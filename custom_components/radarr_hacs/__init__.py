@@ -15,7 +15,8 @@ from .coordinator import RadarrCoordinator
 from . import services, websocket_api
 
 _LOGGER = logging.getLogger(__name__)
-_CARD_URL = f"/{DOMAIN}/radarr-hacs-card.js"
+_CARD_VERSION = "2"
+_CARD_URL = f"/{DOMAIN}/radarr-hacs-card.js?v={_CARD_VERSION}"
 
 PLATFORMS = ["sensor"]
 
@@ -37,6 +38,17 @@ async def _async_register_lovelace_resource(hass: HomeAssistant) -> None:
             items = info
         else:
             return
+        stale_prefix = f"/{DOMAIN}/radarr-hacs-card.js"
+        for r in items:
+            if not isinstance(r, dict):
+                continue
+            url = r.get("url", "")
+            if url.startswith(stale_prefix) and url != _CARD_URL:
+                try:
+                    await resources.async_delete_item(r["id"])
+                    _LOGGER.debug("Removed stale Lovelace resource: %s", url)
+                except Exception:  # noqa: BLE001
+                    pass
         registered = {r.get("url", "") for r in items if isinstance(r, dict)}
         if _CARD_URL not in registered:
             await resources.async_create_item({"res_type": "module", "url": _CARD_URL})
