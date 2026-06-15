@@ -33,7 +33,10 @@ export async function searchMovies(
     entry_id: entryId,
     term,
   });
-  return resp.results.map(m => ({ ...m, inLibrary: (m.id ?? 0) > 0 }));
+  return resp.results.map(m => {
+    const inLibrary = (m.id ?? 0) > 0;
+    return { ...m, inLibrary, id: inLibrary ? m.id : -(m.tmdbId ?? 0) };
+  });
 }
 
 export async function getConfig(
