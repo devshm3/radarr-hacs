@@ -116,14 +116,16 @@ export class RadarrHacsCard extends LitElement {
         getConfig(this.hass, this._config.entry_id),
       ]);
       this._movies = movies;
-      this._filteredMovies = movies;
       this._qualityProfiles = cfg.quality_profiles;
       this._rootFolders = cfg.root_folders;
-      if (prevSelectedId != null) {
-        this._selectedMovie = movies.find(m => m.id === prevSelectedId) ?? this._selectedMovie;
-      }
-      if (prevDialogId != null) {
-        this._dialogSelectedMovie = movies.find(m => m.id === prevDialogId) ?? this._dialogSelectedMovie;
+      if (!this._addMode) {
+        this._filteredMovies = movies;
+        if (prevSelectedId != null) {
+          this._selectedMovie = movies.find(m => m.id === prevSelectedId) ?? this._selectedMovie;
+        }
+        if (prevDialogId != null) {
+          this._dialogSelectedMovie = movies.find(m => m.id === prevDialogId) ?? this._dialogSelectedMovie;
+        }
       }
       const hasDownloading = movies.some(m => m.inQueue);
       if (hasDownloading && !this._queueTimer) {
