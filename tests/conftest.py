@@ -16,6 +16,10 @@ MOCK_MOVIE = {
     "sizeOnDisk": 10_000_000_000,
     "qualityProfileId": 1,
     "path": "/movies/Dune (2021)",
+    "images": [],
+    "ratings": {},
+    "genres": [],
+    "studio": "",
 }
 MOCK_QUALITY_PROFILE = {"id": 1, "name": "Any"}
 MOCK_ROOT_FOLDER = {"id": 1, "path": "/movies", "freeSpace": 500_000_000_000}

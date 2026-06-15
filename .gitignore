@@ -7,3 +7,5 @@ dist/
 *.egg-info/
 .homeassistant/
 .superpowers/
+.venv/
+venv/
