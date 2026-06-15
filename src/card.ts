@@ -28,6 +28,7 @@ export class RadarrHacsCard extends LitElement {
   @state() private _activeFilter = 'all';
   @state() private _searchTerm = '';
   @state() private _tmdbForced = false;
+  @state() private _isTmdbView = false;
   @state() private _loading = false;
   @state() private _error?: string;
 
@@ -118,7 +119,7 @@ export class RadarrHacsCard extends LitElement {
       this._movies = movies;
       this._qualityProfiles = cfg.quality_profiles;
       this._rootFolders = cfg.root_folders;
-      if (!this._addMode) {
+      if (!this._addMode && !this._isTmdbView) {
         this._filteredMovies = movies;
         if (prevSelectedId != null) {
           this._selectedMovie = movies.find(m => m.id === prevSelectedId) ?? this._selectedMovie;
@@ -156,6 +157,7 @@ export class RadarrHacsCard extends LitElement {
     }
 
     this._tmdbForced = false;
+    this._isTmdbView = false;
     const term = this._searchTerm.toLowerCase();
     if (term) {
       this._filteredMovies = this._movies.filter(
@@ -183,6 +185,7 @@ export class RadarrHacsCard extends LitElement {
       const results = await searchMovies(this.hass, this._config.entry_id, this._searchTerm);
       if (this._searchGen === gen) {
         this._filteredMovies = results;
+        this._isTmdbView = true;
       }
     } catch (_e) {
       // leave empty
@@ -201,6 +204,7 @@ export class RadarrHacsCard extends LitElement {
 
   private _exitAddMode(): void {
     this._addMode = false;
+    this._isTmdbView = false;
     this._searchTerm = '';
     this._selectedMovie = undefined;
     this._filteredMovies = this._movies;
@@ -210,6 +214,7 @@ export class RadarrHacsCard extends LitElement {
     this._activeFilter = key;
     this._selectedMovie = undefined;
     this._dialogSelectedMovie = undefined;
+    this._isTmdbView = false;
     if (this._addMode) this._exitAddMode();
     try {
       this._movies = await getMovies(this.hass, this._config.entry_id, {
