@@ -2,10 +2,10 @@ import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Movie } from '../types.js';
 
-function movieStatus(m: Movie): 'available' | 'downloading' | 'missing' {
+function movieStatus(m: Movie): 'available' | 'missing' | 'unmonitored' {
   if (m.hasFile) return 'available';
-  if (!m.hasFile && m.isAvailable) return 'downloading';
-  return 'missing';
+  if (m.monitored) return 'missing';
+  return 'unmonitored';
 }
 
 @customElement('radarr-movie-poster')
@@ -53,9 +53,9 @@ export class RadarrMoviePoster extends LitElement {
       position: absolute;
       text-transform: uppercase;
     }
-    .badge.available  { background: #43a047; color: #fff; }
-    .badge.missing    { background: #757575; color: #fff; }
-    .badge.downloading { background: #f57c00; color: #fff; }
+    .badge.available    { background: #43a047; color: #fff; }
+    .badge.missing      { background: #f57c00; color: #fff; }
+    .badge.unmonitored  { background: #757575; color: #fff; }
   `;
 
   private get _poster(): string {

@@ -141,7 +141,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       color: var(--text-primary-color, #fff);
       font-weight: 600;
     }
-  `,t([pt()],mt.prototype,"activeFilter",void 0),mt=t([dt("radarr-filter-chips")],mt);let bt=class extends nt{constructor(){super(...arguments),this.selected=!1,this.showBadge=!0,this.radius=8}get _poster(){var t,e,i,r;return null!==(r=null===(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.images)||void 0===e?void 0:e.find(t=>"poster"===t.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==r?r:""}render(){const t=function(t){return t.hasFile?"available":!t.hasFile&&t.isAvailable?"downloading":"missing"}(this.movie);return q`
+  `,t([pt()],mt.prototype,"activeFilter",void 0),mt=t([dt("radarr-filter-chips")],mt);let bt=class extends nt{constructor(){super(...arguments),this.selected=!1,this.showBadge=!0,this.radius=8}get _poster(){var t,e,i,r;return null!==(r=null===(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.images)||void 0===e?void 0:e.find(t=>"poster"===t.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==r?r:""}render(){const t=function(t){return t.hasFile?"available":t.monitored?"missing":"unmonitored"}(this.movie);return q`
       <div
         class="wrap ${this.selected?"selected":""}"
         style="--r:${this.radius}px"
@@ -195,9 +195,9 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       position: absolute;
       text-transform: uppercase;
     }
-    .badge.available  { background: #43a047; color: #fff; }
-    .badge.missing    { background: #757575; color: #fff; }
-    .badge.downloading { background: #f57c00; color: #fff; }
+    .badge.available    { background: #43a047; color: #fff; }
+    .badge.missing      { background: #f57c00; color: #fff; }
+    .badge.unmonitored  { background: #757575; color: #fff; }
   `,t([pt({attribute:!1})],bt.prototype,"movie",void 0),t([pt({type:Boolean})],bt.prototype,"selected",void 0),t([pt({type:Boolean})],bt.prototype,"showBadge",void 0),t([pt({type:Number})],bt.prototype,"radius",void 0),bt=t([dt("radarr-movie-poster")],bt);let yt=class extends nt{constructor(){super(...arguments),this.open=!1,this.qualityProfiles=[],this.rootFolders=[],this._monitored=!0,this._adding=!1}get _poster(){var t,e,i,r;return null!==(r=null===(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.images)||void 0===e?void 0:e.find(t=>"poster"===t.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==r?r:""}get _rating(){var t,e,i,r,o;const s=null!==(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.ratings)||void 0===e?void 0:e.tmdb)&&void 0!==i?i:null===(o=null===(r=this.movie)||void 0===r?void 0:r.ratings)||void 0===o?void 0:o.imdb;return s?`★ ${s.value.toFixed(1)}`:""}get _showAddForm(){var t;return!1===(null===(t=this.movie)||void 0===t?void 0:t.inLibrary)}updated(t){t.has("movie")&&(this._profileId=void 0,this._folder=void 0,this._monitored=!0,this._adding=!1,this._addError=void 0)}render(){var t,e;if(!this.movie)return q``;const i=this.movie;return q`
       <div class="panel">
         <div class="poster">
