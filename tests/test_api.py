@@ -4,21 +4,6 @@ from aioresponses import aioresponses
 from custom_components.radarr_hacs.api import RadarrApi
 
 
-@pytest.fixture(scope="session", autouse=True)
-def prewarm_aiohttp_thread():
-    """Create and immediately close a TCPConnector so aiohttp's background thread
-    is started before any test's verify_cleanup fixture captures threads_before."""
-    import asyncio
-
-    async def _warm():
-        conn = aiohttp.TCPConnector()
-        await conn.close()
-
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(_warm())
-    loop.close()
-
-
 @pytest.fixture
 async def api():
     session = aiohttp.ClientSession()
