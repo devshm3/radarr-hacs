@@ -45,4 +45,5 @@ export interface CardConfig {
   show_status_badges?: boolean;
   poster_radius?: number;
   card_title?: string;
+  page_size?: number;
 }

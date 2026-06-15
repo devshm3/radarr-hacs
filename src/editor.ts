@@ -50,6 +50,14 @@ export class RadarrHacsCardEditor extends LitElement {
             @change=${(e: Event) => this._fire({ columns: Number((e.target as HTMLInputElement).value) })} />
         </div>
         <div class="field">
+          <label>Preview size — movies shown before "View all" (default: 25)</label>
+          <select @change=${(e: Event) => this._fire({ page_size: Number((e.target as HTMLSelectElement).value) })}>
+            ${([10, 15, 25, 50] as const).map(n => html`
+              <option value=${n} ?selected=${(c.page_size ?? 25) === n}>${n} movies</option>
+            `)}
+          </select>
+        </div>
+        <div class="field">
           <label>Default Sort</label>
           <select @change=${this._str('default_sort')}>
             ${(['added', 'title', 'year', 'status'] as const).map(s => html`
