@@ -5,7 +5,8 @@ from pathlib import Path
 
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
+from homeassistant.core import Event, HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import RadarrApi
@@ -53,7 +54,11 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     )
     websocket_api.async_register_commands(hass)
     services.async_register_services(hass)
-    await _async_register_lovelace_resource(hass)
+
+    async def _on_ha_started(_event: Event) -> None:
+        await _async_register_lovelace_resource(hass)
+
+    hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, _on_ha_started)
     return True
 
 
