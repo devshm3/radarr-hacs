@@ -20,14 +20,20 @@ class RadarrHacsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         errors = {}
         if user_input is not None:
+            await self.async_set_unique_id(user_input["host"].rstrip("/").lower())
+            self._abort_if_unique_id_configured()
             session = async_get_clientsession(self.hass)
             api = RadarrApi(user_input["host"], user_input["api_key"], session)
-            if await api.test_connection():
+            try:
+                connected = await api.test_connection()
+            except Exception:
+                connected = False
+            if connected:
                 return self.async_create_entry(title=user_input["name"], data=user_input)
             errors["base"] = "cannot_connect"
 
         return self.async_show_form(
             step_id="user",
-            data_schema=STEP_USER_SCHEMA,
+            data_schema=self.add_suggested_values_to_schema(STEP_USER_SCHEMA, user_input or {}),
             errors=errors,
         )
