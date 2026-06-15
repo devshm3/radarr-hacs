@@ -1,0 +1,2 @@
+DOMAIN = "radarr_hacs"
+DEFAULT_POLL_INTERVAL = 30
