@@ -21,6 +21,7 @@ export class RadarrHacsCard extends LitElement {
   @state() private _selectedMovie?: Movie;
   @state() private _activeFilter = 'all';
   @state() private _searchTerm = '';
+  @state() private _tmdbForced = false;
   @state() private _loading = false;
   @state() private _error?: string;
 
@@ -79,6 +80,7 @@ export class RadarrHacsCard extends LitElement {
 
   private _onSearchInput(e: Event): void {
     this._searchTerm = (e.target as HTMLInputElement).value;
+    this._tmdbForced = false;
     clearTimeout(this._debounceTimer);
     const term = this._searchTerm.toLowerCase();
     if (term) {
@@ -92,6 +94,12 @@ export class RadarrHacsCard extends LitElement {
     if (this._filteredMovies.length === 0) {
       this._debounceTimer = setTimeout(() => this._tmdbSearch(), 400);
     }
+  }
+
+  private _forceSearchTmdb(): void {
+    this._tmdbForced = true;
+    clearTimeout(this._debounceTimer);
+    this._tmdbSearch();
   }
 
   private async _tmdbSearch(): Promise<void> {
@@ -260,6 +268,15 @@ export class RadarrHacsCard extends LitElement {
           @delete-movie=${this._onDeleteMovieEvent}
           @search-again=${this._onSearchAgain}
         ></radarr-movie-detail>
+        ${this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
+          <div style="padding:8px 16px 4px;text-align:right">
+            <a
+              href="#"
+              style="color:var(--primary-color);font-size:0.83rem;text-decoration:none"
+              @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
+            >Search TMDB →</a>
+          </div>
+        ` : ''}
       ` : ''}
     `;
   }
