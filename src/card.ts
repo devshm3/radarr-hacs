@@ -188,44 +188,69 @@ export class RadarrHacsCard extends LitElement {
       display: block;
       background: var(--card-background-color);
       border-radius: 12px;
+      font-family: var(--paper-font-body1_-_font-family, sans-serif);
       overflow: hidden;
     }
     .header {
       align-items: center;
-      backdrop-filter: blur(16px);
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       display: flex;
       gap: 12px;
       padding: 12px 16px;
     }
-    .title { font-size: 1.1rem; font-weight: 600; white-space: nowrap; }
+    .title {
+      color: var(--primary-text-color);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
     .search {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       color: var(--primary-text-color);
       flex: 1;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
-      padding: 6px 12px;
+      padding: 7px 13px;
+      transition: border-color 0.15s;
     }
+    .search::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
     .search:focus { border-color: var(--primary-color); }
     .state-msg {
       color: var(--secondary-text-color);
-      padding: 32px;
+      padding: 40px 24px;
       text-align: center;
     }
     .error-msg { color: var(--error-color, #f44336); }
     .retry {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.07);
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px;
       color: var(--primary-text-color);
       cursor: pointer;
-      margin-top: 8px;
-      padding: 6px 14px;
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 16px;
+      transition: background 0.15s;
     }
+    .retry:hover { background: rgba(255,255,255,0.12); }
+    .tmdb-link-row {
+      padding: 4px 16px 8px;
+      text-align: right;
+    }
+    .tmdb-link {
+      color: var(--primary-color);
+      font-size: 0.82rem;
+      opacity: 0.85;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .tmdb-link:hover { opacity: 1; }
   `;
 
   render() {
@@ -277,10 +302,8 @@ export class RadarrHacsCard extends LitElement {
           @search-again=${this._onSearchAgain}
         ></radarr-movie-detail>
         ${this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
-          <div style="padding:8px 16px 4px;text-align:right">
-            <a
-              href="#"
-              style="color:var(--primary-color);font-size:0.83rem;text-decoration:none"
+          <div class="tmdb-link-row">
+            <a class="tmdb-link" href="#"
               @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
             >Search TMDB →</a>
           </div>

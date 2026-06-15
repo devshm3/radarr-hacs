@@ -21,12 +21,19 @@ export class RadarrMoviePoster extends LitElement {
       aspect-ratio: 2 / 3;
       border: 2px solid transparent;
       border-radius: var(--r, 8px);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
       overflow: hidden;
       position: relative;
-      transition: border-color 0.15s, transform 0.15s;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
     }
-    .wrap:hover { transform: scale(1.02); }
-    .wrap.selected { border-color: var(--primary-color); }
+    .wrap:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      transform: scale(1.025);
+    }
+    .wrap.selected {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px var(--primary-color), 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
     img {
       background: rgba(255, 255, 255, 0.04);
       display: block;
@@ -37,17 +44,18 @@ export class RadarrMoviePoster extends LitElement {
     .badge {
       border-radius: 10px;
       bottom: 6px;
-      font-size: 0.65rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      font-size: 0.62rem;
       font-weight: 700;
       left: 6px;
-      letter-spacing: 0.04em;
-      padding: 2px 8px;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
       position: absolute;
       text-transform: uppercase;
     }
-    .badge.available  { background: #4caf50; color: #fff; }
-    .badge.missing    { background: #9e9e9e; color: #fff; }
-    .badge.downloading { background: #ff9800; color: #fff; }
+    .badge.available  { background: #43a047; color: #fff; }
+    .badge.missing    { background: #757575; color: #fff; }
+    .badge.downloading { background: #f57c00; color: #fff; }
   `;
 
   private get _poster(): string {

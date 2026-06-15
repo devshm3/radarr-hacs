@@ -16,24 +16,29 @@ export class RadarrFilterChips extends LitElement {
     :host {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: 6px;
+      padding: 10px 16px;
     }
     button {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.09);
       border-radius: 20px;
-      color: var(--primary-text-color);
+      color: var(--secondary-text-color);
       cursor: pointer;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
       padding: 4px 14px;
-      transition: background 0.15s, border-color 0.15s;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
-    button:hover { background: rgba(255, 255, 255, 0.1); }
+    button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--primary-text-color);
+    }
     button.active {
       background: var(--primary-color);
       border-color: var(--primary-color);
       color: var(--text-primary-color, #fff);
+      font-weight: 600;
     }
   `;
 

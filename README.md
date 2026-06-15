@@ -17,7 +17,16 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 1. Install via [HACS](https://hacs.xyz)
 2. Go to **Settings → Devices & Services → Add Integration → Radarr HACS**
 3. Enter your Radarr URL and API key
-4. Add the **Radarr HACS Card** to any Lovelace dashboard
+4. The Lovelace card resource is registered automatically when HA is in storage mode.
+   If using YAML-mode Lovelace, add this resource manually in your `configuration.yaml`:
+   ```yaml
+   lovelace:
+     resources:
+       - url: /radarr_hacs/radarr-hacs-card.js
+         type: module
+   ```
+5. Add the **Radarr HACS Card** to any Lovelace dashboard and set the Entry ID
+   (find it in Settings → Devices & Services → Radarr HACS → ⋮ → Integration ID)
 
 ## Card Options
 
