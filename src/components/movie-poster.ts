@@ -4,7 +4,7 @@ import type { Movie } from '../types.js';
 
 function movieStatus(m: Movie): 'available' | 'downloading' | 'missing' {
   if (m.hasFile) return 'available';
-  if (!m.hasFile && !m.isAvailable) return 'downloading';
+  if (!m.hasFile && m.isAvailable) return 'downloading';
   return 'missing';
 }
 

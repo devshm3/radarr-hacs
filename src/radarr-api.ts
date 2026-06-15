@@ -33,7 +33,7 @@ export async function searchMovies(
     entry_id: entryId,
     term,
   });
-  return resp.results;
+  return resp.results.map(m => ({ ...m, inLibrary: (m.id ?? 0) > 0 }));
 }
 
 export async function getConfig(

@@ -213,7 +213,7 @@ export class RadarrHacsCard extends LitElement {
         <div class="state-msg error-msg">
           ${this._error}
           <br/>
-          <button class="retry" @click=${() => { this._initialised = false; this._loadData(); }}>Retry</button>
+          <button class="retry" @click=${() => this._loadData()}>Retry</button>
         </div>
       ` : ''}
 
