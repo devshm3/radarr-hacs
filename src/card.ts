@@ -238,6 +238,12 @@ export class RadarrHacsCard extends LitElement {
     try {
       await toggleMonitored(this.hass, this._config.entry_id, movie.id, monitored);
       await this._loadData();
+      if (this._selectedMovie?.id === movie.id) {
+        this._selectedMovie = this._filteredMovies.find(m => m.id === movie.id);
+      }
+      if (this._dialogSelectedMovie?.id === movie.id) {
+        this._dialogSelectedMovie = this._filteredMovies.find(m => m.id === movie.id);
+      }
     } catch (err) {
       this._error = `Could not update monitored: ${err}`;
     }

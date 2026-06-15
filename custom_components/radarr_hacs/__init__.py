@@ -15,7 +15,7 @@ from .coordinator import RadarrCoordinator
 from . import services, websocket_api
 
 _LOGGER = logging.getLogger(__name__)
-_CARD_VERSION = "6"
+_CARD_VERSION = "7"
 _CARD_URL = f"/{DOMAIN}/radarr-hacs-card.js?v={_CARD_VERSION}"
 
 PLATFORMS = ["sensor"]
