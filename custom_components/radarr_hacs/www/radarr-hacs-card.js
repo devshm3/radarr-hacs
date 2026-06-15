@@ -1,83 +1,83 @@
-function t(t,e,i,o){var r,s=arguments.length,a=s<3?e:null===o?o=Object.getOwnPropertyDescriptor(e,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,o);else for(var n=t.length-1;n>=0;n--)(r=t[n])&&(a=(s<3?r(a):s>3?r(e,i,a):r(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a}"function"==typeof SuppressedError&&SuppressedError;
+function e(e,t,i,o){var r,s=arguments.length,a=s<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,i):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,i,o);else for(var n=e.length-1;n>=0;n--)(r=e[n])&&(a=(s<3?r(a):s>3?r(t,i,a):r(t,i))||a);return s>3&&a&&Object.defineProperty(t,i,a),a}"function"==typeof SuppressedError&&SuppressedError;
 /**
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,o=Symbol(),r=new WeakMap;let s=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==o)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=r.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(e,t))}return t}toString(){return this.cssText}};const a=(t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,i,o)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[o+1],t[0]);return new s(i,t,o)},n=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new s("string"==typeof t?t:t+"",void 0,o))(e)})(t):t,{is:l,defineProperty:d,getOwnPropertyDescriptor:c,getOwnPropertyNames:h,getOwnPropertySymbols:p,getPrototypeOf:u}=Object,v=globalThis,_=v.trustedTypes,g=_?_.emptyScript:"",f=v.reactiveElementPolyfillSupport,m=(t,e)=>t,b={toAttribute(t,e){switch(e){case Boolean:t=t?g:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},y=(t,e)=>!l(t,e),$={attribute:!0,type:String,converter:b,reflect:!1,useDefault:!1,hasChanged:y};
+const t=globalThis,i=t.ShadowRoot&&(void 0===t.ShadyCSS||t.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,o=Symbol(),r=new WeakMap;let s=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==o)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(i&&void 0===e){const i=void 0!==t&&1===t.length;i&&(e=r.get(t)),void 0===e&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&r.set(t,e))}return e}toString(){return this.cssText}};const a=(e,...t)=>{const i=1===e.length?e[0]:t.reduce((t,i,o)=>t+(e=>{if(!0===e._$cssResult$)return e.cssText;if("number"==typeof e)return e;throw Error("Value passed to 'css' function must be a 'css' function result: "+e+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+e[o+1],e[0]);return new s(i,e,o)},n=i?e=>e:e=>e instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return(e=>new s("string"==typeof e?e:e+"",void 0,o))(t)})(e):e,{is:l,defineProperty:d,getOwnPropertyDescriptor:c,getOwnPropertyNames:h,getOwnPropertySymbols:p,getPrototypeOf:u}=Object,v=globalThis,_=v.trustedTypes,g=_?_.emptyScript:"",f=v.reactiveElementPolyfillSupport,m=(e,t)=>e,b={toAttribute(e,t){switch(t){case Boolean:e=e?g:null;break;case Object:case Array:e=null==e?e:JSON.stringify(e)}return e},fromAttribute(e,t){let i=e;switch(t){case Boolean:i=null!==e;break;case Number:i=null===e?null:Number(e);break;case Object:case Array:try{i=JSON.parse(e)}catch(e){i=null}}return i}},y=(e,t)=>!l(e,t),$={attribute:!0,type:String,converter:b,reflect:!1,useDefault:!1,hasChanged:y};
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */Symbol.metadata??=Symbol("metadata"),v.litPropertyMetadata??=new WeakMap;let x=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=$){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(t,i,e);void 0!==o&&d(this.prototype,t,o)}}static getPropertyDescriptor(t,e,i){const{get:o,set:r}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:o,set(e){const s=o?.call(this);r?.call(this,e),this.requestUpdate(t,s,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??$}static _$Ei(){if(this.hasOwnProperty(m("elementProperties")))return;const t=u(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(m("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(m("properties"))){const t=this.properties,e=[...h(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(n(t))}else void 0!==t&&e.push(n(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((t,o)=>{if(i)t.adoptedStyleSheets=o.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const i of o){const o=document.createElement("style"),r=e.litNonce;void 0!==r&&o.setAttribute("nonce",r),o.textContent=i.cssText,t.appendChild(o)}})(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),o=this.constructor._$Eu(t,i);if(void 0!==o&&!0===i.reflect){const r=(void 0!==i.converter?.toAttribute?i.converter:b).toAttribute(e,i.type);this._$Em=t,null==r?this.removeAttribute(o):this.setAttribute(o,r),this._$Em=null}}_$AK(t,e){const i=this.constructor,o=i._$Eh.get(t);if(void 0!==o&&this._$Em!==o){const t=i.getPropertyOptions(o),r="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:b;this._$Em=o;const s=r.fromAttribute(e,t.type);this[o]=s??this._$Ej?.get(o)??s,this._$Em=null}}requestUpdate(t,e,i,o=!1,r){if(void 0!==t){const s=this.constructor;if(!1===o&&(r=this[t]),i??=s.getPropertyOptions(t),!((i.hasChanged??y)(r,e)||i.useDefault&&i.reflect&&r===this._$Ej?.get(t)&&!this.hasAttribute(s._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:o,wrapped:r},s){i&&!(this._$Ej??=new Map).has(t)&&(this._$Ej.set(t,s??e??this[t]),!0!==r||void 0!==s)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===o&&this._$Em!==t&&(this._$Eq??=new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,o=this[e];!0!==t||this._$AL.has(e)||void 0===o||this.C(e,void 0,i,o)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(e){throw t=!1,this._$EM(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[m("elementProperties")]=new Map,x[m("finalized")]=new Map,f?.({ReactiveElement:x}),(v.reactiveElementVersions??=[]).push("2.1.2");
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
-const w=globalThis,A=t=>t,S=w.trustedTypes,M=S?S.createPolicy("lit-html",{createHTML:t=>t}):void 0,k="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+E,P=`<${C}>`,T=document,D=()=>T.createComment(""),F=t=>null===t||"object"!=typeof t&&"function"!=typeof t,z=Array.isArray,O="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,N=/-->/g,R=/>/g,q=RegExp(`>|${O}(?:([^\\s"'>=/]+)(${O}*=${O}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),I=/'/g,H=/"/g,B=/^(?:script|style|textarea|title)$/i,j=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),L=Symbol.for("lit-noChange"),Q=Symbol.for("lit-nothing"),G=new WeakMap,V=T.createTreeWalker(T,129);function W(t,e){if(!z(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==M?M.createHTML(e):e}const J=(t,e)=>{const i=t.length-1,o=[];let r,s=2===e?"<svg>":3===e?"<math>":"",a=U;for(let e=0;e<i;e++){const i=t[e];let n,l,d=-1,c=0;for(;c<i.length&&(a.lastIndex=c,l=a.exec(i),null!==l);)c=a.lastIndex,a===U?"!--"===l[1]?a=N:void 0!==l[1]?a=R:void 0!==l[2]?(B.test(l[2])&&(r=RegExp("</"+l[2],"g")),a=q):void 0!==l[3]&&(a=q):a===q?">"===l[0]?(a=r??U,d=-1):void 0===l[1]?d=-2:(d=a.lastIndex-l[2].length,n=l[1],a=void 0===l[3]?q:'"'===l[3]?H:I):a===H||a===I?a=q:a===N||a===R?a=U:(a=q,r=void 0);const h=a===q&&t[e+1].startsWith("/>")?" ":"";s+=a===U?i+P:d>=0?(o.push(n),i.slice(0,d)+k+i.slice(d)+E+h):i+E+(-2===d?e:h)}return[W(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class K{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let r=0,s=0;const a=t.length-1,n=this.parts,[l,d]=J(t,e);if(this.el=K.createElement(l,i),V.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=V.nextNode())&&n.length<a;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(k)){const e=d[s++],i=o.getAttribute(t).split(E),a=/([.?@])?(.*)/.exec(e);n.push({type:1,index:r,name:a[2],strings:i,ctor:"."===a[1]?et:"?"===a[1]?it:"@"===a[1]?ot:tt}),o.removeAttribute(t)}else t.startsWith(E)&&(n.push({type:6,index:r}),o.removeAttribute(t));if(B.test(o.tagName)){const t=o.textContent.split(E),e=t.length-1;if(e>0){o.textContent=S?S.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],D()),V.nextNode(),n.push({type:2,index:++r});o.append(t[e],D())}}}else if(8===o.nodeType)if(o.data===C)n.push({type:2,index:r});else{let t=-1;for(;-1!==(t=o.data.indexOf(E,t+1));)n.push({type:7,index:r}),t+=E.length-1}r++}}static createElement(t,e){const i=T.createElement("template");return i.innerHTML=t,i}}function Y(t,e,i=t,o){if(e===L)return e;let r=void 0!==o?i._$Co?.[o]:i._$Cl;const s=F(e)?void 0:e._$litDirective$;return r?.constructor!==s&&(r?._$AO?.(!1),void 0===s?r=void 0:(r=new s(t),r._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=r:i._$Cl=r),void 0!==r&&(e=Y(t,r._$AS(t,e.values),r,o)),e}class Z{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??T).importNode(e,!0);V.currentNode=o;let r=V.nextNode(),s=0,a=0,n=i[0];for(;void 0!==n;){if(s===n.index){let e;2===n.type?e=new X(r,r.nextSibling,this,t):1===n.type?e=new n.ctor(r,n.name,n.strings,this,t):6===n.type&&(e=new rt(r,this,t)),this._$AV.push(e),n=i[++a]}s!==n?.index&&(r=V.nextNode(),s++)}return V.currentNode=T,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class X{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=Q,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=Y(this,t,e),F(t)?t===Q||null==t||""===t?(this._$AH!==Q&&this._$AR(),this._$AH=Q):t!==this._$AH&&t!==L&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>z(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==Q&&F(this._$AH)?this._$AA.nextSibling.data=t:this.T(T.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=K.createElement(W(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new Z(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=G.get(t.strings);return void 0===e&&G.set(t.strings,e=new K(t)),e}k(t){z(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const r of t)o===e.length?e.push(i=new X(this.O(D()),this.O(D()),this,this.options)):i=e[o],i._$AI(r),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=A(t).nextSibling;A(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class tt{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,r){this.type=1,this._$AH=Q,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=r,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=Q}_$AI(t,e=this,i,o){const r=this.strings;let s=!1;if(void 0===r)t=Y(this,t,e,0),s=!F(t)||t!==this._$AH&&t!==L,s&&(this._$AH=t);else{const o=t;let a,n;for(t=r[0],a=0;a<r.length-1;a++)n=Y(this,o[i+a],e,a),n===L&&(n=this._$AH[a]),s||=!F(n)||n!==this._$AH[a],n===Q?t=Q:t!==Q&&(t+=(n??"")+r[a+1]),this._$AH[a]=n}s&&!o&&this.j(t)}j(t){t===Q?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class et extends tt{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===Q?void 0:t}}class it extends tt{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==Q)}}class ot extends tt{constructor(t,e,i,o,r){super(t,e,i,o,r),this.type=5}_$AI(t,e=this){if((t=Y(this,t,e,0)??Q)===L)return;const i=this._$AH,o=t===Q&&i!==Q||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,r=t!==Q&&(i===Q||o);o&&this.element.removeEventListener(this.name,this,i),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class rt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){Y(this,t)}}const st=w.litHtmlPolyfillSupport;st?.(K,X),(w.litHtmlVersions??=[]).push("3.3.3");const at=globalThis;
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */class nt extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let r=o._$litPart$;if(void 0===r){const t=i?.renderBefore??null;o._$litPart$=r=new X(e.insertBefore(D(),t),t,void 0,i??{})}return r._$AI(t),r})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return L}}nt._$litElement$=!0,nt.finalized=!0,at.litElementHydrateSupport?.({LitElement:nt});const lt=at.litElementPolyfillSupport;lt?.({LitElement:nt}),(at.litElementVersions??=[]).push("4.2.2");
+ */Symbol.metadata??=Symbol("metadata"),v.litPropertyMetadata??=new WeakMap;let x=class extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??=[]).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=$){if(t.state&&(t.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(e)&&((t=Object.create(t)).wrapped=!0),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(e,i,t);void 0!==o&&d(this.prototype,e,o)}}static getPropertyDescriptor(e,t,i){const{get:o,set:r}=c(this.prototype,e)??{get(){return this[t]},set(e){this[t]=e}};return{get:o,set(t){const s=o?.call(this);r?.call(this,t),this.requestUpdate(e,s,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??$}static _$Ei(){if(this.hasOwnProperty(m("elementProperties")))return;const e=u(this);e.finalize(),void 0!==e.l&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(m("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(m("properties"))){const e=this.properties,t=[...h(e),...p(e)];for(const i of t)this.createProperty(i,e[i])}const e=this[Symbol.metadata];if(null!==e){const t=litPropertyMetadata.get(e);if(void 0!==t)for(const[e,i]of t)this.elementProperties.set(e,i)}this._$Eh=new Map;for(const[e,t]of this.elementProperties){const i=this._$Eu(e,t);void 0!==i&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const e of i)t.unshift(n(e))}else void 0!==e&&t.push(n(e));return t}static _$Eu(e,t){const i=t.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof e?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(e=>this.enableUpdating=e),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(e=>e(this))}addController(e){(this._$EO??=new Set).add(e),void 0!==this.renderRoot&&this.isConnected&&e.hostConnected?.()}removeController(e){this._$EO?.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((e,o)=>{if(i)e.adoptedStyleSheets=o.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(const i of o){const o=document.createElement("style"),r=t.litNonce;void 0!==r&&o.setAttribute("nonce",r),o.textContent=i.cssText,e.appendChild(o)}})(e,this.constructor.elementStyles),e}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(e=>e.hostConnected?.())}enableUpdating(e){}disconnectedCallback(){this._$EO?.forEach(e=>e.hostDisconnected?.())}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$ET(e,t){const i=this.constructor.elementProperties.get(e),o=this.constructor._$Eu(e,i);if(void 0!==o&&!0===i.reflect){const r=(void 0!==i.converter?.toAttribute?i.converter:b).toAttribute(t,i.type);this._$Em=e,null==r?this.removeAttribute(o):this.setAttribute(o,r),this._$Em=null}}_$AK(e,t){const i=this.constructor,o=i._$Eh.get(e);if(void 0!==o&&this._$Em!==o){const e=i.getPropertyOptions(o),r="function"==typeof e.converter?{fromAttribute:e.converter}:void 0!==e.converter?.fromAttribute?e.converter:b;this._$Em=o;const s=r.fromAttribute(t,e.type);this[o]=s??this._$Ej?.get(o)??s,this._$Em=null}}requestUpdate(e,t,i,o=!1,r){if(void 0!==e){const s=this.constructor;if(!1===o&&(r=this[e]),i??=s.getPropertyOptions(e),!((i.hasChanged??y)(r,t)||i.useDefault&&i.reflect&&r===this._$Ej?.get(e)&&!this.hasAttribute(s._$Eu(e,i))))return;this.C(e,t,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(e,t,{useDefault:i,reflect:o,wrapped:r},s){i&&!(this._$Ej??=new Map).has(e)&&(this._$Ej.set(e,s??t??this[e]),!0!==r||void 0!==s)||(this._$AL.has(e)||(this.hasUpdated||i||(t=void 0),this._$AL.set(e,t)),!0===o&&this._$Em!==e&&(this._$Eq??=new Set).add(e))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const e=this.scheduleUpdate();return null!=e&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[e,t]of this._$Ep)this[e]=t;this._$Ep=void 0}const e=this.constructor.elementProperties;if(e.size>0)for(const[t,i]of e){const{wrapped:e}=i,o=this[t];!0!==e||this._$AL.has(t)||void 0===o||this.C(t,void 0,i,o)}}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),this._$EO?.forEach(e=>e.hostUpdate?.()),this.update(t)):this._$EM()}catch(t){throw e=!1,this._$EM(),t}e&&this._$AE(t)}willUpdate(e){}_$AE(e){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Eq&&=this._$Eq.forEach(e=>this._$ET(e,this[e])),this._$EM()}updated(e){}firstUpdated(e){}};x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[m("elementProperties")]=new Map,x[m("finalized")]=new Map,f?.({ReactiveElement:x}),(v.reactiveElementVersions??=[]).push("2.1.2");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)},ct={attribute:!0,type:String,converter:b,reflect:!1,hasChanged:y},ht=(t=ct,e,i)=>{const{kind:o,metadata:r}=i;let s=globalThis.litPropertyMetadata.get(r);if(void 0===s&&globalThis.litPropertyMetadata.set(r,s=new Map),"setter"===o&&((t=Object.create(t)).wrapped=!0),s.set(i.name,t),"accessor"===o){const{name:o}=i;return{set(i){const r=e.get.call(this);e.set.call(this,i),this.requestUpdate(o,r,t,!0,i)},init(e){return void 0!==e&&this.C(o,void 0,t,e),e}}}if("setter"===o){const{name:o}=i;return function(i){const r=this[o];e.call(this,i),this.requestUpdate(o,r,t,!0,i)}}throw Error("Unsupported decorator location: "+o)};
+const w=globalThis,A=e=>e,S=w.trustedTypes,M=S?S.createPolicy("lit-html",{createHTML:e=>e}):void 0,k="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,C="?"+E,P=`<${C}>`,T=document,D=()=>T.createComment(""),z=e=>null===e||"object"!=typeof e&&"function"!=typeof e,q=Array.isArray,F="[ \t\n\f\r]",O=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,U=/-->/g,I=/>/g,N=RegExp(`>|${F}(?:([^\\s"'>=/]+)(${F}*=${F}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),R=/'/g,H=/"/g,B=/^(?:script|style|textarea|title)$/i,j=(e=>(t,...i)=>({_$litType$:e,strings:t,values:i}))(1),L=Symbol.for("lit-noChange"),Q=Symbol.for("lit-nothing"),G=new WeakMap,V=T.createTreeWalker(T,129);function W(e,t){if(!q(e)||!e.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==M?M.createHTML(t):t}const J=(e,t)=>{const i=e.length-1,o=[];let r,s=2===t?"<svg>":3===t?"<math>":"",a=O;for(let t=0;t<i;t++){const i=e[t];let n,l,d=-1,c=0;for(;c<i.length&&(a.lastIndex=c,l=a.exec(i),null!==l);)c=a.lastIndex,a===O?"!--"===l[1]?a=U:void 0!==l[1]?a=I:void 0!==l[2]?(B.test(l[2])&&(r=RegExp("</"+l[2],"g")),a=N):void 0!==l[3]&&(a=N):a===N?">"===l[0]?(a=r??O,d=-1):void 0===l[1]?d=-2:(d=a.lastIndex-l[2].length,n=l[1],a=void 0===l[3]?N:'"'===l[3]?H:R):a===H||a===R?a=N:a===U||a===I?a=O:(a=N,r=void 0);const h=a===N&&e[t+1].startsWith("/>")?" ":"";s+=a===O?i+P:d>=0?(o.push(n),i.slice(0,d)+k+i.slice(d)+E+h):i+E+(-2===d?t:h)}return[W(e,s+(e[i]||"<?>")+(2===t?"</svg>":3===t?"</math>":"")),o]};class K{constructor({strings:e,_$litType$:t},i){let o;this.parts=[];let r=0,s=0;const a=e.length-1,n=this.parts,[l,d]=J(e,t);if(this.el=K.createElement(l,i),V.currentNode=this.el.content,2===t||3===t){const e=this.el.content.firstChild;e.replaceWith(...e.childNodes)}for(;null!==(o=V.nextNode())&&n.length<a;){if(1===o.nodeType){if(o.hasAttributes())for(const e of o.getAttributeNames())if(e.endsWith(k)){const t=d[s++],i=o.getAttribute(e).split(E),a=/([.?@])?(.*)/.exec(t);n.push({type:1,index:r,name:a[2],strings:i,ctor:"."===a[1]?te:"?"===a[1]?ie:"@"===a[1]?oe:ee}),o.removeAttribute(e)}else e.startsWith(E)&&(n.push({type:6,index:r}),o.removeAttribute(e));if(B.test(o.tagName)){const e=o.textContent.split(E),t=e.length-1;if(t>0){o.textContent=S?S.emptyScript:"";for(let i=0;i<t;i++)o.append(e[i],D()),V.nextNode(),n.push({type:2,index:++r});o.append(e[t],D())}}}else if(8===o.nodeType)if(o.data===C)n.push({type:2,index:r});else{let e=-1;for(;-1!==(e=o.data.indexOf(E,e+1));)n.push({type:7,index:r}),e+=E.length-1}r++}}static createElement(e,t){const i=T.createElement("template");return i.innerHTML=e,i}}function Y(e,t,i=e,o){if(t===L)return t;let r=void 0!==o?i._$Co?.[o]:i._$Cl;const s=z(t)?void 0:t._$litDirective$;return r?.constructor!==s&&(r?._$AO?.(!1),void 0===s?r=void 0:(r=new s(e),r._$AT(e,i,o)),void 0!==o?(i._$Co??=[])[o]=r:i._$Cl=r),void 0!==r&&(t=Y(e,r._$AS(e,t.values),r,o)),t}class Z{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,o=(e?.creationScope??T).importNode(t,!0);V.currentNode=o;let r=V.nextNode(),s=0,a=0,n=i[0];for(;void 0!==n;){if(s===n.index){let t;2===n.type?t=new X(r,r.nextSibling,this,e):1===n.type?t=new n.ctor(r,n.name,n.strings,this,e):6===n.type&&(t=new re(r,this,e)),this._$AV.push(t),n=i[++a]}s!==n?.index&&(r=V.nextNode(),s++)}return V.currentNode=T,o}p(e){let t=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}}class X{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(e,t,i,o){this.type=2,this._$AH=Q,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return void 0!==t&&11===e?.nodeType&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=Y(this,e,t),z(e)?e===Q||null==e||""===e?(this._$AH!==Q&&this._$AR(),this._$AH=Q):e!==this._$AH&&e!==L&&this._(e):void 0!==e._$litType$?this.$(e):void 0!==e.nodeType?this.T(e):(e=>q(e)||"function"==typeof e?.[Symbol.iterator])(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==Q&&z(this._$AH)?this._$AA.nextSibling.data=e:this.T(T.createTextNode(e)),this._$AH=e}$(e){const{values:t,_$litType$:i}=e,o="number"==typeof i?this._$AC(e):(void 0===i.el&&(i.el=K.createElement(W(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(t);else{const e=new Z(o,this),i=e.u(this.options);e.p(t),this.T(i),this._$AH=e}}_$AC(e){let t=G.get(e.strings);return void 0===t&&G.set(e.strings,t=new K(e)),t}k(e){q(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,o=0;for(const r of e)o===t.length?t.push(i=new X(this.O(D()),this.O(D()),this,this.options)):i=t[o],i._$AI(r),o++;o<t.length&&(this._$AR(i&&i._$AB.nextSibling,o),t.length=o)}_$AR(e=this._$AA.nextSibling,t){for(this._$AP?.(!1,!0,t);e!==this._$AB;){const t=A(e).nextSibling;A(e).remove(),e=t}}setConnected(e){void 0===this._$AM&&(this._$Cv=e,this._$AP?.(e))}}class ee{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,o,r){this.type=1,this._$AH=Q,this._$AN=void 0,this.element=e,this.name=t,this._$AM=o,this.options=r,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=Q}_$AI(e,t=this,i,o){const r=this.strings;let s=!1;if(void 0===r)e=Y(this,e,t,0),s=!z(e)||e!==this._$AH&&e!==L,s&&(this._$AH=e);else{const o=e;let a,n;for(e=r[0],a=0;a<r.length-1;a++)n=Y(this,o[i+a],t,a),n===L&&(n=this._$AH[a]),s||=!z(n)||n!==this._$AH[a],n===Q?e=Q:e!==Q&&(e+=(n??"")+r[a+1]),this._$AH[a]=n}s&&!o&&this.j(e)}j(e){e===Q?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class te extends ee{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===Q?void 0:e}}class ie extends ee{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==Q)}}class oe extends ee{constructor(e,t,i,o,r){super(e,t,i,o,r),this.type=5}_$AI(e,t=this){if((e=Y(this,e,t,0)??Q)===L)return;const i=this._$AH,o=e===Q&&i!==Q||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,r=e!==Q&&(i===Q||o);o&&this.element.removeEventListener(this.name,this,i),r&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,e):this._$AH.handleEvent(e)}}class re{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){Y(this,e)}}const se=w.litHtmlPolyfillSupport;se?.(K,X),(w.litHtmlVersions??=[]).push("3.3.3");const ae=globalThis;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function pt(t){return(e,i)=>"object"==typeof i?ht(t,e,i):((t,e,i)=>{const o=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),o?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}
+ */class ne extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const e=super.createRenderRoot();return this.renderOptions.renderBefore??=e.firstChild,e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this._$Do=((e,t,i)=>{const o=i?.renderBefore??t;let r=o._$litPart$;if(void 0===r){const e=i?.renderBefore??null;o._$litPart$=r=new X(t.insertBefore(D(),e),e,void 0,i??{})}return r._$AI(e),r})(t,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return L}}ne._$litElement$=!0,ne.finalized=!0,ae.litElementHydrateSupport?.({LitElement:ne});const le=ae.litElementPolyfillSupport;le?.({LitElement:ne}),(ae.litElementVersions??=[]).push("4.2.2");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function ut(t){return pt({...t,state:!0,attribute:!1})}
+ */
+const de=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}):customElements.define(e,t)},ce={attribute:!0,type:String,converter:b,reflect:!1,hasChanged:y},he=(e=ce,t,i)=>{const{kind:o,metadata:r}=i;let s=globalThis.litPropertyMetadata.get(r);if(void 0===s&&globalThis.litPropertyMetadata.set(r,s=new Map),"setter"===o&&((e=Object.create(e)).wrapped=!0),s.set(i.name,e),"accessor"===o){const{name:o}=i;return{set(i){const r=t.get.call(this);t.set.call(this,i),this.requestUpdate(o,r,e,!0,i)},init(t){return void 0!==t&&this.C(o,void 0,e,t),t}}}if("setter"===o){const{name:o}=i;return function(i){const r=this[o];t.call(this,i),this.requestUpdate(o,r,e,!0,i)}}throw Error("Unsupported decorator location: "+o)};
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */async function vt(t,e,i={}){const o={type:"radarr_hacs/get_movies",entry_id:e};i.filter&&"all"!==i.filter&&(o.filter=i.filter),i.sort&&(o.sort=i.sort),i.search&&(o.search=i.search);return(await t.connection.sendMessagePromise(o)).movies}async function _t(t,e){return t.connection.sendMessagePromise({type:"radarr_hacs/get_config",entry_id:e})}let gt=class extends nt{setConfig(t){this._config={...t},this.requestUpdate()}render(){var t,e,i,o;if(!this._config)return j``;const r=this._config;return j`
+ */function pe(e){return(t,i)=>"object"==typeof i?he(e,t,i):((e,t,i)=>{const o=t.hasOwnProperty(i);return t.constructor.createProperty(i,e),o?Object.getOwnPropertyDescriptor(t,i):void 0})(e,t,i)}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */function ue(e){return pe({...e,state:!0,attribute:!1})}
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */async function ve(e,t,i={}){const o={type:"radarr_hacs/get_movies",entry_id:t};i.filter&&"all"!==i.filter&&(o.filter=i.filter),i.sort&&(o.sort=i.sort),i.search&&(o.search=i.search);return(await e.connection.sendMessagePromise(o)).movies}async function _e(e,t){return e.connection.sendMessagePromise({type:"radarr_hacs/get_config",entry_id:t})}let ge=class extends ne{setConfig(e){this._config={...e},this.requestUpdate()}render(){var e,t,i,o;if(!this._config)return j``;const r=this._config;return j`
       <div class="form">
         <div class="field">
           <label>Entry ID (required — find in Settings → Devices & Services → Radarr HACS → ⋮ → Integration ID)</label>
-          <input .value=${null!==(t=r.entry_id)&&void 0!==t?t:""} @change=${this._str("entry_id")} />
+          <input .value=${null!==(e=r.entry_id)&&void 0!==e?e:""} @change=${this._str("entry_id")} />
         </div>
         <div class="field">
           <label>Card Title (default: "Radarr")</label>
-          <input .value=${null!==(e=r.card_title)&&void 0!==e?e:""} @change=${this._str("card_title")} />
+          <input .value=${null!==(t=r.card_title)&&void 0!==t?t:""} @change=${this._str("card_title")} />
         </div>
         <div class="field">
           <label>Columns (2–8, default: 4)</label>
           <input type="number" min="2" max="8"
             .value=${String(null!==(i=r.columns)&&void 0!==i?i:4)}
-            @change=${t=>this._fire({columns:Number(t.target.value)})} />
+            @change=${e=>this._fire({columns:Number(e.target.value)})} />
         </div>
         <div class="field">
           <label>Preview size — movies shown before "View all" (default: 25)</label>
-          <select @change=${t=>this._fire({page_size:Number(t.target.value)})}>
-            ${[10,15,25,50].map(t=>{var e;return j`
-              <option value=${t} ?selected=${(null!==(e=r.page_size)&&void 0!==e?e:25)===t}>${t} movies</option>
+          <select @change=${e=>this._fire({page_size:Number(e.target.value)})}>
+            ${[10,15,25,50].map(e=>{var t;return j`
+              <option value=${e} ?selected=${(null!==(t=r.page_size)&&void 0!==t?t:25)===e}>${e} movies</option>
             `})}
           </select>
         </div>
         <div class="field">
           <label>Default Sort</label>
           <select @change=${this._str("default_sort")}>
-            ${["added","title","year","status"].map(t=>{var e;return j`
-              <option value=${t} ?selected=${(null!==(e=r.default_sort)&&void 0!==e?e:"added")===t}>${t}</option>
+            ${["added","title","year","status"].map(e=>{var t;return j`
+              <option value=${e} ?selected=${(null!==(t=r.default_sort)&&void 0!==t?t:"added")===e}>${e}</option>
             `})}
           </select>
         </div>
         <div class="field">
           <label>Default Filter</label>
           <select @change=${this._str("default_filter")}>
-            ${["all","available","missing","downloading"].map(t=>{var e;return j`
-              <option value=${t} ?selected=${(null!==(e=r.default_filter)&&void 0!==e?e:"all")===t}>${t}</option>
+            ${["all","available","missing","downloading"].map(e=>{var t;return j`
+              <option value=${e} ?selected=${(null!==(t=r.default_filter)&&void 0!==t?t:"all")===e}>${e}</option>
             `})}
           </select>
         </div>
@@ -85,40 +85,40 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           <label>Poster Border Radius in px (default: 8)</label>
           <input type="number" min="0" max="24"
             .value=${String(null!==(o=r.poster_radius)&&void 0!==o?o:8)}
-            @change=${t=>this._fire({poster_radius:Number(t.target.value)})} />
+            @change=${e=>this._fire({poster_radius:Number(e.target.value)})} />
         </div>
         <div class="field-row">
           <input type="checkbox"
             ?checked=${!1!==r.show_status_badges}
-            @change=${t=>this._fire({show_status_badges:t.target.checked})} />
+            @change=${e=>this._fire({show_status_badges:e.target.checked})} />
           <label>Show status badges on posters</label>
         </div>
         <div class="field-row">
           <input type="checkbox"
             ?checked=${!1!==r.show_filter_counts}
-            @change=${t=>this._fire({show_filter_counts:t.target.checked})} />
+            @change=${e=>this._fire({show_filter_counts:e.target.checked})} />
           <label>Show movie counts on filter tabs</label>
         </div>
         <div class="field-row">
           <input type="checkbox"
             ?checked=${!1!==r.show_quality}
-            @change=${t=>this._fire({show_quality:t.target.checked})} />
+            @change=${e=>this._fire({show_quality:e.target.checked})} />
           <label>Show quality profile in movie detail</label>
         </div>
         <div class="field-row">
           <input type="checkbox"
             ?checked=${!1!==r.show_file_info}
-            @change=${t=>this._fire({show_file_info:t.target.checked})} />
+            @change=${e=>this._fire({show_file_info:e.target.checked})} />
           <label>Show file info (size &amp; codec) in movie detail</label>
         </div>
         <div class="field-row">
           <input type="checkbox"
             ?checked=${!1!==r.show_refresh_button}
-            @change=${t=>this._fire({show_refresh_button:t.target.checked})} />
+            @change=${e=>this._fire({show_refresh_button:e.target.checked})} />
           <label>Show refresh button in header</label>
         </div>
       </div>
-    `}_str(t){return e=>this._fire({[t]:e.target.value})}_fire(t){this._config={...this._config,...t},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0})),this.requestUpdate()}};gt.styles=a`
+    `}_str(e){return t=>this._fire({[e]:t.target.value})}_fire(e){this._config={...this._config,...e},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0})),this.requestUpdate()}};ge.styles=a`
     .form { display: flex; flex-direction: column; gap: 12px; padding: 16px; }
     .field { display: flex; flex-direction: column; gap: 4px; }
     .field-row { display: flex; align-items: center; gap: 8px; }
@@ -132,12 +132,12 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       width: 100%;
       box-sizing: border-box;
     }
-  `,t([pt({attribute:!1})],gt.prototype,"hass",void 0),gt=t([dt("radarr-hacs-card-editor")],gt);const ft=[{key:"all",label:"All"},{key:"available",label:"Available"},{key:"missing",label:"Missing"},{key:"unmonitored",label:"Unmonitored"},{key:"downloading",label:"Downloading"}];let mt=class extends nt{constructor(){super(...arguments),this.activeFilter="all"}render(){return j`${ft.map(t=>j`
+  `,e([pe({attribute:!1})],ge.prototype,"hass",void 0),ge=e([de("radarr-hacs-card-editor")],ge);const fe=[{key:"all",label:"All"},{key:"available",label:"Available"},{key:"missing",label:"Missing"},{key:"unmonitored",label:"Unmonitored"},{key:"downloading",label:"Downloading"}];let me=class extends ne{constructor(){super(...arguments),this.activeFilter="all"}render(){return j`${fe.map(e=>j`
       <button
-        class=${t.key===this.activeFilter?"active":""}
-        @click=${()=>this._select(t.key)}
-      >${t.label}${null!=this.counts&&null!=this.counts[t.key]?j` <span class="count">${this.counts[t.key]}</span>`:""}</button>
-    `)}`}_select(t){this.dispatchEvent(new CustomEvent("filter-change",{detail:t,bubbles:!0,composed:!0}))}};mt.styles=a`
+        class=${e.key===this.activeFilter?"active":""}
+        @click=${()=>this._select(e.key)}
+      >${e.label}${null!=this.counts&&null!=this.counts[e.key]?j` <span class="count">${this.counts[e.key]}</span>`:""}</button>
+    `)}`}_select(e){this.dispatchEvent(new CustomEvent("filter-change",{detail:e,bubbles:!0,composed:!0}))}};me.styles=a`
     :host {
       display: flex;
       flex-wrap: wrap;
@@ -173,22 +173,27 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       padding: 1px 6px;
     }
     button.active .count { background: rgba(0,0,0,0.2); }
-  `,t([pt()],mt.prototype,"activeFilter",void 0),t([pt({attribute:!1})],mt.prototype,"counts",void 0),mt=t([dt("radarr-filter-chips")],mt);let bt=class extends nt{constructor(){super(...arguments),this.selected=!1,this.showBadge=!0,this.radius=8}get _poster(){var t,e,i,o;return null!==(o=null===(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.images)||void 0===e?void 0:e.find(t=>"poster"===t.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==o?o:""}render(){const t=function(t){return t.hasFile?"available":t.monitored?"missing":"unmonitored"}(this.movie);return j`
+  `,e([pe()],me.prototype,"activeFilter",void 0),e([pe({attribute:!1})],me.prototype,"counts",void 0),me=e([de("radarr-filter-chips")],me);let be=class extends ne{constructor(){super(...arguments),this.selected=!1,this.showBadge=!0,this.radius=8}get _poster(){var e,t,i,o;return null!==(o=null===(i=null===(t=null===(e=this.movie)||void 0===e?void 0:e.images)||void 0===t?void 0:t.find(e=>"poster"===e.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==o?o:""}get _downloadPct(){var e;const t=null===(e=this.movie)||void 0===e?void 0:e.queueItem;return t&&0!==t.size?Math.round(100*(1-t.sizeleft/t.size)):0}render(){const e=function(e){return e.hasFile?"available":e.monitored?"missing":"unmonitored"}(this.movie);return j`
       <div
         class="wrap ${this.selected?"selected":""}"
         style="--r:${this.radius}px"
         @click=${()=>this.dispatchEvent(new CustomEvent("poster-click",{detail:this.movie,bubbles:!0,composed:!0}))}
       >
         ${this._poster?j`<img src=${this._poster} alt=${this.movie.title} loading="lazy"
-              @error=${t=>t.target.style.display="none"} />`:j`<div class="placeholder">
+              @error=${e=>e.target.style.display="none"} />`:j`<div class="placeholder">
               <span>${this.movie.title}</span>
               ${this.movie.year?j`<span>(${this.movie.year})</span>`:Q}
             </div>`}
         ${this.showBadge&&!1!==this.movie.inLibrary?j`
-          <span class="badge ${t}">${t}</span>
+          <span class="badge ${e}">${e}</span>
         `:""}
+        ${this.movie.queueItem?j`
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${this._downloadPct}%"></div>
+          </div>
+        `:Q}
       </div>
-    `}};bt.styles=a`
+    `}};be.styles=a`
     :host { display: block; cursor: pointer; }
     .wrap {
       aspect-ratio: 2 / 3;
@@ -242,7 +247,20 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .badge.available    { background: #43a047; color: #fff; }
     .badge.missing      { background: #f57c00; color: #fff; }
     .badge.unmonitored  { background: #757575; color: #fff; }
-  `,t([pt({attribute:!1})],bt.prototype,"movie",void 0),t([pt({type:Boolean})],bt.prototype,"selected",void 0),t([pt({type:Boolean})],bt.prototype,"showBadge",void 0),t([pt({type:Number})],bt.prototype,"radius",void 0),bt=t([dt("radarr-movie-poster")],bt);let yt=class extends nt{constructor(){super(...arguments),this.open=!1,this.qualityProfiles=[],this.rootFolders=[],this.showQuality=!0,this.showFileInfo=!0,this._monitored=!0,this._adding=!1,this._confirmDelete=!1,this._searchQueued=!1}get _poster(){var t,e,i,o;return null!==(o=null===(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.images)||void 0===e?void 0:e.find(t=>"poster"===t.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==o?o:""}get _rating(){var t,e,i,o,r;const s=null!==(i=null===(e=null===(t=this.movie)||void 0===t?void 0:t.ratings)||void 0===e?void 0:e.tmdb)&&void 0!==i?i:null===(r=null===(o=this.movie)||void 0===o?void 0:o.ratings)||void 0===r?void 0:r.imdb;return s?`★ ${s.value.toFixed(1)}`:""}get _showAddForm(){var t;return!1===(null===(t=this.movie)||void 0===t?void 0:t.inLibrary)}get _qualityProfileName(){var t,e;if(this.showQuality&&(null===(t=this.movie)||void 0===t?void 0:t.qualityProfileId))return null===(e=this.qualityProfiles.find(t=>t.id===this.movie.qualityProfileId))||void 0===e?void 0:e.name}get _fileInfoStr(){var t,e,i;if(!this.showFileInfo||!(null===(t=this.movie)||void 0===t?void 0:t.movieFile))return;const{quality:o,size:r}=this.movie.movieFile;return[null!==(i=null===(e=null==o?void 0:o.quality)||void 0===e?void 0:e.name)&&void 0!==i?i:"",r>1e9?`${(r/1e9).toFixed(1)} GB`:`${Math.round(r/1e6)} MB`].filter(Boolean).join(" · ")}updated(t){t.has("movie")&&(this._profileId=void 0,this._folder=void 0,this._monitored=!0,this._adding=!1,this._addError=void 0,this._confirmDelete=!1,this._searchQueued=!1)}render(){var t,e;if(!this.movie)return j``;const i=this.movie;return j`
+    .progress-bar {
+      background: rgba(0,0,0,0.4);
+      bottom: 0;
+      height: 4px;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
+    .progress-fill {
+      background: var(--primary-color);
+      height: 100%;
+      transition: width 1s linear;
+    }
+  `,e([pe({attribute:!1})],be.prototype,"movie",void 0),e([pe({type:Boolean})],be.prototype,"selected",void 0),e([pe({type:Boolean})],be.prototype,"showBadge",void 0),e([pe({type:Number})],be.prototype,"radius",void 0),be=e([de("radarr-movie-poster")],be);let ye=class extends ne{constructor(){super(...arguments),this.open=!1,this.qualityProfiles=[],this.rootFolders=[],this.showQuality=!0,this.showFileInfo=!0,this._monitored=!0,this._adding=!1,this._confirmDelete=!1,this._searchQueued=!1}get _poster(){var e,t,i,o;return null!==(o=null===(i=null===(t=null===(e=this.movie)||void 0===e?void 0:e.images)||void 0===t?void 0:t.find(e=>"poster"===e.coverType))||void 0===i?void 0:i.remoteUrl)&&void 0!==o?o:""}get _rating(){var e,t,i,o,r;const s=null!==(i=null===(t=null===(e=this.movie)||void 0===e?void 0:e.ratings)||void 0===t?void 0:t.tmdb)&&void 0!==i?i:null===(r=null===(o=this.movie)||void 0===o?void 0:o.ratings)||void 0===r?void 0:r.imdb;return s?`★ ${s.value.toFixed(1)}`:""}get _showAddForm(){var e;return!1===(null===(e=this.movie)||void 0===e?void 0:e.inLibrary)}get _downloadPct(){var e;const t=null===(e=this.movie)||void 0===e?void 0:e.queueItem;return t&&0!==t.size?Math.round(100*(1-t.sizeleft/t.size)):0}_formatTimeLeft(e){if(!e)return"";const t=e.split(":").map(Number);if(3!==t.length)return e;const[i,o]=t;return i>0?`${i}h ${o}m left`:o>0?`${o}m left`:"< 1m left"}get _qualityProfileName(){var e,t;if(this.showQuality&&(null===(e=this.movie)||void 0===e?void 0:e.qualityProfileId))return null===(t=this.qualityProfiles.find(e=>e.id===this.movie.qualityProfileId))||void 0===t?void 0:t.name}get _fileInfoStr(){var e,t,i;if(!this.showFileInfo||!(null===(e=this.movie)||void 0===e?void 0:e.movieFile))return;const{quality:o,size:r}=this.movie.movieFile;return[null!==(i=null===(t=null==o?void 0:o.quality)||void 0===t?void 0:t.name)&&void 0!==i?i:"",r>1e9?`${(r/1e9).toFixed(1)} GB`:`${Math.round(r/1e6)} MB`].filter(Boolean).join(" · ")}updated(e){e.has("movie")&&(this._profileId=void 0,this._folder=void 0,this._monitored=!0,this._adding=!1,this._addError=void 0,this._confirmDelete=!1,this._searchQueued=!1)}render(){var e,t;if(!this.movie)return j``;const i=this.movie;return j`
       <div class="panel">
         <div class="poster">
           ${this._poster?j`<img src=${this._poster} alt=${i.title} />`:j`
@@ -255,7 +273,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         <div>
           <h2>${i.title}${i.year?j` <span style="font-weight:400;opacity:.7">(${i.year})</span>`:""}</h2>
           <div class="meta">
-            ${[i.runtime?`${i.runtime} min`:"",null===(t=i.genres)||void 0===t?void 0:t.slice(0,3).join(", "),null!==(e=i.studio)&&void 0!==e?e:"",this._rating].filter(Boolean).join(" · ")}
+            ${[i.runtime?`${i.runtime} min`:"",null===(e=i.genres)||void 0===e?void 0:e.slice(0,3).join(", "),null!==(t=i.studio)&&void 0!==t?t:"",this._rating].filter(Boolean).join(" · ")}
           </div>
           ${this._qualityProfileName?j`
             <div class="info-row"><strong>Quality:</strong> ${this._qualityProfileName}</div>
@@ -294,26 +312,39 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           `}
         </div>
 
+        ${this.movie.queueItem?j`
+          <div class="download-progress">
+            <div class="progress-header">
+              <span class="progress-label">Downloading${this.movie.queueItem.protocol?` · ${this.movie.queueItem.protocol}`:""}</span>
+              <span class="progress-time">${this._formatTimeLeft(this.movie.queueItem.timeleft)}</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${this._downloadPct}%"></div>
+            </div>
+            <div class="progress-pct">${this._downloadPct}%</div>
+          </div>
+        `:Q}
+
         ${this._showAddForm?j`
           <div class="add-form">
             <div class="form-row">
               <label>Quality Profile</label>
-              <select @change=${t=>this._profileId=Number(t.target.value)}>
+              <select @change=${e=>this._profileId=Number(e.target.value)}>
                 <option value="">Select…</option>
-                ${this.qualityProfiles.map(t=>j`<option value=${t.id}>${t.name}</option>`)}
+                ${this.qualityProfiles.map(e=>j`<option value=${e.id}>${e.name}</option>`)}
               </select>
             </div>
             <div class="form-row">
               <label>Root Folder</label>
-              <select @change=${t=>this._folder=t.target.value}>
+              <select @change=${e=>this._folder=e.target.value}>
                 <option value="">Select…</option>
-                ${this.rootFolders.map(t=>j`<option value=${t.path}>${t.path}</option>`)}
+                ${this.rootFolders.map(e=>j`<option value=${e.path}>${e.path}</option>`)}
               </select>
             </div>
             <div class="form-row">
               <label>Monitored</label>
               <input type="checkbox" ?checked=${this._monitored}
-                @change=${t=>this._monitored=t.target.checked} />
+                @change=${e=>this._monitored=e.target.checked} />
             </div>
             ${this._addError?j`<div class="add-error">${this._addError}</div>`:""}
             <button
@@ -324,7 +355,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           </div>
         `:""}
       </div>
-    `}_toggleMonitored(){this.dispatchEvent(new CustomEvent("toggle-monitored",{detail:{movie:this.movie,monitored:!this.movie.monitored},bubbles:!0,composed:!0}))}_searchNow(){this._searchQueued=!0,this.dispatchEvent(new CustomEvent("search-now",{detail:this.movie,bubbles:!0,composed:!0}))}_deleteMovie(){this._confirmDelete=!1,this.dispatchEvent(new CustomEvent("delete-movie",{detail:this.movie,bubbles:!0,composed:!0}))}_addMovie(){this._profileId&&this._folder&&(this._adding=!0,this._addError=void 0,this.dispatchEvent(new CustomEvent("add-movie",{detail:{movie:this.movie,qualityProfileId:this._profileId,rootFolder:this._folder,monitored:this._monitored},bubbles:!0,composed:!0})))}addComplete(t){this._adding=!1,t&&(this._addError=t)}};yt.styles=a`
+    `}_toggleMonitored(){this.dispatchEvent(new CustomEvent("toggle-monitored",{detail:{movie:this.movie,monitored:!this.movie.monitored},bubbles:!0,composed:!0}))}_searchNow(){this._searchQueued=!0,this.dispatchEvent(new CustomEvent("search-now",{detail:this.movie,bubbles:!0,composed:!0}))}_deleteMovie(){this._confirmDelete=!1,this.dispatchEvent(new CustomEvent("delete-movie",{detail:this.movie,bubbles:!0,composed:!0}))}_addMovie(){this._profileId&&this._folder&&(this._adding=!0,this._addError=void 0,this.dispatchEvent(new CustomEvent("add-movie",{detail:{movie:this.movie,qualityProfileId:this._profileId,rootFolder:this._folder,monitored:this._monitored},bubbles:!0,composed:!0})))}addComplete(e){this._adding=!1,e&&(this._addError=e)}};ye.styles=a`
     :host {
       display: block;
       max-height: 0;
@@ -413,21 +444,52 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       padding: 6px 10px;
     }
     .add-error { color: var(--error-color, #f44336); font-size: 0.8rem; margin-bottom: 8px; }
-  `,t([pt({type:Boolean,reflect:!0})],yt.prototype,"open",void 0),t([pt({attribute:!1})],yt.prototype,"movie",void 0),t([pt({attribute:!1})],yt.prototype,"qualityProfiles",void 0),t([pt({attribute:!1})],yt.prototype,"rootFolders",void 0),t([pt({type:Boolean})],yt.prototype,"showQuality",void 0),t([pt({type:Boolean})],yt.prototype,"showFileInfo",void 0),t([ut()],yt.prototype,"_profileId",void 0),t([ut()],yt.prototype,"_folder",void 0),t([ut()],yt.prototype,"_monitored",void 0),t([ut()],yt.prototype,"_adding",void 0),t([ut()],yt.prototype,"_addError",void 0),t([ut()],yt.prototype,"_confirmDelete",void 0),t([ut()],yt.prototype,"_searchQueued",void 0),yt=t([dt("radarr-movie-detail")],yt);let $t=class extends nt{constructor(){super(...arguments),this._movies=[],this._filteredMovies=[],this._qualityProfiles=[],this._rootFolders=[],this._dialogOpen=!1,this._addMode=!1,this._activeFilter="all",this._searchTerm="",this._tmdbForced=!1,this._loading=!1,this._initialised=!1,this._searchGen=0}static getConfigElement(){return document.createElement("radarr-hacs-card-editor")}static getStubConfig(){return{entry_id:""}}setConfig(t){var e;if(!t.entry_id)throw new Error("entry_id is required");this._config={columns:4,default_sort:"added",default_filter:"all",show_status_badges:!0,poster_radius:8,page_size:25,show_quality:!0,show_file_info:!0,show_filter_counts:!0,show_refresh_button:!0,...t},this._activeFilter=null!==(e=this._config.default_filter)&&void 0!==e?e:"all"}updated(t){var e;t.has("hass")&&this.hass&&this._config&&!this._initialised&&(this._initialised=!0,this._loadData()),t.has("_dialogOpen")&&this._dialogOpen&&(null===(e=this._dialog)||void 0===e||e.showModal())}get _pageSize(){var t,e;return null!==(e=null===(t=this._config)||void 0===t?void 0:t.page_size)&&void 0!==e?e:25}get _displayMovies(){return this._pageSize>0?this._filteredMovies.slice(0,this._pageSize):this._filteredMovies}get _hasMore(){return this._pageSize>0&&this._filteredMovies.length>this._pageSize}get _filterCounts(){const t=this._movies;return{all:t.length,available:t.filter(t=>t.hasFile).length,missing:t.filter(t=>!t.hasFile&&t.monitored).length,unmonitored:t.filter(t=>!t.hasFile&&!t.monitored).length,downloading:t.filter(t=>t.inQueue).length}}async _loadData(){this._loading=!0,this._error=void 0;try{const[t,e]=await Promise.all([vt(this.hass,this._config.entry_id,{filter:"all"!==this._activeFilter?this._activeFilter:void 0,sort:this._config.default_sort}),_t(this.hass,this._config.entry_id)]);this._movies=t,this._filteredMovies=t,this._qualityProfiles=e.quality_profiles,this._rootFolders=e.root_folders}catch(t){this._error=`Could not connect to Radarr: ${t}`}finally{this._loading=!1}}_onSearchInput(t){if(this._searchTerm=t.target.value,this._searchGen++,clearTimeout(this._debounceTimer),this._addMode)return void(this._searchTerm?this._debounceTimer=setTimeout(()=>this._tmdbSearch(),300):this._filteredMovies=[]);this._tmdbForced=!1;const e=this._searchTerm.toLowerCase();e?(this._filteredMovies=this._movies.filter(t=>t.title.toLowerCase().includes(e)||String(t.year).includes(e)),0===this._filteredMovies.length&&(this._debounceTimer=setTimeout(()=>this._tmdbSearch(),400))):this._filteredMovies=this._movies}_forceSearchTmdb(){this._tmdbForced=!0,this._searchGen++,clearTimeout(this._debounceTimer),this._tmdbSearch()}async _tmdbSearch(){if(!this._searchTerm)return;const t=this._searchGen;try{const e=await async function(t,e,i){return(await t.connection.sendMessagePromise({type:"radarr_hacs/search_movies",entry_id:e,term:i})).results.map(t=>{var e;return{...t,inLibrary:(null!==(e=t.id)&&void 0!==e?e:0)>0}})}(this.hass,this._config.entry_id,this._searchTerm);this._searchGen===t&&(this._filteredMovies=e)}catch(t){}}_enterAddMode(){this._addMode=!0,this._searchTerm="",this._filteredMovies=[],this._selectedMovie=void 0,this.updateComplete.then(()=>{var t,e;null===(e=null===(t=this.shadowRoot)||void 0===t?void 0:t.querySelector(".search"))||void 0===e||e.focus()})}_exitAddMode(){this._addMode=!1,this._searchTerm="",this._selectedMovie=void 0,this._filteredMovies=this._movies}async _onFilterChange(t){this._activeFilter=t,this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,this._addMode&&this._exitAddMode();try{this._movies=await vt(this.hass,this._config.entry_id,{filter:"all"!==t?t:void 0,sort:this._config.default_sort}),this._filteredMovies=this._movies}catch(t){this._error=String(t)}}_onPosterClick(t){var e;this._selectedMovie=(null===(e=this._selectedMovie)||void 0===e?void 0:e.id)===t.id?void 0:t}_onDialogPosterClick(t){var e;this._dialogSelectedMovie=(null===(e=this._dialogSelectedMovie)||void 0===e?void 0:e.id)===t.id?void 0:t}async _onAddMovie(t,e,i,o){try{return await async function(t,e,i,o,r,s=!0){await t.callService("radarr_hacs","add_movie",{entry_id:e,tmdb_id:i.tmdbId,title:i.title,year:i.year,quality_profile_id:o,root_folder:r,monitored:s})}(this.hass,this._config.entry_id,t,e,i,o),this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,this._addMode&&this._exitAddMode(),void await this._loadData()}catch(t){return String(t)}}async _onDeleteMovie(t){try{await async function(t,e,i,o=!1){await t.callService("radarr_hacs","delete_movie",{entry_id:e,movie_id:i,delete_files:o})}(this.hass,this._config.entry_id,t.id),this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,await this._loadData()}catch(t){this._error=`Delete failed: ${t}`}}async _onToggleMonitored(t){var e,i;const{movie:o,monitored:r}=t.detail;try{await async function(t,e,i,o){await t.callService("radarr_hacs","toggle_monitored",{entry_id:e,movie_id:i,monitored:o})}(this.hass,this._config.entry_id,o.id,r),await this._loadData(),(null===(e=this._selectedMovie)||void 0===e?void 0:e.id)===o.id&&(this._selectedMovie=this._filteredMovies.find(t=>t.id===o.id)),(null===(i=this._dialogSelectedMovie)||void 0===i?void 0:i.id)===o.id&&(this._dialogSelectedMovie=this._filteredMovies.find(t=>t.id===o.id))}catch(t){this._error=`Could not update monitored: ${t}`}}async _onSearchNow(t){const e=t.detail;try{await async function(t,e,i){await t.callService("radarr_hacs","trigger_search",{entry_id:e,movie_id:i})}(this.hass,this._config.entry_id,e.id)}catch(t){this._error=`Search failed: ${t}`}}async _onAddMovieEvent(t){const{movie:e,qualityProfileId:i,rootFolder:o,monitored:r}=t.detail,s=t.target,a=await this._onAddMovie(e,i,o,r);s.addComplete(a)}async _onDeleteMovieEvent(t){await this._onDeleteMovie(t.detail)}_onDialogSearchAgain(t){this._dialogSelectedMovie=void 0,this._tmdbForced=!1;const e=t.detail;this._searchTerm=e.title;const i=e.title.toLowerCase();this._filteredMovies=this._movies.filter(t=>t.title.toLowerCase().includes(i)),0===this._filteredMovies.length&&setTimeout(()=>this._tmdbSearch(),400)}_openDialog(){this._dialogOpen=!0}_onDialogClose(){this._dialogOpen=!1,this._dialogSelectedMovie=void 0}_renderGrid(t,e,i,o,r,s,a,n){var l,d;if(!t.length)return j`<div class="empty">${this._addMode&&this._searchTerm?"No results on TMDB":"No movies found"}</div>`;const c=null!==(d=null===(l=this._config)||void 0===l?void 0:l.columns)&&void 0!==d?d:4,h=null!=e?t.findIndex(t=>t.id===e.id):-1,p=h>=0?Math.min(Math.floor(h/c)*c+c-1,t.length-1):-1;return j`
+    .download-progress {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+    }
+    .progress-header {
+      align-items: center;
+      display: flex;
+      font-size: 0.8rem;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .progress-label { color: var(--secondary-text-color); }
+    .progress-time { color: var(--primary-text-color); font-weight: 500; }
+    .progress-track {
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: var(--primary-color);
+      border-radius: 4px;
+      height: 100%;
+      transition: width 1s linear;
+    }
+    .progress-pct {
+      color: var(--secondary-text-color);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      text-align: right;
+    }
+  `,e([pe({type:Boolean,reflect:!0})],ye.prototype,"open",void 0),e([pe({attribute:!1})],ye.prototype,"movie",void 0),e([pe({attribute:!1})],ye.prototype,"qualityProfiles",void 0),e([pe({attribute:!1})],ye.prototype,"rootFolders",void 0),e([pe({type:Boolean})],ye.prototype,"showQuality",void 0),e([pe({type:Boolean})],ye.prototype,"showFileInfo",void 0),e([ue()],ye.prototype,"_profileId",void 0),e([ue()],ye.prototype,"_folder",void 0),e([ue()],ye.prototype,"_monitored",void 0),e([ue()],ye.prototype,"_adding",void 0),e([ue()],ye.prototype,"_addError",void 0),e([ue()],ye.prototype,"_confirmDelete",void 0),e([ue()],ye.prototype,"_searchQueued",void 0),ye=e([de("radarr-movie-detail")],ye);let $e=class extends ne{constructor(){super(...arguments),this._movies=[],this._filteredMovies=[],this._qualityProfiles=[],this._rootFolders=[],this._dialogOpen=!1,this._addMode=!1,this._activeFilter="all",this._searchTerm="",this._tmdbForced=!1,this._loading=!1,this._initialised=!1,this._searchGen=0}static getConfigElement(){return document.createElement("radarr-hacs-card-editor")}static getStubConfig(){return{entry_id:""}}setConfig(e){var t;if(!e.entry_id)throw new Error("entry_id is required");this._config={columns:4,default_sort:"added",default_filter:"all",show_status_badges:!0,poster_radius:8,page_size:25,show_quality:!0,show_file_info:!0,show_filter_counts:!0,show_refresh_button:!0,...e},this._activeFilter=null!==(t=this._config.default_filter)&&void 0!==t?t:"all"}updated(e){var t;e.has("hass")&&this.hass&&this._config&&!this._initialised&&(this._initialised=!0,this._loadData()),e.has("_dialogOpen")&&this._dialogOpen&&(null===(t=this._dialog)||void 0===t||t.showModal())}get _pageSize(){var e,t;return null!==(t=null===(e=this._config)||void 0===e?void 0:e.page_size)&&void 0!==t?t:25}get _displayMovies(){return this._pageSize>0?this._filteredMovies.slice(0,this._pageSize):this._filteredMovies}get _hasMore(){return this._pageSize>0&&this._filteredMovies.length>this._pageSize}get _filterCounts(){const e=this._movies;return{all:e.length,available:e.filter(e=>e.hasFile).length,missing:e.filter(e=>!e.hasFile&&e.monitored).length,unmonitored:e.filter(e=>!e.hasFile&&!e.monitored).length,downloading:e.filter(e=>e.inQueue).length}}disconnectedCallback(){super.disconnectedCallback(),this._queueTimer&&(clearInterval(this._queueTimer),this._queueTimer=void 0)}async _loadData(e=!1){var t,i,o,r;const s=e?null===(t=this._selectedMovie)||void 0===t?void 0:t.id:void 0,a=e?null===(i=this._dialogSelectedMovie)||void 0===i?void 0:i.id:void 0;this._loading=!e,this._error=void 0;try{const[e,t]=await Promise.all([ve(this.hass,this._config.entry_id,{filter:"all"!==this._activeFilter?this._activeFilter:void 0,sort:this._config.default_sort}),_e(this.hass,this._config.entry_id)]);this._movies=e,this._filteredMovies=e,this._qualityProfiles=t.quality_profiles,this._rootFolders=t.root_folders,null!=s&&(this._selectedMovie=null!==(o=e.find(e=>e.id===s))&&void 0!==o?o:this._selectedMovie),null!=a&&(this._dialogSelectedMovie=null!==(r=e.find(e=>e.id===a))&&void 0!==r?r:this._dialogSelectedMovie);const i=e.some(e=>e.inQueue);i&&!this._queueTimer?this._queueTimer=setInterval(()=>this._loadData(!0),15e3):!i&&this._queueTimer&&(clearInterval(this._queueTimer),this._queueTimer=void 0)}catch(e){this._error=`Could not connect to Radarr: ${e}`}finally{this._loading=!1}}_onSearchInput(e){if(this._searchTerm=e.target.value,this._searchGen++,clearTimeout(this._debounceTimer),this._addMode)return void(this._searchTerm?this._debounceTimer=setTimeout(()=>this._tmdbSearch(),300):this._filteredMovies=[]);this._tmdbForced=!1;const t=this._searchTerm.toLowerCase();t?(this._filteredMovies=this._movies.filter(e=>e.title.toLowerCase().includes(t)||String(e.year).includes(t)),0===this._filteredMovies.length&&(this._debounceTimer=setTimeout(()=>this._tmdbSearch(),400))):this._filteredMovies=this._movies}_forceSearchTmdb(){this._tmdbForced=!0,this._searchGen++,clearTimeout(this._debounceTimer),this._tmdbSearch()}async _tmdbSearch(){if(!this._searchTerm)return;const e=this._searchGen;try{const t=await async function(e,t,i){return(await e.connection.sendMessagePromise({type:"radarr_hacs/search_movies",entry_id:t,term:i})).results.map(e=>{var t;return{...e,inLibrary:(null!==(t=e.id)&&void 0!==t?t:0)>0}})}(this.hass,this._config.entry_id,this._searchTerm);this._searchGen===e&&(this._filteredMovies=t)}catch(e){}}_enterAddMode(){this._addMode=!0,this._searchTerm="",this._filteredMovies=[],this._selectedMovie=void 0,this.updateComplete.then(()=>{var e,t;null===(t=null===(e=this.shadowRoot)||void 0===e?void 0:e.querySelector(".search"))||void 0===t||t.focus()})}_exitAddMode(){this._addMode=!1,this._searchTerm="",this._selectedMovie=void 0,this._filteredMovies=this._movies}async _onFilterChange(e){this._activeFilter=e,this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,this._addMode&&this._exitAddMode();try{this._movies=await ve(this.hass,this._config.entry_id,{filter:"all"!==e?e:void 0,sort:this._config.default_sort}),this._filteredMovies=this._movies}catch(e){this._error=String(e)}}_onPosterClick(e){var t;this._selectedMovie=(null===(t=this._selectedMovie)||void 0===t?void 0:t.id)===e.id?void 0:e}_onDialogPosterClick(e){var t;this._dialogSelectedMovie=(null===(t=this._dialogSelectedMovie)||void 0===t?void 0:t.id)===e.id?void 0:e}async _onAddMovie(e,t,i,o){try{return await async function(e,t,i,o,r,s=!0){await e.callService("radarr_hacs","add_movie",{entry_id:t,tmdb_id:i.tmdbId,title:i.title,year:i.year,quality_profile_id:o,root_folder:r,monitored:s})}(this.hass,this._config.entry_id,e,t,i,o),this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,this._addMode&&this._exitAddMode(),void await this._loadData()}catch(e){return String(e)}}async _onDeleteMovie(e){try{await async function(e,t,i,o=!1){await e.callService("radarr_hacs","delete_movie",{entry_id:t,movie_id:i,delete_files:o})}(this.hass,this._config.entry_id,e.id),this._selectedMovie=void 0,this._dialogSelectedMovie=void 0,await this._loadData()}catch(e){this._error=`Delete failed: ${e}`}}async _onToggleMonitored(e){var t,i;const{movie:o,monitored:r}=e.detail;try{await async function(e,t,i,o){await e.callService("radarr_hacs","toggle_monitored",{entry_id:t,movie_id:i,monitored:o})}(this.hass,this._config.entry_id,o.id,r),await this._loadData(),(null===(t=this._selectedMovie)||void 0===t?void 0:t.id)===o.id&&(this._selectedMovie=this._filteredMovies.find(e=>e.id===o.id)),(null===(i=this._dialogSelectedMovie)||void 0===i?void 0:i.id)===o.id&&(this._dialogSelectedMovie=this._filteredMovies.find(e=>e.id===o.id))}catch(e){this._error=`Could not update monitored: ${e}`}}async _onSearchNow(e){const t=e.detail;try{await async function(e,t,i){await e.callService("radarr_hacs","trigger_search",{entry_id:t,movie_id:i})}(this.hass,this._config.entry_id,t.id)}catch(e){this._error=`Search failed: ${e}`}}async _onAddMovieEvent(e){const{movie:t,qualityProfileId:i,rootFolder:o,monitored:r}=e.detail,s=e.target,a=await this._onAddMovie(t,i,o,r);s.addComplete(a)}async _onDeleteMovieEvent(e){await this._onDeleteMovie(e.detail)}_onDialogSearchAgain(e){this._dialogSelectedMovie=void 0,this._tmdbForced=!1;const t=e.detail;this._searchTerm=t.title;const i=t.title.toLowerCase();this._filteredMovies=this._movies.filter(e=>e.title.toLowerCase().includes(i)),0===this._filteredMovies.length&&setTimeout(()=>this._tmdbSearch(),400)}_openDialog(){this._dialogOpen=!0}_onDialogClose(){this._dialogOpen=!1,this._dialogSelectedMovie=void 0}_renderGrid(e,t,i,o,r,s,a,n){var l,d;if(!e.length)return j`<div class="empty">${this._addMode&&this._searchTerm?"No results on TMDB":"No movies found"}</div>`;const c=null!==(d=null===(l=this._config)||void 0===l?void 0:l.columns)&&void 0!==d?d:4,h=null!=t?e.findIndex(e=>e.id===t.id):-1,p=h>=0?Math.min(Math.floor(h/c)*c+c-1,e.length-1):-1;return j`
       <div class="grid" style="grid-template-columns:repeat(${c},1fr)">
-        ${t.map((t,l)=>{var d,c,h,u,v;return j`
+        ${e.map((e,l)=>{var d,c,h,u,v;return j`
           <radarr-movie-poster
-            .movie=${t}
-            ?selected=${t.id===(null==e?void 0:e.id)}
+            .movie=${e}
+            ?selected=${e.id===(null==t?void 0:t.id)}
             ?showBadge=${!1!==(null===(d=this._config)||void 0===d?void 0:d.show_status_badges)}
             .radius=${null!==(h=null===(c=this._config)||void 0===c?void 0:c.poster_radius)&&void 0!==h?h:8}
-            @poster-click=${()=>i(t)}
+            @poster-click=${()=>i(e)}
           ></radarr-movie-poster>
           ${l===p?j`
             <div class="inline-detail">
               <radarr-movie-detail
                 open
-                .movie=${e}
+                .movie=${t}
                 .qualityProfiles=${this._qualityProfiles}
                 .rootFolders=${this._rootFolders}
                 .showQuality=${!1!==(null===(u=this._config)||void 0===u?void 0:u.show_quality)}
@@ -442,7 +504,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           `:Q}
         `})}
       </div>
-    `}render(){var t;if(!this._config)return j``;const e=null!==(t=this._config.card_title)&&void 0!==t?t:"Radarr",i=!1!==this._config.show_filter_counts;return j`
+    `}render(){var e;if(!this._config)return j``;const t=null!==(e=this._config.card_title)&&void 0!==e?e:"Radarr",i=!1!==this._config.show_filter_counts;return j`
       <div class="header">
         ${this._addMode?j`
           <button class="icon-btn" @click=${this._exitAddMode}>← Back</button>
@@ -454,7 +516,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
             @input=${this._onSearchInput}
           />
         `:j`
-          <span class="title">${e}</span>
+          <span class="title">${t}</span>
           <input
             class="search"
             type="search"
@@ -473,7 +535,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         <radarr-filter-chips
           .activeFilter=${this._activeFilter}
           .counts=${i?this._filterCounts:void 0}
-          @filter-change=${t=>this._onFilterChange(t.detail)}
+          @filter-change=${e=>this._onFilterChange(e.detail)}
         ></radarr-filter-chips>
       `}
 
@@ -490,7 +552,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       ${this._loading||this._error?"":j`
         ${this._addMode&&!this._searchTerm?j`
           <div class="state-msg">Type a movie name to search TMDB</div>
-        `:this._renderGrid(this._addMode?this._filteredMovies:this._displayMovies,this._selectedMovie,t=>this._onPosterClick(t),this._onAddMovieEvent,this._onDeleteMovieEvent,this._onToggleMonitored,this._onSearchNow)}
+        `:this._renderGrid(this._addMode?this._filteredMovies:this._displayMovies,this._selectedMovie,e=>this._onPosterClick(e),this._onAddMovieEvent,this._onDeleteMovieEvent,this._onToggleMonitored,this._onSearchNow)}
         ${!this._addMode&&this._hasMore?j`
           <button class="view-all" @click=${this._openDialog}>
             View all ${this._filteredMovies.length} movies →
@@ -499,7 +561,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         ${!this._addMode&&this._searchTerm&&this._filteredMovies.length>0&&!this._tmdbForced?j`
           <div style="padding:4px 16px 8px;text-align:right">
             <a style="color:var(--primary-color);font-size:.82rem;opacity:.85;text-decoration:none"
-              href="#" @click=${t=>{t.preventDefault(),this._forceSearchTmdb()}}
+              href="#" @click=${e=>{e.preventDefault(),this._forceSearchTmdb()}}
             >Search TMDB →</a>
           </div>
         `:""}
@@ -508,7 +570,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       <dialog @close=${this._onDialogClose}>
         ${this._dialogOpen?j`
           <div class="dialog-header">
-            <span class="title">${e}</span>
+            <span class="title">${t}</span>
             <input
               class="search"
               type="search"
@@ -516,24 +578,24 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
               .value=${this._searchTerm}
               @input=${this._onSearchInput}
             />
-            <button class="icon-btn" @click=${()=>{var t;return null===(t=this._dialog)||void 0===t?void 0:t.close()}}>✕</button>
+            <button class="icon-btn" @click=${()=>{var e;return null===(e=this._dialog)||void 0===e?void 0:e.close()}}>✕</button>
           </div>
           <radarr-filter-chips
             .activeFilter=${this._activeFilter}
             .counts=${i?this._filterCounts:void 0}
-            @filter-change=${t=>this._onFilterChange(t.detail)}
+            @filter-change=${e=>this._onFilterChange(e.detail)}
           ></radarr-filter-chips>
-          ${this._renderGrid(this._filteredMovies,this._dialogSelectedMovie,t=>this._onDialogPosterClick(t),this._onAddMovieEvent,this._onDeleteMovieEvent,this._onToggleMonitored,this._onSearchNow,this._onDialogSearchAgain)}
+          ${this._renderGrid(this._filteredMovies,this._dialogSelectedMovie,e=>this._onDialogPosterClick(e),this._onAddMovieEvent,this._onDeleteMovieEvent,this._onToggleMonitored,this._onSearchNow,this._onDialogSearchAgain)}
           ${this._searchTerm&&this._filteredMovies.length>0&&!this._tmdbForced?j`
             <div style="padding:4px 16px 8px;text-align:right">
               <a style="color:var(--primary-color);font-size:.82rem;opacity:.85;text-decoration:none"
-                href="#" @click=${t=>{t.preventDefault(),this._forceSearchTmdb()}}
+                href="#" @click=${e=>{e.preventDefault(),this._forceSearchTmdb()}}
               >Search TMDB →</a>
             </div>
           `:""}
         `:""}
       </dialog>
-    `}};$t.styles=a`
+    `}};$e.styles=a`
     :host {
       display: block;
       background: var(--card-background-color);
@@ -663,10 +725,10 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       top: 0;
       z-index: 1;
     }
-  `,t([pt({attribute:!1})],$t.prototype,"hass",void 0),t([ut()],$t.prototype,"_config",void 0),t([ut()],$t.prototype,"_movies",void 0),t([ut()],$t.prototype,"_filteredMovies",void 0),t([ut()],$t.prototype,"_qualityProfiles",void 0),t([ut()],$t.prototype,"_rootFolders",void 0),t([ut()],$t.prototype,"_selectedMovie",void 0),t([ut()],$t.prototype,"_dialogSelectedMovie",void 0),t([ut()],$t.prototype,"_dialogOpen",void 0),t([ut()],$t.prototype,"_addMode",void 0),t([ut()],$t.prototype,"_activeFilter",void 0),t([ut()],$t.prototype,"_searchTerm",void 0),t([ut()],$t.prototype,"_tmdbForced",void 0),t([ut()],$t.prototype,"_loading",void 0),t([ut()],$t.prototype,"_error",void 0),t([
+  `,e([pe({attribute:!1})],$e.prototype,"hass",void 0),e([ue()],$e.prototype,"_config",void 0),e([ue()],$e.prototype,"_movies",void 0),e([ue()],$e.prototype,"_filteredMovies",void 0),e([ue()],$e.prototype,"_qualityProfiles",void 0),e([ue()],$e.prototype,"_rootFolders",void 0),e([ue()],$e.prototype,"_selectedMovie",void 0),e([ue()],$e.prototype,"_dialogSelectedMovie",void 0),e([ue()],$e.prototype,"_dialogOpen",void 0),e([ue()],$e.prototype,"_addMode",void 0),e([ue()],$e.prototype,"_activeFilter",void 0),e([ue()],$e.prototype,"_searchTerm",void 0),e([ue()],$e.prototype,"_tmdbForced",void 0),e([ue()],$e.prototype,"_loading",void 0),e([ue()],$e.prototype,"_error",void 0),e([
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function(t){return(e,i,o)=>((t,e,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof e&&Object.defineProperty(t,e,i),i))(e,i,{get(){return(e=>e.renderRoot?.querySelector(t)??null)(this)}})}("dialog")],$t.prototype,"_dialog",void 0),$t=t([dt("radarr-hacs-card")],$t),window.customCards=window.customCards||[],window.customCards.push({type:"radarr-hacs-card",name:"Radarr HACS Card",description:"Browse and manage your Radarr movie library",preview:!1});export{$t as RadarrHacsCard};
+function(e){return(t,i,o)=>((e,t,i)=>(i.configurable=!0,i.enumerable=!0,Reflect.decorate&&"object"!=typeof t&&Object.defineProperty(e,t,i),i))(t,i,{get(){return(t=>t.renderRoot?.querySelector(e)??null)(this)}})}("dialog")],$e.prototype,"_dialog",void 0),$e=e([de("radarr-hacs-card")],$e),window.customCards=window.customCards||[],window.customCards.push({type:"radarr-hacs-card",name:"Radarr HACS Card",description:"Browse and manage your Radarr movie library",preview:!1});export{$e as RadarrHacsCard};

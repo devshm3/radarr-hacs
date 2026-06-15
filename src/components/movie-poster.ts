@@ -69,10 +69,29 @@ export class RadarrMoviePoster extends LitElement {
     .badge.available    { background: #43a047; color: #fff; }
     .badge.missing      { background: #f57c00; color: #fff; }
     .badge.unmonitored  { background: #757575; color: #fff; }
+    .progress-bar {
+      background: rgba(0,0,0,0.4);
+      bottom: 0;
+      height: 4px;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
+    .progress-fill {
+      background: var(--primary-color);
+      height: 100%;
+      transition: width 1s linear;
+    }
   `;
 
   private get _poster(): string {
     return this.movie?.images?.find(i => i.coverType === 'poster')?.remoteUrl ?? '';
+  }
+
+  private get _downloadPct(): number {
+    const q = this.movie?.queueItem;
+    if (!q || q.size === 0) return 0;
+    return Math.round((1 - q.sizeleft / q.size) * 100);
   }
 
   render() {
@@ -95,6 +114,11 @@ export class RadarrMoviePoster extends LitElement {
         ${this.showBadge && this.movie.inLibrary !== false ? html`
           <span class="badge ${status}">${status}</span>
         ` : ''}
+        ${this.movie.queueItem ? html`
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${this._downloadPct}%"></div>
+          </div>
+        ` : nothing}
       </div>
     `;
   }

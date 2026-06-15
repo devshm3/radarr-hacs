@@ -108,6 +108,37 @@ export class RadarrMovieDetail extends LitElement {
       padding: 6px 10px;
     }
     .add-error { color: var(--error-color, #f44336); font-size: 0.8rem; margin-bottom: 8px; }
+    .download-progress {
+      grid-column: 1 / -1;
+      margin-top: 4px;
+    }
+    .progress-header {
+      align-items: center;
+      display: flex;
+      font-size: 0.8rem;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .progress-label { color: var(--secondary-text-color); }
+    .progress-time { color: var(--primary-text-color); font-weight: 500; }
+    .progress-track {
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: var(--primary-color);
+      border-radius: 4px;
+      height: 100%;
+      transition: width 1s linear;
+    }
+    .progress-pct {
+      color: var(--secondary-text-color);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      text-align: right;
+    }
   `;
 
   private get _poster(): string {
@@ -121,6 +152,22 @@ export class RadarrMovieDetail extends LitElement {
 
   private get _showAddForm(): boolean {
     return this.movie?.inLibrary === false;
+  }
+
+  private get _downloadPct(): number {
+    const q = this.movie?.queueItem;
+    if (!q || q.size === 0) return 0;
+    return Math.round((1 - q.sizeleft / q.size) * 100);
+  }
+
+  private _formatTimeLeft(timeleft?: string): string {
+    if (!timeleft) return '';
+    const parts = timeleft.split(':').map(Number);
+    if (parts.length !== 3) return timeleft;
+    const [h, m] = parts;
+    if (h > 0) return `${h}h ${m}m left`;
+    if (m > 0) return `${m}m left`;
+    return '< 1m left';
   }
 
   private get _qualityProfileName(): string | undefined {
@@ -211,6 +258,19 @@ export class RadarrMovieDetail extends LitElement {
             </div>
           `}
         </div>
+
+        ${this.movie.queueItem ? html`
+          <div class="download-progress">
+            <div class="progress-header">
+              <span class="progress-label">Downloading${this.movie.queueItem.protocol ? ` · ${this.movie.queueItem.protocol}` : ''}</span>
+              <span class="progress-time">${this._formatTimeLeft(this.movie.queueItem.timeleft)}</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${this._downloadPct}%"></div>
+            </div>
+            <div class="progress-pct">${this._downloadPct}%</div>
+          </div>
+        ` : nothing}
 
         ${this._showAddForm ? html`
           <div class="add-form">

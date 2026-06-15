@@ -25,6 +25,13 @@ export interface Movie {
   studio?: string;
   inLibrary?: boolean;
   inQueue?: boolean;
+  queueItem?: {
+    size: number;
+    sizeleft: number;
+    timeleft?: string;
+    status: string;
+    protocol?: string;
+  };
 }
 
 export interface QualityProfile {

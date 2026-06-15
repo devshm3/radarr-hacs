@@ -34,6 +34,7 @@ export class RadarrHacsCard extends LitElement {
   @query('dialog') private _dialog?: HTMLDialogElement;
 
   private _debounceTimer?: ReturnType<typeof setTimeout>;
+  private _queueTimer?: ReturnType<typeof setInterval>;
   private _initialised = false;
   private _searchGen = 0;
 
@@ -96,8 +97,15 @@ export class RadarrHacsCard extends LitElement {
     };
   }
 
-  private async _loadData(): Promise<void> {
-    this._loading = true;
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this._queueTimer) { clearInterval(this._queueTimer); this._queueTimer = undefined; }
+  }
+
+  private async _loadData(preserveSelection = false): Promise<void> {
+    const prevSelectedId = preserveSelection ? this._selectedMovie?.id : undefined;
+    const prevDialogId = preserveSelection ? this._dialogSelectedMovie?.id : undefined;
+    this._loading = !preserveSelection;
     this._error = undefined;
     try {
       const [movies, cfg] = await Promise.all([
@@ -111,6 +119,19 @@ export class RadarrHacsCard extends LitElement {
       this._filteredMovies = movies;
       this._qualityProfiles = cfg.quality_profiles;
       this._rootFolders = cfg.root_folders;
+      if (prevSelectedId != null) {
+        this._selectedMovie = movies.find(m => m.id === prevSelectedId) ?? this._selectedMovie;
+      }
+      if (prevDialogId != null) {
+        this._dialogSelectedMovie = movies.find(m => m.id === prevDialogId) ?? this._dialogSelectedMovie;
+      }
+      const hasDownloading = movies.some(m => m.inQueue);
+      if (hasDownloading && !this._queueTimer) {
+        this._queueTimer = setInterval(() => this._loadData(true), 15000);
+      } else if (!hasDownloading && this._queueTimer) {
+        clearInterval(this._queueTimer);
+        this._queueTimer = undefined;
+      }
     } catch (e) {
       this._error = `Could not connect to Radarr: ${e}`;
     } finally {

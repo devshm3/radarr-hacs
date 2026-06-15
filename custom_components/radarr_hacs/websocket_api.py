@@ -28,8 +28,20 @@ async def ws_get_movies(hass: HomeAssistant, connection, msg: dict) -> None:
         connection.send_error(msg["id"], "not_found", "Config entry not found")
         return
 
-    queue_ids = {item["movieId"] for item in coordinator.data.get("queue", [])}
-    movies = [{**m, "inQueue": m["id"] in queue_ids} for m in coordinator.data["movies"]]
+    queue_map = {item["movieId"]: item for item in coordinator.data.get("queue", [])}
+    movies = []
+    for m in coordinator.data["movies"]:
+        movie = {**m, "inQueue": m["id"] in queue_map}
+        if m["id"] in queue_map:
+            q = queue_map[m["id"]]
+            movie["queueItem"] = {
+                "size": q.get("size", 0),
+                "sizeleft": q.get("sizeleft", 0),
+                "timeleft": q.get("timeleft"),
+                "status": q.get("status", ""),
+                "protocol": q.get("protocol", ""),
+            }
+        movies.append(movie)
 
     search = msg.get("search", "").lower()
     if search:
