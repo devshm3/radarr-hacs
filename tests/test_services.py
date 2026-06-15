@@ -56,6 +56,40 @@ async def test_delete_movie_calls_api(hass, coordinator_with_api):
     coordinator.async_request_refresh.assert_awaited_once()
 
 
+async def test_delete_movie_with_delete_files(hass, coordinator_with_api):
+    coordinator = coordinator_with_api
+    await hass.services.async_call(
+        DOMAIN,
+        "delete_movie",
+        {"entry_id": "test_entry_id", "movie_id": 1, "delete_files": True},
+        blocking=True,
+    )
+    coordinator.api.delete_movie.assert_awaited_once_with(1, delete_files=True)
+
+
+async def test_add_movie_monitored_defaults_to_true(hass, coordinator_with_api):
+    coordinator = coordinator_with_api
+    await hass.services.async_call(
+        DOMAIN,
+        "add_movie",
+        {"entry_id": "test_entry_id", "tmdb_id": 438631, "quality_profile_id": 1, "root_folder": "/movies"},
+        blocking=True,
+    )
+    call_kwargs = coordinator.api.add_movie.call_args[0][0]
+    assert call_kwargs["monitored"] is True
+
+
+async def test_unknown_entry_id_is_noop(hass, coordinator_with_api):
+    coordinator = coordinator_with_api
+    await hass.services.async_call(
+        DOMAIN,
+        "add_movie",
+        {"entry_id": "nonexistent", "tmdb_id": 1, "quality_profile_id": 1, "root_folder": "/"},
+        blocking=True,
+    )
+    coordinator.api.add_movie.assert_not_awaited()
+
+
 async def test_refresh_library_triggers_coordinator(hass, coordinator_with_api):
     coordinator = coordinator_with_api
     await hass.services.async_call(
