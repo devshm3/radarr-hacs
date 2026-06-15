@@ -9,7 +9,6 @@ def prewarm_aiohttp_thread():
     """Create and immediately close a TCPConnector so aiohttp's background thread
     is started before any test's verify_cleanup fixture captures threads_before."""
     import asyncio
-    import threading
 
     async def _warm():
         conn = aiohttp.TCPConnector()
@@ -76,6 +75,16 @@ async def test_delete_movie(api):
         await api.delete_movie(1, delete_files=False)
 
 
+async def test_delete_movie_with_delete_files(api):
+    with aioresponses() as m:
+        m.delete(
+            "http://localhost:7878/api/v3/movie/1?deleteFiles=true",
+            status=200,
+            payload={},
+        )
+        await api.delete_movie(1, delete_files=True)
+
+
 async def test_get_quality_profiles(api):
     with aioresponses() as m:
         m.get(
@@ -94,6 +103,16 @@ async def test_get_root_folders(api):
         )
         result = await api.get_root_folders()
     assert result[0]["path"] == "/movies"
+
+
+async def test_send_command(api):
+    with aioresponses() as m:
+        m.post(
+            "http://localhost:7878/api/v3/command",
+            payload={"id": 1, "name": "RescanMovie"},
+        )
+        result = await api.send_command("RescanMovie", movieId=1)
+    assert result["name"] == "RescanMovie"
 
 
 async def test_test_connection_returns_true_on_success(api):

@@ -29,7 +29,7 @@ class RadarrApi:
         return await self._request("POST", "/movie", json=payload)
 
     async def delete_movie(self, movie_id: int, delete_files: bool = False) -> None:
-        params = {"deleteFiles": "true"} if delete_files else {}
+        params = {"deleteFiles": "true"} if delete_files else None
         await self._request("DELETE", f"/movie/{movie_id}", params=params)
 
     async def send_command(self, name: str, **kwargs) -> dict:
@@ -45,5 +45,5 @@ class RadarrApi:
         try:
             await self._request("GET", "/system/status")
             return True
-        except Exception:
+        except aiohttp.ClientError:
             return False
