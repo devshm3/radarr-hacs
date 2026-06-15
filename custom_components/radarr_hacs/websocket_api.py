@@ -18,7 +18,7 @@ def async_register_commands(hass: HomeAssistant) -> None:
     vol.Required("type"): "radarr_hacs/get_movies",
     vol.Required("entry_id"): str,
     vol.Optional("search"): str,
-    vol.Optional("filter"): vol.In(["available", "missing", "downloading"]),
+    vol.Optional("filter"): vol.In(["available", "missing", "downloading", "unmonitored"]),
     vol.Optional("sort"): vol.In(["title", "added", "year", "status"]),
 })
 @websocket_api.async_response
@@ -42,6 +42,8 @@ async def ws_get_movies(hass: HomeAssistant, connection, msg: dict) -> None:
     elif filter_val == "downloading":
         queue_ids = {item["movieId"] for item in coordinator.data.get("queue", [])}
         movies = [m for m in movies if not m.get("hasFile") and m["id"] in queue_ids]
+    elif filter_val == "unmonitored":
+        movies = [m for m in movies if not m.get("hasFile") and not m.get("monitored")]
 
     sort = msg.get("sort", "added")
     if sort == "title":

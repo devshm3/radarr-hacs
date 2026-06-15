@@ -5,6 +5,7 @@ const FILTERS: Array<{ key: string; label: string }> = [
   { key: 'all', label: 'All' },
   { key: 'available', label: 'Available' },
   { key: 'missing', label: 'Missing' },
+  { key: 'unmonitored', label: 'Unmonitored' },
   { key: 'downloading', label: 'Downloading' },
 ];
 

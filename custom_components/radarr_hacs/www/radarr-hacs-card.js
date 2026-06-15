@@ -108,7 +108,7 @@ const dt=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       width: 100%;
       box-sizing: border-box;
     }
-  `,t([pt({attribute:!1})],gt.prototype,"hass",void 0),gt=t([dt("radarr-hacs-card-editor")],gt);const ft=[{key:"all",label:"All"},{key:"available",label:"Available"},{key:"missing",label:"Missing"},{key:"downloading",label:"Downloading"}];let mt=class extends nt{constructor(){super(...arguments),this.activeFilter="all"}render(){return q`${ft.map(t=>q`
+  `,t([pt({attribute:!1})],gt.prototype,"hass",void 0),gt=t([dt("radarr-hacs-card-editor")],gt);const ft=[{key:"all",label:"All"},{key:"available",label:"Available"},{key:"missing",label:"Missing"},{key:"unmonitored",label:"Unmonitored"},{key:"downloading",label:"Downloading"}];let mt=class extends nt{constructor(){super(...arguments),this.activeFilter="all"}render(){return q`${ft.map(t=>q`
       <button
         class=${t.key===this.activeFilter?"active":""}
         @click=${()=>this._select(t.key)}
