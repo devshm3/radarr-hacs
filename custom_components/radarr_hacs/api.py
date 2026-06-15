@@ -1,0 +1,49 @@
+from __future__ import annotations
+
+import aiohttp
+
+
+class RadarrApi:
+    def __init__(self, host: str, api_key: str, session: aiohttp.ClientSession) -> None:
+        self._base = host.rstrip("/") + "/api/v3"
+        self._headers = {"X-Api-Key": api_key}
+        self._session = session
+
+    async def _request(self, method: str, endpoint: str, **kwargs):
+        url = f"{self._base}{endpoint}"
+        async with self._session.request(
+            method, url, headers=self._headers, **kwargs
+        ) as resp:
+            resp.raise_for_status()
+            if resp.status != 204:
+                return await resp.json()
+            return None
+
+    async def get_movies(self) -> list[dict]:
+        return await self._request("GET", "/movie")
+
+    async def search_movies(self, term: str) -> list[dict]:
+        return await self._request("GET", "/movie/lookup", params={"term": term})
+
+    async def add_movie(self, payload: dict) -> dict:
+        return await self._request("POST", "/movie", json=payload)
+
+    async def delete_movie(self, movie_id: int, delete_files: bool = False) -> None:
+        params = {"deleteFiles": "true"} if delete_files else {}
+        await self._request("DELETE", f"/movie/{movie_id}", params=params)
+
+    async def send_command(self, name: str, **kwargs) -> dict:
+        return await self._request("POST", "/command", json={"name": name, **kwargs})
+
+    async def get_quality_profiles(self) -> list[dict]:
+        return await self._request("GET", "/qualityprofile")
+
+    async def get_root_folders(self) -> list[dict]:
+        return await self._request("GET", "/rootfolder")
+
+    async def test_connection(self) -> bool:
+        try:
+            await self._request("GET", "/system/status")
+            return True
+        except Exception:
+            return False
