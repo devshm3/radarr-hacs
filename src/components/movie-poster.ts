@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Movie } from '../types.js';
 
@@ -41,6 +41,19 @@ export class RadarrMoviePoster extends LitElement {
       object-fit: cover;
       width: 100%;
     }
+    .placeholder {
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--secondary-text-color);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.72rem;
+      gap: 4px;
+      height: 100%;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+    }
     .badge {
       border-radius: 10px;
       bottom: 6px;
@@ -72,12 +85,13 @@ export class RadarrMoviePoster extends LitElement {
           detail: this.movie, bubbles: true, composed: true,
         }))}
       >
-        <img
-          src=${this._poster}
-          alt=${this.movie.title}
-          loading="lazy"
-          @error=${(e: Event) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
-        />
+        ${this._poster
+          ? html`<img src=${this._poster} alt=${this.movie.title} loading="lazy"
+              @error=${(e: Event) => ((e.target as HTMLImageElement).style.display = 'none')} />`
+          : html`<div class="placeholder">
+              <span>${this.movie.title}</span>
+              ${this.movie.year ? html`<span>(${this.movie.year})</span>` : nothing}
+            </div>`}
         ${this.showBadge && this.movie.inLibrary !== false ? html`
           <span class="badge ${status}">${status}</span>
         ` : ''}

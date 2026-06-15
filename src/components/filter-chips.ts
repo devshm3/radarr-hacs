@@ -12,6 +12,7 @@ const FILTERS: Array<{ key: string; label: string }> = [
 @customElement('radarr-filter-chips')
 export class RadarrFilterChips extends LitElement {
   @property() activeFilter = 'all';
+  @property({ attribute: false }) counts?: Record<string, number>;
 
   static styles = css`
     :host {
@@ -41,6 +42,14 @@ export class RadarrFilterChips extends LitElement {
       color: var(--text-primary-color, #fff);
       font-weight: 600;
     }
+    .count {
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 1px 6px;
+    }
+    button.active .count { background: rgba(0,0,0,0.2); }
   `;
 
   render() {
@@ -48,7 +57,9 @@ export class RadarrFilterChips extends LitElement {
       <button
         class=${f.key === this.activeFilter ? 'active' : ''}
         @click=${() => this._select(f.key)}
-      >${f.label}</button>
+      >${f.label}${this.counts != null && this.counts[f.key] != null
+          ? html` <span class="count">${this.counts[f.key]}</span>`
+          : ''}</button>
     `)}`;
   }
 

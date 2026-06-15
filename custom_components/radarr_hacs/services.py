@@ -26,6 +26,17 @@ _REFRESH_SCHEMA = vol.Schema({
     vol.Required("entry_id"): str,
 })
 
+_TOGGLE_MONITORED_SCHEMA = vol.Schema({
+    vol.Required("entry_id"): str,
+    vol.Required("movie_id"): int,
+    vol.Required("monitored"): bool,
+})
+
+_TRIGGER_SEARCH_SCHEMA = vol.Schema({
+    vol.Required("entry_id"): str,
+    vol.Required("movie_id"): int,
+})
+
 
 def async_register_services(hass: HomeAssistant) -> None:
     async def handle_add_movie(call: ServiceCall) -> None:
@@ -58,6 +69,21 @@ def async_register_services(hass: HomeAssistant) -> None:
             return
         await coordinator.async_request_refresh()
 
+    async def handle_toggle_monitored(call: ServiceCall) -> None:
+        coordinator = hass.data[DOMAIN].get(call.data["entry_id"])
+        if coordinator is None:
+            return
+        await coordinator.api.toggle_monitored(call.data["movie_id"], call.data["monitored"])
+        await coordinator.async_request_refresh()
+
+    async def handle_trigger_search(call: ServiceCall) -> None:
+        coordinator = hass.data[DOMAIN].get(call.data["entry_id"])
+        if coordinator is None:
+            return
+        await coordinator.api.trigger_search(call.data["movie_id"])
+
     hass.services.async_register(DOMAIN, "add_movie", handle_add_movie, _ADD_SCHEMA)
     hass.services.async_register(DOMAIN, "delete_movie", handle_delete_movie, _DELETE_SCHEMA)
     hass.services.async_register(DOMAIN, "refresh_library", handle_refresh_library, _REFRESH_SCHEMA)
+    hass.services.async_register(DOMAIN, "toggle_monitored", handle_toggle_monitored, _TOGGLE_MONITORED_SCHEMA)
+    hass.services.async_register(DOMAIN, "trigger_search", handle_trigger_search, _TRIGGER_SEARCH_SCHEMA)

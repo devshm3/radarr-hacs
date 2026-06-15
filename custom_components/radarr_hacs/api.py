@@ -45,6 +45,14 @@ class RadarrApi:
         data = await self._request("GET", "/queue", params={"pageSize": 1000})
         return data.get("records", []) if data else []
 
+    async def toggle_monitored(self, movie_id: int, monitored: bool) -> None:
+        movie = await self._request("GET", f"/movie/{movie_id}")
+        movie["monitored"] = monitored
+        await self._request("PUT", f"/movie/{movie_id}", json=movie)
+
+    async def trigger_search(self, movie_id: int) -> None:
+        await self.send_command("MoviesSearch", movieIds=[movie_id])
+
     async def test_connection(self) -> bool:
         try:
             await self._request("GET", "/system/status")

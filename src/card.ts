@@ -2,7 +2,10 @@ import { LitElement, html, css, nothing, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import type { HomeAssistant } from './ha-types.js';
 import type { CardConfig, Movie, QualityProfile, RootFolder } from './types.js';
-import { getMovies, searchMovies, getConfig, addMovie, deleteMovie } from './radarr-api.js';
+import {
+  getMovies, searchMovies, getConfig,
+  addMovie, deleteMovie, toggleMonitored, triggerSearch,
+} from './radarr-api.js';
 import './editor.js';
 import './components/filter-chips.js';
 import './components/movie-poster.js';
@@ -21,6 +24,7 @@ export class RadarrHacsCard extends LitElement {
   @state() private _selectedMovie?: Movie;
   @state() private _dialogSelectedMovie?: Movie;
   @state() private _dialogOpen = false;
+  @state() private _addMode = false;
   @state() private _activeFilter = 'all';
   @state() private _searchTerm = '';
   @state() private _tmdbForced = false;
@@ -50,6 +54,10 @@ export class RadarrHacsCard extends LitElement {
       show_status_badges: true,
       poster_radius: 8,
       page_size: 25,
+      show_quality: true,
+      show_file_info: true,
+      show_filter_counts: true,
+      show_refresh_button: true,
       ...config,
     };
     this._activeFilter = this._config.default_filter ?? 'all';
@@ -77,6 +85,17 @@ export class RadarrHacsCard extends LitElement {
     return this._pageSize > 0 && this._filteredMovies.length > this._pageSize;
   }
 
+  private get _filterCounts(): Record<string, number> {
+    const all = this._movies;
+    return {
+      all: all.length,
+      available: all.filter(m => m.hasFile).length,
+      missing: all.filter(m => !m.hasFile && m.monitored).length,
+      unmonitored: all.filter(m => !m.hasFile && !m.monitored).length,
+      downloading: all.filter(m => m.inQueue).length,
+    };
+  }
+
   private async _loadData(): Promise<void> {
     this._loading = true;
     this._error = undefined;
@@ -101,20 +120,29 @@ export class RadarrHacsCard extends LitElement {
 
   private _onSearchInput(e: Event): void {
     this._searchTerm = (e.target as HTMLInputElement).value;
-    this._tmdbForced = false;
     this._searchGen++;
     clearTimeout(this._debounceTimer);
+
+    if (this._addMode) {
+      if (this._searchTerm) {
+        this._debounceTimer = setTimeout(() => this._tmdbSearch(), 300);
+      } else {
+        this._filteredMovies = [];
+      }
+      return;
+    }
+
+    this._tmdbForced = false;
     const term = this._searchTerm.toLowerCase();
     if (term) {
       this._filteredMovies = this._movies.filter(
         m => m.title.toLowerCase().includes(term) || String(m.year).includes(term)
       );
+      if (this._filteredMovies.length === 0) {
+        this._debounceTimer = setTimeout(() => this._tmdbSearch(), 400);
+      }
     } else {
       this._filteredMovies = this._movies;
-      return;
-    }
-    if (this._filteredMovies.length === 0) {
-      this._debounceTimer = setTimeout(() => this._tmdbSearch(), 400);
     }
   }
 
@@ -138,10 +166,28 @@ export class RadarrHacsCard extends LitElement {
     }
   }
 
+  private _enterAddMode(): void {
+    this._addMode = true;
+    this._searchTerm = '';
+    this._filteredMovies = [];
+    this._selectedMovie = undefined;
+    this.updateComplete.then(() => {
+      this.shadowRoot?.querySelector<HTMLInputElement>('.search')?.focus();
+    });
+  }
+
+  private _exitAddMode(): void {
+    this._addMode = false;
+    this._searchTerm = '';
+    this._selectedMovie = undefined;
+    this._filteredMovies = this._movies;
+  }
+
   private async _onFilterChange(key: string): Promise<void> {
     this._activeFilter = key;
     this._selectedMovie = undefined;
     this._dialogSelectedMovie = undefined;
+    if (this._addMode) this._exitAddMode();
     try {
       this._movies = await getMovies(this.hass, this._config.entry_id, {
         filter: key !== 'all' ? key : undefined,
@@ -168,6 +214,7 @@ export class RadarrHacsCard extends LitElement {
       await addMovie(this.hass, this._config.entry_id, movie, qualityProfileId, rootFolder, monitored);
       this._selectedMovie = undefined;
       this._dialogSelectedMovie = undefined;
+      if (this._addMode) this._exitAddMode();
       await this._loadData();
       return undefined;
     } catch (e) {
@@ -186,6 +233,25 @@ export class RadarrHacsCard extends LitElement {
     }
   }
 
+  private async _onToggleMonitored(e: CustomEvent): Promise<void> {
+    const { movie, monitored } = e.detail as { movie: Movie; monitored: boolean };
+    try {
+      await toggleMonitored(this.hass, this._config.entry_id, movie.id, monitored);
+      await this._loadData();
+    } catch (err) {
+      this._error = `Could not update monitored: ${err}`;
+    }
+  }
+
+  private async _onSearchNow(e: CustomEvent): Promise<void> {
+    const movie = e.detail as Movie;
+    try {
+      await triggerSearch(this.hass, this._config.entry_id, movie.id);
+    } catch (err) {
+      this._error = `Search failed: ${err}`;
+    }
+  }
+
   private async _onAddMovieEvent(e: CustomEvent): Promise<void> {
     const { movie, qualityProfileId, rootFolder, monitored } = e.detail;
     const panel = e.target as RadarrMovieDetail;
@@ -195,17 +261,6 @@ export class RadarrHacsCard extends LitElement {
 
   private async _onDeleteMovieEvent(e: CustomEvent): Promise<void> {
     await this._onDeleteMovie(e.detail as Movie);
-  }
-
-  private _onSearchAgain(e: CustomEvent): void {
-    this._tmdbForced = false;
-    const m = e.detail as Movie;
-    this._searchTerm = m.title;
-    const term = m.title.toLowerCase();
-    this._filteredMovies = this._movies.filter(mv => mv.title.toLowerCase().includes(term));
-    if (this._filteredMovies.length === 0) {
-      setTimeout(() => this._tmdbSearch(), 400);
-    }
   }
 
   private _onDialogSearchAgain(e: CustomEvent): void {
@@ -235,9 +290,13 @@ export class RadarrHacsCard extends LitElement {
     onPosterClick: (m: Movie) => void,
     onAdd: (e: CustomEvent) => void,
     onDelete: (e: CustomEvent) => void,
-    onSearchAgain: (e: CustomEvent) => void,
+    onToggleMonitored: (e: CustomEvent) => void,
+    onSearchNow: (e: CustomEvent) => void,
+    onSearchAgain?: (e: CustomEvent) => void,
   ) {
-    if (!movies.length) return html`<div class="empty">No movies found</div>`;
+    if (!movies.length) {
+      return html`<div class="empty">${this._addMode && this._searchTerm ? 'No results on TMDB' : 'No movies found'}</div>`;
+    }
 
     const cols = this._config?.columns ?? 4;
     const selectedIdx = selectedMovie != null
@@ -264,9 +323,13 @@ export class RadarrHacsCard extends LitElement {
                 .movie=${selectedMovie}
                 .qualityProfiles=${this._qualityProfiles}
                 .rootFolders=${this._rootFolders}
+                .showQuality=${this._config?.show_quality !== false}
+                .showFileInfo=${this._config?.show_file_info !== false}
                 @add-movie=${onAdd}
                 @delete-movie=${onDelete}
-                @search-again=${onSearchAgain}
+                @toggle-monitored=${onToggleMonitored}
+                @search-now=${onSearchNow}
+                ${onSearchAgain ? html`` : ''}
               ></radarr-movie-detail>
             </div>
           ` : nothing}
@@ -290,7 +353,7 @@ export class RadarrHacsCard extends LitElement {
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       display: flex;
-      gap: 12px;
+      gap: 8px;
       padding: 12px 16px;
     }
     .title {
@@ -313,6 +376,26 @@ export class RadarrHacsCard extends LitElement {
     }
     .search::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
     .search:focus { border-color: var(--primary-color); }
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: var(--primary-text-color);
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 6px 10px;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.14); }
+    .icon-btn.add-btn {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: var(--text-primary-color, #fff);
+    }
+    .icon-btn.add-btn:hover { filter: brightness(1.1); }
     .state-msg {
       color: var(--secondary-text-color);
       padding: 40px 24px;
@@ -331,18 +414,6 @@ export class RadarrHacsCard extends LitElement {
       transition: background 0.15s;
     }
     .retry:hover { background: rgba(255,255,255,0.12); }
-    .tmdb-link-row {
-      padding: 4px 16px 8px;
-      text-align: right;
-    }
-    .tmdb-link {
-      color: var(--primary-color);
-      font-size: 0.82rem;
-      opacity: 0.85;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    .tmdb-link:hover { opacity: 1; }
     .grid { display: grid; gap: 8px; padding: 8px; }
     .empty { color: var(--secondary-text-color); padding: 32px; text-align: center; }
     .inline-detail {
@@ -391,46 +462,52 @@ export class RadarrHacsCard extends LitElement {
       background: rgba(255, 255, 255, 0.03);
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       display: flex;
-      gap: 12px;
+      gap: 8px;
       padding: 12px 16px;
       position: sticky;
       top: 0;
       z-index: 1;
     }
-    .close-btn {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      color: var(--primary-text-color);
-      cursor: pointer;
-      flex-shrink: 0;
-      font-size: 1rem;
-      line-height: 1;
-      padding: 5px 10px;
-      transition: background 0.15s;
-    }
-    .close-btn:hover { background: rgba(255, 255, 255, 0.14); }
   `;
 
   render() {
     if (!this._config) return html``;
     const title = this._config.card_title ?? 'Radarr';
+    const showCounts = this._config.show_filter_counts !== false;
     return html`
       <div class="header">
-        <span class="title">${title}</span>
-        <input
-          class="search"
-          type="search"
-          placeholder="Search library or TMDB…"
-          .value=${this._searchTerm}
-          @input=${this._onSearchInput}
-        />
+        ${this._addMode ? html`
+          <button class="icon-btn" @click=${this._exitAddMode}>← Back</button>
+          <input
+            class="search"
+            type="search"
+            placeholder="Search TMDB to add a movie…"
+            .value=${this._searchTerm}
+            @input=${this._onSearchInput}
+          />
+        ` : html`
+          <span class="title">${title}</span>
+          <input
+            class="search"
+            type="search"
+            placeholder="Search library…"
+            .value=${this._searchTerm}
+            @input=${this._onSearchInput}
+          />
+          <button class="icon-btn add-btn" @click=${this._enterAddMode}>+ Add</button>
+          ${this._config.show_refresh_button !== false ? html`
+            <button class="icon-btn" @click=${() => this._loadData()} title="Refresh">↻</button>
+          ` : nothing}
+        `}
       </div>
 
-      <radarr-filter-chips
-        .activeFilter=${this._activeFilter}
-        @filter-change=${(e: CustomEvent<string>) => this._onFilterChange(e.detail)}
-      ></radarr-filter-chips>
+      ${!this._addMode ? html`
+        <radarr-filter-chips
+          .activeFilter=${this._activeFilter}
+          .counts=${showCounts ? this._filterCounts : undefined}
+          @filter-change=${(e: CustomEvent<string>) => this._onFilterChange(e.detail)}
+        ></radarr-filter-chips>
+      ` : nothing}
 
       ${this._loading ? html`<div class="state-msg">Loading…</div>` : ''}
 
@@ -438,28 +515,31 @@ export class RadarrHacsCard extends LitElement {
         <div class="state-msg error-msg">
           ${this._error}
           <br/>
-          <button class="retry" @click=${() => this._loadData()}>Retry</button>
+          <button class="retry" @click=${() => { this._error = undefined; this._loadData(); }}>Retry</button>
         </div>
       ` : ''}
 
       ${!this._loading && !this._error ? html`
-        ${this._renderGrid(
-          this._displayMovies,
+        ${this._addMode && !this._searchTerm ? html`
+          <div class="state-msg">Type a movie name to search TMDB</div>
+        ` : this._renderGrid(
+          this._addMode ? this._filteredMovies : this._displayMovies,
           this._selectedMovie,
           m => this._onPosterClick(m),
           this._onAddMovieEvent,
           this._onDeleteMovieEvent,
-          this._onSearchAgain,
+          this._onToggleMonitored,
+          this._onSearchNow,
         )}
-        ${this._hasMore ? html`
+        ${!this._addMode && this._hasMore ? html`
           <button class="view-all" @click=${this._openDialog}>
             View all ${this._filteredMovies.length} movies →
           </button>
         ` : ''}
-        ${this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
-          <div class="tmdb-link-row">
-            <a class="tmdb-link" href="#"
-              @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
+        ${!this._addMode && this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
+          <div style="padding:4px 16px 8px;text-align:right">
+            <a style="color:var(--primary-color);font-size:.82rem;opacity:.85;text-decoration:none"
+              href="#" @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
             >Search TMDB →</a>
           </div>
         ` : ''}
@@ -472,14 +552,15 @@ export class RadarrHacsCard extends LitElement {
             <input
               class="search"
               type="search"
-              placeholder="Search library or TMDB…"
+              placeholder="Search library…"
               .value=${this._searchTerm}
               @input=${this._onSearchInput}
             />
-            <button class="close-btn" @click=${() => this._dialog?.close()}>✕</button>
+            <button class="icon-btn" @click=${() => this._dialog?.close()}>✕</button>
           </div>
           <radarr-filter-chips
             .activeFilter=${this._activeFilter}
+            .counts=${showCounts ? this._filterCounts : undefined}
             @filter-change=${(e: CustomEvent<string>) => this._onFilterChange(e.detail)}
           ></radarr-filter-chips>
           ${this._renderGrid(
@@ -488,12 +569,14 @@ export class RadarrHacsCard extends LitElement {
             m => this._onDialogPosterClick(m),
             this._onAddMovieEvent,
             this._onDeleteMovieEvent,
+            this._onToggleMonitored,
+            this._onSearchNow,
             this._onDialogSearchAgain,
           )}
           ${this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
-            <div class="tmdb-link-row">
-              <a class="tmdb-link" href="#"
-                @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
+            <div style="padding:4px 16px 8px;text-align:right">
+              <a style="color:var(--primary-color);font-size:.82rem;opacity:.85;text-decoration:none"
+                href="#" @click=${(e: Event) => { e.preventDefault(); this._forceSearchTmdb(); }}
               >Search TMDB →</a>
             </div>
           ` : ''}

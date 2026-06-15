@@ -83,7 +83,31 @@ export class RadarrHacsCardEditor extends LitElement {
           <input type="checkbox"
             ?checked=${c.show_status_badges !== false}
             @change=${(e: Event) => this._fire({ show_status_badges: (e.target as HTMLInputElement).checked })} />
-          <label>Show Status Badges</label>
+          <label>Show status badges on posters</label>
+        </div>
+        <div class="field-row">
+          <input type="checkbox"
+            ?checked=${c.show_filter_counts !== false}
+            @change=${(e: Event) => this._fire({ show_filter_counts: (e.target as HTMLInputElement).checked })} />
+          <label>Show movie counts on filter tabs</label>
+        </div>
+        <div class="field-row">
+          <input type="checkbox"
+            ?checked=${c.show_quality !== false}
+            @change=${(e: Event) => this._fire({ show_quality: (e.target as HTMLInputElement).checked })} />
+          <label>Show quality profile in movie detail</label>
+        </div>
+        <div class="field-row">
+          <input type="checkbox"
+            ?checked=${c.show_file_info !== false}
+            @change=${(e: Event) => this._fire({ show_file_info: (e.target as HTMLInputElement).checked })} />
+          <label>Show file info (size &amp; codec) in movie detail</label>
+        </div>
+        <div class="field-row">
+          <input type="checkbox"
+            ?checked=${c.show_refresh_button !== false}
+            @change=${(e: Event) => this._fire({ show_refresh_button: (e.target as HTMLInputElement).checked })} />
+          <label>Show refresh button in header</label>
         </div>
       </div>
     `;

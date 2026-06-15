@@ -24,6 +24,7 @@ export interface Movie {
   qualityProfileId?: number;
   studio?: string;
   inLibrary?: boolean;
+  inQueue?: boolean;
 }
 
 export interface QualityProfile {
@@ -46,4 +47,8 @@ export interface CardConfig {
   poster_radius?: number;
   card_title?: string;
   page_size?: number;
+  show_quality?: boolean;
+  show_file_info?: boolean;
+  show_filter_counts?: boolean;
+  show_refresh_button?: boolean;
 }

@@ -77,3 +77,27 @@ export async function deleteMovie(
     delete_files: deleteFiles,
   });
 }
+
+export async function toggleMonitored(
+  hass: HomeAssistant,
+  entryId: string,
+  movieId: number,
+  monitored: boolean
+): Promise<void> {
+  await hass.callService('radarr_hacs', 'toggle_monitored', {
+    entry_id: entryId,
+    movie_id: movieId,
+    monitored,
+  });
+}
+
+export async function triggerSearch(
+  hass: HomeAssistant,
+  entryId: string,
+  movieId: number
+): Promise<void> {
+  await hass.callService('radarr_hacs', 'trigger_search', {
+    entry_id: entryId,
+    movie_id: movieId,
+  });
+}
