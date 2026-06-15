@@ -4,6 +4,8 @@ import type { HomeAssistant } from './ha-types.js';
 import type { CardConfig, Movie, QualityProfile, RootFolder } from './types.js';
 import { getMovies, searchMovies, getConfig, addMovie, deleteMovie } from './radarr-api.js';
 import './editor.js';
+import './components/filter-chips.js';
+import './components/movie-grid.js';
 
 @customElement('radarr-hacs-card')
 export class RadarrHacsCard extends LitElement {
@@ -147,6 +149,27 @@ export class RadarrHacsCard extends LitElement {
       border-radius: 12px;
       overflow: hidden;
     }
+    .header {
+      align-items: center;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      display: flex;
+      gap: 12px;
+      padding: 12px 16px;
+    }
+    .title { font-size: 1.1rem; font-weight: 600; white-space: nowrap; }
+    .search {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--primary-text-color);
+      flex: 1;
+      font-size: 0.9rem;
+      outline: none;
+      padding: 6px 12px;
+    }
+    .search:focus { border-color: var(--primary-color); }
     .state-msg {
       color: var(--secondary-text-color);
       padding: 32px;
@@ -166,15 +189,44 @@ export class RadarrHacsCard extends LitElement {
 
   render() {
     if (!this._config) return html``;
+    const title = this._config.card_title ?? 'Radarr';
     return html`
-      <p class="state-msg">
-        ${this._loading ? 'Loading…' : ''}
-        ${this._error ? html`
-          <span class="error-msg">${this._error}</span><br/>
+      <div class="header">
+        <span class="title">${title}</span>
+        <input
+          class="search"
+          type="search"
+          placeholder="Search library or TMDB…"
+          .value=${this._searchTerm}
+          @input=${this._onSearchInput}
+        />
+      </div>
+
+      <radarr-filter-chips
+        .activeFilter=${this._activeFilter}
+        @filter-change=${(e: CustomEvent<string>) => this._onFilterChange(e.detail)}
+      ></radarr-filter-chips>
+
+      ${this._loading ? html`<div class="state-msg">Loading…</div>` : ''}
+
+      ${this._error ? html`
+        <div class="state-msg error-msg">
+          ${this._error}
+          <br/>
           <button class="retry" @click=${() => { this._initialised = false; this._loadData(); }}>Retry</button>
-        ` : ''}
-        ${!this._loading && !this._error ? `${this._filteredMovies.length} movies` : ''}
-      </p>
+        </div>
+      ` : ''}
+
+      ${!this._loading && !this._error ? html`
+        <radarr-movie-grid
+          .movies=${this._filteredMovies}
+          .columns=${this._config.columns ?? 4}
+          .selectedMovieId=${this._selectedMovie?.id}
+          .showBadges=${this._config.show_status_badges !== false}
+          .posterRadius=${this._config.poster_radius ?? 8}
+          @poster-click=${(e: CustomEvent<Movie>) => this._onPosterClick(e.detail)}
+        ></radarr-movie-grid>
+      ` : ''}
     `;
   }
 }
