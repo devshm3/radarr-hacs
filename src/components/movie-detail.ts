@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, PropertyValues, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { Movie, QualityProfile, RootFolder } from '../types.js';
 
@@ -23,7 +23,7 @@ export class RadarrMovieDetail extends LitElement {
       overflow: hidden;
       transition: max-height 0.3s ease, opacity 0.2s ease;
     }
-    :host([open]) { max-height: 700px; opacity: 1; }
+    :host([open]) { max-height: 1000px; opacity: 1; }
 
     .panel {
       backdrop-filter: blur(8px);
@@ -97,13 +97,23 @@ export class RadarrMovieDetail extends LitElement {
     return this.movie?.inLibrary === false;
   }
 
+  protected updated(changed: PropertyValues): void {
+    if (changed.has('movie')) {
+      this._profileId = undefined;
+      this._folder = undefined;
+      this._monitored = true;
+      this._adding = false;
+      this._addError = undefined;
+    }
+  }
+
   render() {
     if (!this.movie) return html``;
     const m = this.movie;
     return html`
       <div class="panel">
         <div class="poster">
-          <img src=${this._poster} alt=${m.title} />
+          ${this._poster ? html`<img src=${this._poster} alt=${m.title} />` : nothing}
         </div>
         <div>
           <h2>${m.title}${m.year ? html` <span style="font-weight:400;opacity:.7">(${m.year})</span>` : ''}</h2>

@@ -146,11 +146,9 @@ export class RadarrHacsCard extends LitElement {
 
   private async _onAddMovieEvent(e: CustomEvent): Promise<void> {
     const { movie, qualityProfileId, rootFolder, monitored } = e.detail;
+    const panel = this.shadowRoot?.querySelector('radarr-movie-detail') as RadarrMovieDetail | null;
     const err = await this._onAddMovie(movie, qualityProfileId, rootFolder, monitored);
-    if (err) {
-      const panel = this.shadowRoot?.querySelector('radarr-movie-detail') as RadarrMovieDetail | null;
-      panel?.addComplete(err);
-    }
+    panel?.addComplete(err);
   }
 
   private async _onDeleteMovieEvent(e: CustomEvent): Promise<void> {
