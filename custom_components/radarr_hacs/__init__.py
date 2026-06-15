@@ -29,7 +29,14 @@ async def _async_register_lovelace_resource(hass: HomeAssistant) -> None:
         if resources is None:
             return
         info = await resources.async_get_info()
-        registered = {r.get("url", "") for r in info.get("resources", [])}
+        # Handle both dict {"resources": [...]} and list return shapes across HA versions
+        if isinstance(info, dict):
+            items = info.get("resources", [])
+        elif isinstance(info, list):
+            items = info
+        else:
+            return
+        registered = {r.get("url", "") for r in items if isinstance(r, dict)}
         if _CARD_URL not in registered:
             await resources.async_create_item({"res_type": "module", "url": _CARD_URL})
             _LOGGER.debug("Registered Lovelace resource: %s", _CARD_URL)
@@ -46,6 +53,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     )
     websocket_api.async_register_commands(hass)
     services.async_register_services(hass)
+    await _async_register_lovelace_resource(hass)
     return True
 
 
@@ -56,7 +64,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
     hass.data[DOMAIN][entry.entry_id] = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    await _async_register_lovelace_resource(hass)
     return True
 
 
