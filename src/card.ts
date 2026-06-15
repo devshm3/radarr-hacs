@@ -1,11 +1,11 @@
-import { LitElement, html, css, PropertyValues } from 'lit';
+import { LitElement, html, css, nothing, PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import type { HomeAssistant } from './ha-types.js';
 import type { CardConfig, Movie, QualityProfile, RootFolder } from './types.js';
 import { getMovies, searchMovies, getConfig, addMovie, deleteMovie } from './radarr-api.js';
 import './editor.js';
 import './components/filter-chips.js';
-import './components/movie-grid.js';
+import './components/movie-poster.js';
 import './components/movie-detail.js';
 import type { RadarrMovieDetail } from './components/movie-detail.js';
 
@@ -188,9 +188,9 @@ export class RadarrHacsCard extends LitElement {
 
   private async _onAddMovieEvent(e: CustomEvent): Promise<void> {
     const { movie, qualityProfileId, rootFolder, monitored } = e.detail;
-    const panel = this.shadowRoot?.querySelector('radarr-movie-detail') as RadarrMovieDetail | null;
+    const panel = e.target as RadarrMovieDetail;
     const err = await this._onAddMovie(movie, qualityProfileId, rootFolder, monitored);
-    panel?.addComplete(err);
+    panel.addComplete(err);
   }
 
   private async _onDeleteMovieEvent(e: CustomEvent): Promise<void> {
@@ -206,17 +206,6 @@ export class RadarrHacsCard extends LitElement {
     if (this._filteredMovies.length === 0) {
       setTimeout(() => this._tmdbSearch(), 400);
     }
-  }
-
-  private async _onDialogAddMovieEvent(e: CustomEvent): Promise<void> {
-    const { movie, qualityProfileId, rootFolder, monitored } = e.detail;
-    const panel = this.shadowRoot?.querySelector('dialog radarr-movie-detail') as RadarrMovieDetail | null;
-    const err = await this._onAddMovie(movie, qualityProfileId, rootFolder, monitored);
-    panel?.addComplete(err);
-  }
-
-  private async _onDialogDeleteMovieEvent(e: CustomEvent): Promise<void> {
-    await this._onDeleteMovie(e.detail as Movie);
   }
 
   private _onDialogSearchAgain(e: CustomEvent): void {
@@ -238,6 +227,52 @@ export class RadarrHacsCard extends LitElement {
   private _onDialogClose(): void {
     this._dialogOpen = false;
     this._dialogSelectedMovie = undefined;
+  }
+
+  private _renderGrid(
+    movies: Movie[],
+    selectedMovie: Movie | undefined,
+    onPosterClick: (m: Movie) => void,
+    onAdd: (e: CustomEvent) => void,
+    onDelete: (e: CustomEvent) => void,
+    onSearchAgain: (e: CustomEvent) => void,
+  ) {
+    if (!movies.length) return html`<div class="empty">No movies found</div>`;
+
+    const cols = this._config?.columns ?? 4;
+    const selectedIdx = selectedMovie != null
+      ? movies.findIndex(m => m.id === selectedMovie.id)
+      : -1;
+    const rowEndIdx = selectedIdx >= 0
+      ? Math.min(Math.floor(selectedIdx / cols) * cols + cols - 1, movies.length - 1)
+      : -1;
+
+    return html`
+      <div class="grid" style="grid-template-columns:repeat(${cols},1fr)">
+        ${movies.map((movie, idx) => html`
+          <radarr-movie-poster
+            .movie=${movie}
+            ?selected=${movie.id === selectedMovie?.id}
+            ?showBadge=${this._config?.show_status_badges !== false}
+            .radius=${this._config?.poster_radius ?? 8}
+            @poster-click=${() => onPosterClick(movie)}
+          ></radarr-movie-poster>
+          ${idx === rowEndIdx ? html`
+            <div class="inline-detail">
+              <radarr-movie-detail
+                open
+                .movie=${selectedMovie}
+                .qualityProfiles=${this._qualityProfiles}
+                .rootFolders=${this._rootFolders}
+                @add-movie=${onAdd}
+                @delete-movie=${onDelete}
+                @search-again=${onSearchAgain}
+              ></radarr-movie-detail>
+            </div>
+          ` : nothing}
+        `)}
+      </div>
+    `;
   }
 
   static styles = css`
@@ -308,6 +343,16 @@ export class RadarrHacsCard extends LitElement {
       transition: opacity 0.15s;
     }
     .tmdb-link:hover { opacity: 1; }
+    .grid { display: grid; gap: 8px; padding: 8px; }
+    .empty { color: var(--secondary-text-color); padding: 32px; text-align: center; }
+    .inline-detail {
+      animation: slideDown 0.2s ease-out;
+      grid-column: 1 / -1;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
     .view-all {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -398,23 +443,14 @@ export class RadarrHacsCard extends LitElement {
       ` : ''}
 
       ${!this._loading && !this._error ? html`
-        <radarr-movie-grid
-          .movies=${this._displayMovies}
-          .columns=${this._config.columns ?? 4}
-          .selectedMovieId=${this._selectedMovie?.id}
-          .showBadges=${this._config.show_status_badges !== false}
-          .posterRadius=${this._config.poster_radius ?? 8}
-          @poster-click=${(e: CustomEvent<Movie>) => this._onPosterClick(e.detail)}
-        ></radarr-movie-grid>
-        <radarr-movie-detail
-          ?open=${!!this._selectedMovie}
-          .movie=${this._selectedMovie}
-          .qualityProfiles=${this._qualityProfiles}
-          .rootFolders=${this._rootFolders}
-          @add-movie=${this._onAddMovieEvent}
-          @delete-movie=${this._onDeleteMovieEvent}
-          @search-again=${this._onSearchAgain}
-        ></radarr-movie-detail>
+        ${this._renderGrid(
+          this._displayMovies,
+          this._selectedMovie,
+          m => this._onPosterClick(m),
+          this._onAddMovieEvent,
+          this._onDeleteMovieEvent,
+          this._onSearchAgain,
+        )}
         ${this._hasMore ? html`
           <button class="view-all" @click=${this._openDialog}>
             View all ${this._filteredMovies.length} movies →
@@ -446,23 +482,14 @@ export class RadarrHacsCard extends LitElement {
             .activeFilter=${this._activeFilter}
             @filter-change=${(e: CustomEvent<string>) => this._onFilterChange(e.detail)}
           ></radarr-filter-chips>
-          <radarr-movie-grid
-            .movies=${this._filteredMovies}
-            .columns=${this._config.columns ?? 4}
-            .selectedMovieId=${this._dialogSelectedMovie?.id}
-            .showBadges=${this._config.show_status_badges !== false}
-            .posterRadius=${this._config.poster_radius ?? 8}
-            @poster-click=${(e: CustomEvent<Movie>) => this._onDialogPosterClick(e.detail)}
-          ></radarr-movie-grid>
-          <radarr-movie-detail
-            ?open=${!!this._dialogSelectedMovie}
-            .movie=${this._dialogSelectedMovie}
-            .qualityProfiles=${this._qualityProfiles}
-            .rootFolders=${this._rootFolders}
-            @add-movie=${this._onDialogAddMovieEvent}
-            @delete-movie=${this._onDialogDeleteMovieEvent}
-            @search-again=${this._onDialogSearchAgain}
-          ></radarr-movie-detail>
+          ${this._renderGrid(
+            this._filteredMovies,
+            this._dialogSelectedMovie,
+            m => this._onDialogPosterClick(m),
+            this._onAddMovieEvent,
+            this._onDeleteMovieEvent,
+            this._onDialogSearchAgain,
+          )}
           ${this._searchTerm && this._filteredMovies.length > 0 && !this._tmdbForced ? html`
             <div class="tmdb-link-row">
               <a class="tmdb-link" href="#"
