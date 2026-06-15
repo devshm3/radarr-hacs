@@ -18,7 +18,7 @@ def async_register_commands(hass: HomeAssistant) -> None:
     vol.Required("type"): "radarr_hacs/get_movies",
     vol.Required("entry_id"): str,
     vol.Optional("search"): str,
-    vol.Optional("filter"): str,
+    vol.Optional("filter"): vol.In(["available", "missing", "downloading"]),
     vol.Optional("sort"): vol.In(["title", "added", "year", "status"]),
 })
 @websocket_api.async_response
@@ -40,7 +40,7 @@ async def ws_get_movies(hass: HomeAssistant, connection, msg: dict) -> None:
     elif filter_val == "missing":
         movies = [m for m in movies if not m.get("hasFile") and m.get("monitored")]
     elif filter_val == "downloading":
-        movies = [m for m in movies if not m.get("hasFile") and not m.get("isAvailable", True)]
+        movies = [m for m in movies if not m.get("hasFile") and not m.get("isAvailable", False)]
 
     sort = msg.get("sort", "added")
     if sort == "title":
@@ -65,7 +65,11 @@ async def ws_search_movies(hass: HomeAssistant, connection, msg: dict) -> None:
         connection.send_error(msg["id"], "not_found", "Config entry not found")
         return
 
-    results = await coordinator.api.search_movies(msg["term"])
+    try:
+        results = await coordinator.api.search_movies(msg["term"])
+    except Exception as err:
+        connection.send_error(msg["id"], "radarr_error", str(err))
+        return
     library_tmdb_ids = {m["tmdbId"] for m in coordinator.data["movies"]}
     for result in results:
         result["inLibrary"] = result.get("tmdbId") in library_tmdb_ids
