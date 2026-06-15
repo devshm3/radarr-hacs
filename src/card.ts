@@ -6,6 +6,8 @@ import { getMovies, searchMovies, getConfig, addMovie, deleteMovie } from './rad
 import './editor.js';
 import './components/filter-chips.js';
 import './components/movie-grid.js';
+import './components/movie-detail.js';
+import type { RadarrMovieDetail } from './components/movie-detail.js';
 
 @customElement('radarr-hacs-card')
 export class RadarrHacsCard extends LitElement {
@@ -142,6 +144,31 @@ export class RadarrHacsCard extends LitElement {
     }
   }
 
+  private async _onAddMovieEvent(e: CustomEvent): Promise<void> {
+    const { movie, qualityProfileId, rootFolder, monitored } = e.detail;
+    const err = await this._onAddMovie(movie, qualityProfileId, rootFolder, monitored);
+    if (err) {
+      const panel = this.shadowRoot?.querySelector('radarr-movie-detail') as RadarrMovieDetail | null;
+      panel?.addComplete(err);
+    }
+  }
+
+  private async _onDeleteMovieEvent(e: CustomEvent): Promise<void> {
+    await this._onDeleteMovie(e.detail as Movie);
+  }
+
+  private _onSearchAgain(e: CustomEvent): void {
+    const m = e.detail as Movie;
+    this._searchTerm = m.title;
+    const term = m.title.toLowerCase();
+    this._filteredMovies = this._movies.filter(
+      mv => mv.title.toLowerCase().includes(term)
+    );
+    if (this._filteredMovies.length === 0) {
+      setTimeout(() => this._tmdbSearch(), 400);
+    }
+  }
+
   static styles = css`
     :host {
       display: block;
@@ -226,6 +253,15 @@ export class RadarrHacsCard extends LitElement {
           .posterRadius=${this._config.poster_radius ?? 8}
           @poster-click=${(e: CustomEvent<Movie>) => this._onPosterClick(e.detail)}
         ></radarr-movie-grid>
+        <radarr-movie-detail
+          ?open=${!!this._selectedMovie}
+          .movie=${this._selectedMovie}
+          .qualityProfiles=${this._qualityProfiles}
+          .rootFolders=${this._rootFolders}
+          @add-movie=${this._onAddMovieEvent}
+          @delete-movie=${this._onDeleteMovieEvent}
+          @search-again=${this._onSearchAgain}
+        ></radarr-movie-detail>
       ` : ''}
     `;
   }
