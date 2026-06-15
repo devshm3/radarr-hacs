@@ -1,6 +1,5 @@
 # tests/test_sensor.py
 from unittest.mock import MagicMock
-import pytest
 from custom_components.radarr_hacs.sensor import (
     RadarrDownloadingSensor,
     RadarrMissingSensor,

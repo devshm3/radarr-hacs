@@ -1,7 +1,7 @@
 # custom_components/radarr_hacs/sensor.py
 from __future__ import annotations
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -27,6 +27,7 @@ async def async_setup_entry(
 
 class RadarrTotalSensor(CoordinatorEntity, SensorEntity):
     _attr_icon = "mdi:filmstrip"
+    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, coordinator: RadarrCoordinator, entry_id: str, display_name: str) -> None:
         super().__init__(coordinator)
@@ -34,12 +35,15 @@ class RadarrTotalSensor(CoordinatorEntity, SensorEntity):
         self._attr_unique_id = f"{entry_id}_total_movies"
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
+        if not self.coordinator.data:
+            return None
         return len(self.coordinator.data["movies"])
 
 
 class RadarrMissingSensor(CoordinatorEntity, SensorEntity):
     _attr_icon = "mdi:filmstrip-off"
+    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, coordinator: RadarrCoordinator, entry_id: str, display_name: str) -> None:
         super().__init__(coordinator)
@@ -47,7 +51,9 @@ class RadarrMissingSensor(CoordinatorEntity, SensorEntity):
         self._attr_unique_id = f"{entry_id}_missing_movies"
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
+        if not self.coordinator.data:
+            return None
         return sum(
             1
             for m in self.coordinator.data["movies"]
@@ -57,6 +63,7 @@ class RadarrMissingSensor(CoordinatorEntity, SensorEntity):
 
 class RadarrDownloadingSensor(CoordinatorEntity, SensorEntity):
     _attr_icon = "mdi:download"
+    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, coordinator: RadarrCoordinator, entry_id: str, display_name: str) -> None:
         super().__init__(coordinator)
@@ -64,7 +71,9 @@ class RadarrDownloadingSensor(CoordinatorEntity, SensorEntity):
         self._attr_unique_id = f"{entry_id}_downloading_movies"
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
+        if not self.coordinator.data:
+            return None
         return sum(
             1
             for m in self.coordinator.data["movies"]
