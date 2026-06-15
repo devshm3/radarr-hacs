@@ -27,6 +27,7 @@ export class RadarrHacsCard extends LitElement {
 
   private _debounceTimer?: ReturnType<typeof setTimeout>;
   private _initialised = false;
+  private _searchGen = 0;
 
   static getConfigElement() {
     return document.createElement('radarr-hacs-card-editor');
@@ -81,6 +82,7 @@ export class RadarrHacsCard extends LitElement {
   private _onSearchInput(e: Event): void {
     this._searchTerm = (e.target as HTMLInputElement).value;
     this._tmdbForced = false;
+    this._searchGen++;
     clearTimeout(this._debounceTimer);
     const term = this._searchTerm.toLowerCase();
     if (term) {
@@ -98,14 +100,19 @@ export class RadarrHacsCard extends LitElement {
 
   private _forceSearchTmdb(): void {
     this._tmdbForced = true;
+    this._searchGen++;
     clearTimeout(this._debounceTimer);
     this._tmdbSearch();
   }
 
   private async _tmdbSearch(): Promise<void> {
     if (!this._searchTerm) return;
+    const gen = this._searchGen;
     try {
-      this._filteredMovies = await searchMovies(this.hass, this._config.entry_id, this._searchTerm);
+      const results = await searchMovies(this.hass, this._config.entry_id, this._searchTerm);
+      if (this._searchGen === gen) {
+        this._filteredMovies = results;
+      }
     } catch (_e) {
       // leave empty
     }
@@ -164,6 +171,7 @@ export class RadarrHacsCard extends LitElement {
   }
 
   private _onSearchAgain(e: CustomEvent): void {
+    this._tmdbForced = false;
     const m = e.detail as Movie;
     this._searchTerm = m.title;
     const term = m.title.toLowerCase();
