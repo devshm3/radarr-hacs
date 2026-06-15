@@ -65,6 +65,13 @@ MOCK_MOVIE = {
 }
 MOCK_QUALITY_PROFILE = {"id": 1, "name": "Any"}
 MOCK_ROOT_FOLDER = {"id": 1, "path": "/movies", "freeSpace": 500_000_000_000}
+MOCK_QUEUE_ITEM = {
+    "id": 1,
+    "movieId": MOCK_MOVIE["id"],
+    "title": "Dune",
+    "status": "downloading",
+    "timeleft": "00:30:00",
+}
 
 
 @pytest.fixture

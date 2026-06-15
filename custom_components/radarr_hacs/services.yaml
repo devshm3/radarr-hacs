@@ -1,0 +1,91 @@
+add_movie:
+  name: Add Movie
+  description: Add a movie to Radarr.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: The config entry ID of the Radarr instance.
+      required: true
+      selector:
+        text:
+    tmdb_id:
+      name: TMDB ID
+      description: The TMDB ID of the movie to add.
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box
+    title:
+      name: Title
+      description: Movie title (required by Radarr).
+      required: true
+      selector:
+        text:
+    year:
+      name: Year
+      description: Release year (required by Radarr).
+      required: true
+      selector:
+        number:
+          min: 1900
+          max: 2100
+          mode: box
+    quality_profile_id:
+      name: Quality Profile ID
+      description: ID of the quality profile to use.
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box
+    root_folder:
+      name: Root Folder
+      description: Root folder path where Radarr will place the movie.
+      required: true
+      selector:
+        text:
+    monitored:
+      name: Monitored
+      description: Whether Radarr should monitor this movie for downloads.
+      required: false
+      default: true
+      selector:
+        boolean:
+
+delete_movie:
+  name: Delete Movie
+  description: Remove a movie from Radarr.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: The config entry ID of the Radarr instance.
+      required: true
+      selector:
+        text:
+    movie_id:
+      name: Movie ID
+      description: The Radarr internal movie ID.
+      required: true
+      selector:
+        number:
+          min: 1
+          mode: box
+    delete_files:
+      name: Delete Files
+      description: Also delete the movie files from disk.
+      required: false
+      default: false
+      selector:
+        boolean:
+
+refresh_library:
+  name: Refresh Library
+  description: Trigger an immediate library refresh from Radarr.
+  fields:
+    entry_id:
+      name: Entry ID
+      description: The config entry ID of the Radarr instance.
+      required: true
+      selector:
+        text:

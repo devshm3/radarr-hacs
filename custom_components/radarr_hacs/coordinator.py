@@ -25,15 +25,17 @@ class RadarrCoordinator(DataUpdateCoordinator):
 
     async def _async_update_data(self) -> dict:
         try:
-            movies, quality_profiles, root_folders = await asyncio.gather(
+            movies, quality_profiles, root_folders, queue = await asyncio.gather(
                 self.api.get_movies(),
                 self.api.get_quality_profiles(),
                 self.api.get_root_folders(),
+                self.api.get_queue(),
             )
             return {
                 "movies": movies,
                 "quality_profiles": quality_profiles,
                 "root_folders": root_folders,
+                "queue": queue,
             }
         except Exception as err:
             raise UpdateFailed(f"Error communicating with Radarr: {err}") from err

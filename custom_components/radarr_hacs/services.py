@@ -9,6 +9,8 @@ from .const import DOMAIN
 _ADD_SCHEMA = vol.Schema({
     vol.Required("entry_id"): str,
     vol.Required("tmdb_id"): int,
+    vol.Required("title"): str,
+    vol.Required("year"): int,
     vol.Required("quality_profile_id"): int,
     vol.Required("root_folder"): str,
     vol.Optional("monitored", default=True): bool,
@@ -32,6 +34,8 @@ def async_register_services(hass: HomeAssistant) -> None:
             return
         await coordinator.api.add_movie({
             "tmdbId": call.data["tmdb_id"],
+            "title": call.data["title"],
+            "year": call.data["year"],
             "qualityProfileId": call.data["quality_profile_id"],
             "rootFolderPath": call.data["root_folder"],
             "monitored": call.data["monitored"],

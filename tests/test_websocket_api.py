@@ -15,6 +15,7 @@ async def ws_client(hass, hass_ws_client):
         "movies": [MOCK_MOVIE, _MISSING_MOVIE],
         "quality_profiles": [MOCK_QUALITY_PROFILE],
         "root_folders": [MOCK_ROOT_FOLDER],
+        "queue": [{"movieId": 2}],
     }
     coordinator.api = MagicMock()
     coordinator.api.search_movies = AsyncMock(
@@ -84,8 +85,8 @@ async def test_get_movies_filter_downloading(ws_client):
     )
     msg = await ws_client.receive_json()
     assert msg["success"] is True
-    assert all(not m["hasFile"] and not m["isAvailable"] for m in msg["result"]["movies"])
     assert len(msg["result"]["movies"]) == 1
+    assert all(not m["hasFile"] and m["id"] in {2} for m in msg["result"]["movies"])
 
 
 async def test_search_movies_not_in_library(ws_client):
@@ -105,6 +106,7 @@ async def test_search_movies_in_library(hass, hass_ws_client):
         "movies": [MOCK_MOVIE],
         "quality_profiles": [MOCK_QUALITY_PROFILE],
         "root_folders": [MOCK_ROOT_FOLDER],
+        "queue": [],
     }
     coordinator.api = MagicMock()
     coordinator.api.search_movies = AsyncMock(
@@ -128,6 +130,7 @@ async def test_search_movies_api_error(hass, hass_ws_client):
         "movies": [MOCK_MOVIE],
         "quality_profiles": [MOCK_QUALITY_PROFILE],
         "root_folders": [MOCK_ROOT_FOLDER],
+        "queue": [],
     }
     coordinator.api = MagicMock()
     coordinator.api.search_movies = AsyncMock(side_effect=Exception("Radarr down"))

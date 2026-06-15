@@ -2,6 +2,7 @@
   "domain": "radarr_hacs",
   "name": "Radarr HACS",
   "version": "0.1.0",
+  "homeassistant": "2024.1.0",
   "codeowners": ["@dmill13"],
   "config_flow": true,
   "documentation": "https://github.com/dmill13/radarr-hacs",

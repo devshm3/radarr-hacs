@@ -9,11 +9,12 @@ from custom_components.radarr_hacs.coordinator import RadarrCoordinator
 from tests.conftest import MOCK_MOVIE, MOCK_QUALITY_PROFILE, MOCK_ROOT_FOLDER
 
 
-def make_api(movies=None, profiles=None, folders=None):
+def make_api(movies=None, profiles=None, folders=None, queue=None):
     api = MagicMock()
     api.get_movies = AsyncMock(return_value=movies if movies is not None else [MOCK_MOVIE])
     api.get_quality_profiles = AsyncMock(return_value=profiles if profiles is not None else [MOCK_QUALITY_PROFILE])
     api.get_root_folders = AsyncMock(return_value=folders if folders is not None else [MOCK_ROOT_FOLDER])
+    api.get_queue = AsyncMock(return_value=queue if queue is not None else [])
     return api
 
 
@@ -33,9 +34,11 @@ async def test_coordinator_fetches_all_data(hass):
     assert coordinator.data["movies"] == [MOCK_MOVIE]
     assert coordinator.data["quality_profiles"] == [MOCK_QUALITY_PROFILE]
     assert coordinator.data["root_folders"] == [MOCK_ROOT_FOLDER]
+    assert coordinator.data["queue"] == []
     api.get_movies.assert_awaited_once()
     api.get_quality_profiles.assert_awaited_once()
     api.get_root_folders.assert_awaited_once()
+    api.get_queue.assert_awaited_once()
 
 
 async def test_coordinator_raises_update_failed_on_error(hass):
@@ -43,6 +46,7 @@ async def test_coordinator_raises_update_failed_on_error(hass):
     api.get_movies = AsyncMock(side_effect=Exception("connection refused"))
     api.get_quality_profiles = AsyncMock(return_value=[])
     api.get_root_folders = AsyncMock(return_value=[])
+    api.get_queue = AsyncMock(return_value=[])
     coordinator = make_coordinator(hass, api)
 
     # async_config_entry_first_refresh converts UpdateFailed → ConfigEntryNotReady.
@@ -68,12 +72,18 @@ async def test_coordinator_fetches_in_parallel(hass):
         call_order.append("folders")
         return [MOCK_ROOT_FOLDER]
 
+    async def fast_queue():
+        call_order.append("queue")
+        return []
+
     api = MagicMock()
     api.get_movies = slow_movies
     api.get_quality_profiles = fast_profiles
     api.get_root_folders = fast_folders
+    api.get_queue = fast_queue
 
     coordinator = make_coordinator(hass, api)
     await coordinator.async_config_entry_first_refresh()
 
     assert call_order.index("profiles") < call_order.index("movies")
+    assert "queue" in call_order

@@ -50,7 +50,8 @@ radarr-hacs/
 ```
 
 **Communication pattern (Hybrid — Option C):**
-- Card UI reads → `hass.connection.sendMessagePromise()` → WebSocket handler → coordinator cache → Radarr API
+- Card UI reads → `hass.connection.sendMessagePromise()` → WebSocket handler → coordinator cache (no Radarr API hit)
+- Live search → WebSocket handler → `api.py` → Radarr API (TMDB lookup only, not cached)
 - Write actions → `hass.callService()` → HA service → `api.py` → Radarr API → coordinator refresh
 - API key stored in HA config entry — never sent to the browser
 
@@ -125,9 +126,10 @@ Three sensors per config entry (named using display name from config flow):
 
 ### Search Behaviour
 1. Typing filters local cached library instantly (client-side, no network call)
-2. After 400ms debounce with no local match → calls `radarr_hacs/search_movies`
-3. TMDB results not in library show **"+ Add to Radarr"** in their inline-detail
-4. TMDB results already in library show their current status
+2. After 400ms debounce, if the query returns zero local results → calls `radarr_hacs/search_movies` against TMDB
+3. If there are local results, only local results are shown (no TMDB call); user can click **"Search TMDB"** link to force a TMDB lookup
+4. TMDB results not in library show **"+ Add to Radarr"** in their inline-detail
+5. TMDB results already in library show their existing status
 
 ### Inline Detail
 - Opens below the row of the selected poster (not a modal — no navigation away)

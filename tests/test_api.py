@@ -115,3 +115,13 @@ async def test_test_connection_returns_false_on_error(api):
         m.get("http://localhost:7878/api/v3/system/status", status=401)
         result = await api.test_connection()
     assert result is False
+
+
+async def test_get_queue(api):
+    with aioresponses() as m:
+        m.get(
+            "http://localhost:7878/api/v3/queue?pageSize=1000",
+            payload={"records": [{"id": 1, "movieId": 42}]},
+        )
+        result = await api.get_queue()
+    assert result == [{"id": 1, "movieId": 42}]

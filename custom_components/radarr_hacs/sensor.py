@@ -74,8 +74,5 @@ class RadarrDownloadingSensor(CoordinatorEntity, SensorEntity):
     def native_value(self) -> int | None:
         if not self.coordinator.data:
             return None
-        return sum(
-            1
-            for m in self.coordinator.data["movies"]
-            if not m.get("hasFile") and not m.get("isAvailable", False)
-        )
+        queue_ids = {item["movieId"] for item in self.coordinator.data.get("queue", [])}
+        return sum(1 for m in self.coordinator.data["movies"] if not m.get("hasFile") and m["id"] in queue_ids)

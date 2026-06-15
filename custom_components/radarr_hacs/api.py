@@ -41,6 +41,10 @@ class RadarrApi:
     async def get_root_folders(self) -> list[dict]:
         return await self._request("GET", "/rootfolder")
 
+    async def get_queue(self) -> list[dict]:
+        data = await self._request("GET", "/queue", params={"pageSize": 1000})
+        return data.get("records", []) if data else []
+
     async def test_connection(self) -> bool:
         try:
             await self._request("GET", "/system/status")

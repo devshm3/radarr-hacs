@@ -40,7 +40,8 @@ async def ws_get_movies(hass: HomeAssistant, connection, msg: dict) -> None:
     elif filter_val == "missing":
         movies = [m for m in movies if not m.get("hasFile") and m.get("monitored")]
     elif filter_val == "downloading":
-        movies = [m for m in movies if not m.get("hasFile") and not m.get("isAvailable", False)]
+        queue_ids = {item["movieId"] for item in coordinator.data.get("queue", [])}
+        movies = [m for m in movies if not m.get("hasFile") and m["id"] in queue_ids]
 
     sort = msg.get("sort", "added")
     if sort == "title":
@@ -49,6 +50,8 @@ async def ws_get_movies(hass: HomeAssistant, connection, msg: dict) -> None:
         movies.sort(key=lambda m: m.get("year", 0), reverse=True)
     elif sort == "status":
         movies.sort(key=lambda m: m.get("hasFile", False), reverse=True)
+    elif sort == "added":
+        movies = sorted(movies, key=lambda m: m.get("added", ""), reverse=True)
 
     connection.send_result(msg["id"], {"movies": movies})
 

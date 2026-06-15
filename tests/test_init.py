@@ -21,7 +21,7 @@ def mock_coordinator():
 @pytest.fixture(autouse=True)
 def mock_http(hass):
     http = MagicMock()
-    http.register_static_path = MagicMock(return_value=None)
+    http.async_register_static_paths = AsyncMock(return_value=None)
     hass.http = http
 
 

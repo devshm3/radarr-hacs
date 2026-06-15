@@ -8,12 +8,13 @@ from custom_components.radarr_hacs.sensor import (
 from tests.conftest import MOCK_MOVIE, MOCK_QUALITY_PROFILE, MOCK_ROOT_FOLDER
 
 
-def make_coordinator(movies):
+def make_coordinator(movies, queue=None):
     coordinator = MagicMock()
     coordinator.data = {
         "movies": movies,
         "quality_profiles": [MOCK_QUALITY_PROFILE],
         "root_folders": [MOCK_ROOT_FOLDER],
+        "queue": queue if queue is not None else [],
     }
     return coordinator
 
@@ -41,10 +42,10 @@ def test_missing_sensor_counts_monitored_without_file():
 def test_downloading_sensor_counts_unavailable_without_file():
     movies = [
         MOCK_MOVIE,  # hasFile=True — not downloading
-        {**MOCK_MOVIE, "id": 2, "hasFile": False, "isAvailable": False},  # downloading
-        {**MOCK_MOVIE, "id": 3, "hasFile": False, "isAvailable": True},   # missing, not downloading
+        {**MOCK_MOVIE, "id": 2, "hasFile": False, "isAvailable": False},  # in queue — downloading
+        {**MOCK_MOVIE, "id": 3, "hasFile": False, "isAvailable": True},   # missing, not in queue
     ]
-    coordinator = make_coordinator(movies)
+    coordinator = make_coordinator(movies, queue=[{"movieId": 2}])
     s = RadarrDownloadingSensor(coordinator, "entry1", "My Radarr")
     assert s.native_value == 1
     assert s.unique_id == "entry1_downloading_movies"

@@ -28,6 +28,8 @@ async def test_add_movie_calls_api_with_correct_payload(hass, coordinator_with_a
         {
             "entry_id": "test_entry_id",
             "tmdb_id": 438631,
+            "title": "Dune",
+            "year": 2021,
             "quality_profile_id": 1,
             "root_folder": "/movies",
             "monitored": True,
@@ -36,6 +38,8 @@ async def test_add_movie_calls_api_with_correct_payload(hass, coordinator_with_a
     )
     coordinator.api.add_movie.assert_awaited_once_with({
         "tmdbId": 438631,
+        "title": "Dune",
+        "year": 2021,
         "qualityProfileId": 1,
         "rootFolderPath": "/movies",
         "monitored": True,
@@ -72,7 +76,7 @@ async def test_add_movie_monitored_defaults_to_true(hass, coordinator_with_api):
     await hass.services.async_call(
         DOMAIN,
         "add_movie",
-        {"entry_id": "test_entry_id", "tmdb_id": 438631, "quality_profile_id": 1, "root_folder": "/movies"},
+        {"entry_id": "test_entry_id", "tmdb_id": 438631, "title": "Dune", "year": 2021, "quality_profile_id": 1, "root_folder": "/movies"},
         blocking=True,
     )
     call_kwargs = coordinator.api.add_movie.call_args[0][0]
@@ -84,7 +88,7 @@ async def test_unknown_entry_id_is_noop(hass, coordinator_with_api):
     await hass.services.async_call(
         DOMAIN,
         "add_movie",
-        {"entry_id": "nonexistent", "tmdb_id": 1, "quality_profile_id": 1, "root_folder": "/"},
+        {"entry_id": "nonexistent", "tmdb_id": 1, "title": "Unknown", "year": 2020, "quality_profile_id": 1, "root_folder": "/"},
         blocking=True,
     )
     coordinator.api.add_movie.assert_not_awaited()

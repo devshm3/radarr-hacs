@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -16,10 +17,8 @@ PLATFORMS = ["sensor"]
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     hass.data.setdefault(DOMAIN, {})
-    hass.http.register_static_path(
-        f"/{DOMAIN}",
-        str(Path(__file__).parent / "www"),
-        cache_headers=True,
+    await hass.http.async_register_static_paths(
+        [StaticPathConfig(f"/{DOMAIN}", str(Path(__file__).parent / "www"), cache_headers=True)]
     )
     websocket_api.async_register_commands(hass)
     services.async_register_services(hass)
