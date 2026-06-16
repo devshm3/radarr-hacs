@@ -368,7 +368,7 @@ export class RadarrHacsCard extends LitElement {
           <radarr-movie-poster
             .movie=${movie}
             ?selected=${movie.id === selectedMovie?.id}
-            ?showBadge=${this._config?.show_status_badges !== false}
+            .showBadge=${this._config?.show_status_badges !== false}
             .radius=${this._config?.poster_radius ?? 8}
             @poster-click=${() => onPosterClick(movie)}
           ></radarr-movie-poster>

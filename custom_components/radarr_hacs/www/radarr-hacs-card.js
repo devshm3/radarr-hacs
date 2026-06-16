@@ -505,7 +505,7 @@ const le=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}
           <radarr-movie-poster
             .movie=${e}
             ?selected=${e.id===(null==t?void 0:t.id)}
-            ?showBadge=${!1!==(null===(l=this._config)||void 0===l?void 0:l.show_status_badges)}
+            .showBadge=${!1!==(null===(l=this._config)||void 0===l?void 0:l.show_status_badges)}
             .radius=${null!==(h=null===(c=this._config)||void 0===c?void 0:c.poster_radius)&&void 0!==h?h:8}
             @poster-click=${()=>i(e)}
           ></radarr-movie-poster>
