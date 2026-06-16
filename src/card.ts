@@ -391,47 +391,92 @@ export class RadarrHacsCard extends LitElement {
     :host {
       display: block;
       font-family: var(--paper-font-body1_-_font-family, sans-serif);
+      /* ---- Glass tokens (default appearance, theme-adaptive) ---- */
+      --rc-text: var(--primary-text-color);
+      --rc-text-secondary: var(--secondary-text-color);
+      --rc-surface: var(--ha-card-background, var(--card-background-color));
+      /* derives from --rc-text (defined above) so overlays adapt to light/dark */
+      --rc-surface-container: color-mix(in srgb, var(--rc-text) 8%, transparent);
+      --rc-outline: var(--divider-color, color-mix(in srgb, var(--rc-text) 12%, transparent));
+      --rc-accent: var(--primary-color);
+      --rc-accent-container: var(--primary-color);
+      --rc-on-accent: var(--text-primary-color, #fff);
+      --rc-radius: var(--ha-card-border-radius, 12px);
+      --rc-control-radius: 8px;
+      --rc-chip-radius: 20px;
+      --rc-chip-bg: var(--rc-surface-container);
+      --rc-chip-check: "";
     }
-    /* Render through ha-card so the card inherits the active theme's card
-       surface (background, blur, radius, shadow) — matching Mushroom and other
-       cards exactly, instead of painting its own darker panel background. */
+    /* ---- Material You — light scheme ---- */
+    :host([data-appearance="material"]) {
+      --rc-text: #1c1b1a;
+      --rc-text-secondary: #5f5b55;
+      --rc-surface: color-mix(in srgb, var(--primary-color) 5%, #ffffff);
+      --rc-surface-container: color-mix(in srgb, var(--primary-color) 8%, #ffffff);
+      --rc-outline: color-mix(in srgb, var(--primary-color) 15%, #b5ada5);
+      --rc-accent: var(--primary-color);
+      --rc-accent-container: color-mix(in srgb, var(--primary-color) 22%, #ffffff);
+      --rc-on-accent: color-mix(in srgb, var(--primary-color) 75%, #000000);
+      --rc-radius: 24px;
+      --rc-control-radius: 20px;
+      --rc-chip-radius: 8px;
+      --rc-chip-bg: transparent;
+      --rc-chip-check: "✓ ";
+    }
+    /* ---- Material You — dark scheme overrides ---- */
+    :host([data-appearance="material"][data-dark]) {
+      --rc-accent: var(--primary-color);
+      --rc-text: #ece5df;
+      --rc-text-secondary: #cbc3bb;
+      --rc-surface: color-mix(in srgb, var(--primary-color) 6%, #1a1715);
+      --rc-surface-container: color-mix(in srgb, var(--primary-color) 10%, #262220);
+      --rc-outline: color-mix(in srgb, var(--primary-color) 15%, #4a443d);
+      --rc-accent-container: color-mix(in srgb, var(--primary-color) 30%, #000000);
+      --rc-on-accent: color-mix(in srgb, var(--primary-color) 60%, #ffffff);
+    }
     ha-card {
       overflow: hidden;
       padding: 0;
     }
+    /* Material paints its own solid surface; Glass keeps the theme ha-card surface */
+    :host([data-appearance="material"]) ha-card {
+      background: var(--rc-surface);
+      border-radius: var(--rc-radius);
+      color: var(--rc-text);
+    }
     .header {
       align-items: center;
       background: transparent;
-      border-bottom: 1px solid var(--divider-color, rgba(255, 255, 255, 0.08));
+      border-bottom: 1px solid var(--rc-outline);
       display: flex;
       gap: 8px;
       padding: 12px 16px;
     }
     .title {
-      color: var(--primary-text-color);
+      color: var(--rc-text);
       font-size: 1.05rem;
       font-weight: 600;
       letter-spacing: 0.01em;
       white-space: nowrap;
     }
     .search {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      color: var(--primary-text-color);
+      background: var(--rc-surface-container);
+      border: 1px solid var(--rc-outline);
+      border-radius: var(--rc-control-radius);
+      color: var(--rc-text);
       flex: 1;
       font-size: 0.88rem;
       outline: none;
       padding: 7px 13px;
       transition: border-color 0.15s;
     }
-    .search::placeholder { color: var(--secondary-text-color); opacity: 0.7; }
-    .search:focus { border-color: var(--primary-color); }
+    .search::placeholder { color: var(--rc-text-secondary); opacity: 0.7; }
+    .search:focus { border-color: var(--rc-accent); }
     .icon-btn {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      color: var(--primary-text-color);
+      background: var(--rc-surface-container);
+      border: 1px solid var(--rc-outline);
+      border-radius: var(--rc-control-radius);
+      color: var(--rc-text);
       cursor: pointer;
       flex-shrink: 0;
       font-size: 1rem;
@@ -440,33 +485,33 @@ export class RadarrHacsCard extends LitElement {
       transition: background 0.15s;
       white-space: nowrap;
     }
-    .icon-btn:hover { background: rgba(255, 255, 255, 0.14); }
+    .icon-btn:hover { background: color-mix(in srgb, var(--rc-text) 14%, transparent); }
     .icon-btn.add-btn {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      color: var(--text-primary-color, #fff);
+      background: var(--rc-accent-container);
+      border-color: var(--rc-accent-container);
+      color: var(--rc-on-accent);
     }
-    .icon-btn.add-btn:hover { filter: brightness(1.1); }
+    .icon-btn.add-btn:hover { filter: brightness(1.05); }
     .state-msg {
-      color: var(--secondary-text-color);
+      color: var(--rc-text-secondary);
       padding: 40px 24px;
       text-align: center;
     }
     .error-msg { color: var(--error-color, #f44336); }
     .retry {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 8px;
-      color: var(--primary-text-color);
+      background: var(--rc-surface-container);
+      border: 1px solid var(--rc-outline);
+      border-radius: var(--rc-control-radius);
+      color: var(--rc-text);
       cursor: pointer;
       display: inline-block;
       margin-top: 10px;
       padding: 6px 16px;
       transition: background 0.15s;
     }
-    .retry:hover { background: rgba(255,255,255,0.12); }
+    .retry:hover { background: color-mix(in srgb, var(--rc-text) 12%, transparent); }
     .grid { display: grid; gap: 8px; padding: 8px; }
-    .empty { color: var(--secondary-text-color); padding: 32px; text-align: center; }
+    .empty { color: var(--rc-text-secondary); padding: 32px; text-align: center; }
     .inline-detail {
       animation: slideDown 0.2s ease-out;
       grid-column: 1 / -1;
@@ -476,11 +521,11 @@ export class RadarrHacsCard extends LitElement {
       to   { opacity: 1; transform: translateY(0); }
     }
     .view-all {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
+      background: var(--rc-surface-container);
+      border: 1px solid var(--rc-outline);
+      border-radius: var(--rc-control-radius);
       box-sizing: border-box;
-      color: var(--primary-color);
+      color: var(--rc-accent);
       cursor: pointer;
       display: block;
       font-size: 0.88rem;
@@ -490,7 +535,7 @@ export class RadarrHacsCard extends LitElement {
       transition: background 0.15s;
       width: calc(100% - 16px);
     }
-    .view-all:hover { background: rgba(255, 255, 255, 0.09); }
+    .view-all:hover { background: color-mix(in srgb, var(--rc-text) 9%, transparent); }
     dialog {
       background: var(--card-background-color, #1c1c1e);
       border: none;
@@ -505,13 +550,15 @@ export class RadarrHacsCard extends LitElement {
       position: fixed;
       width: 100%;
     }
+    :host([data-appearance="material"]) dialog {
+      background: var(--rc-surface);
+      color: var(--rc-text);
+    }
     dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
     .dialog-header {
       align-items: center;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.03);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: var(--rc-surface-container);
+      border-bottom: 1px solid var(--rc-outline);
       display: flex;
       gap: 8px;
       padding: 12px 16px;
