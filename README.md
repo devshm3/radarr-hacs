@@ -2,7 +2,9 @@
 
 A Home Assistant integration that gives you full Radarr control from a single Lovelace card — browse your library, search TMDB, add movies, monitor downloads, and manage your collection without leaving your dashboard.
 
-[![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=devshm3&repository=radarr-hacs&category=integration)
+[![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=devshm3&repository=radarr-card&category=integration)
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/devshm3)
 
 <!-- Add a screenshot here once you have one:
 ![Radarr Card Card](docs/screenshot.png)
@@ -32,7 +34,7 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 
 ### Via HACS (recommended)
 
-1. Click the badge above, or open HACS → Integrations → ⋮ → Custom repositories, add `https://github.com/devshm3/radarr-hacs`, category **Integration**
+1. Click the badge above, or open HACS → Integrations → ⋮ → Custom repositories, add `https://github.com/devshm3/radarr-card`, category **Integration**
 2. Download **Radarr Card** and restart Home Assistant
 3. Go to **Settings → Devices & Services → Add Integration → Radarr Card**
 4. Enter your Radarr URL (e.g. `http://192.168.1.10:7878`) and API key

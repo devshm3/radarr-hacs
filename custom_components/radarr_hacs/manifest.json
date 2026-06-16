@@ -5,7 +5,7 @@
   "homeassistant": "2024.1.0",
   "codeowners": ["@devshm3"],
   "config_flow": true,
-  "documentation": "https://github.com/devshm3/radarr-hacs",
+  "documentation": "https://github.com/devshm3/radarr-card",
   "iot_class": "local_polling",
   "requirements": []
 }

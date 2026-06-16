@@ -637,5 +637,5 @@ export class RadarrHacsCard extends LitElement {
   name: 'Radarr Card',
   description: 'Browse and manage your Radarr movie library',
   preview: false,
-  documentationURL: 'https://github.com/devshm3/radarr-hacs',
+  documentationURL: 'https://github.com/devshm3/radarr-card',
 });
