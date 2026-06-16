@@ -30,10 +30,9 @@ export class RadarrMovieDetail extends LitElement {
     :host([open]) { max-height: 1200px; opacity: 1; }
 
     .panel {
-      backdrop-filter: blur(8px);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      background: var(--rc-surface-container, rgba(255, 255, 255, 0.04));
+      border: 1px solid var(--rc-outline, rgba(255, 255, 255, 0.08));
+      border-radius: var(--rc-radius, 12px);
       display: grid;
       gap: 16px;
       grid-template-columns: auto 1fr;
@@ -48,7 +47,7 @@ export class RadarrMovieDetail extends LitElement {
     .poster-placeholder {
       align-items: center;
       aspect-ratio: 2 / 3;
-      background: rgba(255,255,255,0.05);
+      background: var(--rc-surface-container, rgba(255,255,255,0.05));
       border-radius: 8px;
       color: var(--secondary-text-color);
       display: flex;
@@ -60,28 +59,28 @@ export class RadarrMovieDetail extends LitElement {
       text-align: center;
       width: 120px;
     }
-    h2 { font-size: 1.15rem; margin: 0 0 4px; }
-    .meta { color: var(--secondary-text-color); font-size: 0.82rem; line-height: 1.6; }
-    .info-row { color: var(--secondary-text-color); font-size: 0.8rem; margin-top: 4px; }
-    .info-row strong { color: var(--primary-text-color); }
-    .overview { font-size: 0.88rem; line-height: 1.55; margin-top: 8px; }
+    h2 { font-size: 1.15rem; margin: 0 0 4px; color: var(--rc-text, var(--primary-text-color)); }
+    .meta { color: var(--rc-text-secondary, var(--secondary-text-color)); font-size: 0.82rem; line-height: 1.6; }
+    .info-row { color: var(--rc-text-secondary, var(--secondary-text-color)); font-size: 0.8rem; margin-top: 4px; }
+    .info-row strong { color: var(--rc-text, var(--primary-text-color)); }
+    .overview { font-size: 0.88rem; line-height: 1.55; margin-top: 8px; color: var(--rc-text, var(--primary-text-color)); }
     .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 
     button {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      color: var(--primary-text-color);
+      background: var(--rc-surface-container, rgba(255, 255, 255, 0.07));
+      border: 1px solid var(--rc-outline, rgba(255, 255, 255, 0.12));
+      border-radius: var(--rc-control-radius, 8px);
+      color: var(--rc-text, var(--primary-text-color));
       cursor: pointer;
       font-size: 0.84rem;
       padding: 6px 14px;
       transition: background 0.15s;
     }
-    button:hover { background: rgba(255, 255, 255, 0.12); }
+    button:hover { background: color-mix(in srgb, var(--rc-text, #fff) 12%, transparent); }
     button.primary {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      color: var(--text-primary-color, #fff);
+      background: var(--rc-accent-container, var(--primary-color));
+      border-color: var(--rc-accent-container, var(--primary-color));
+      color: var(--rc-on-accent, var(--text-primary-color, #fff));
     }
     button.primary:disabled { opacity: 0.5; cursor: default; }
     button.primary:hover:not(:disabled) { filter: brightness(1.1); }
@@ -100,10 +99,10 @@ export class RadarrMovieDetail extends LitElement {
     }
     .form-row label { font-size: 0.84rem; min-width: 120px; }
     select {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      color: var(--primary-text-color);
+      background: var(--rc-surface-container, rgba(255, 255, 255, 0.06));
+      border: 1px solid var(--rc-outline, rgba(255, 255, 255, 0.1));
+      border-radius: var(--rc-control-radius, 6px);
+      color: var(--rc-text, var(--primary-text-color));
       flex: 1;
       padding: 6px 10px;
     }
@@ -119,22 +118,22 @@ export class RadarrMovieDetail extends LitElement {
       justify-content: space-between;
       margin-bottom: 5px;
     }
-    .progress-label { color: var(--secondary-text-color); }
-    .progress-time { color: var(--primary-text-color); font-weight: 500; }
+    .progress-label { color: var(--rc-text-secondary, var(--secondary-text-color)); }
+    .progress-time { color: var(--rc-text, var(--primary-text-color)); font-weight: 500; }
     .progress-track {
-      background: rgba(255,255,255,0.08);
+      background: color-mix(in srgb, var(--rc-text, #fff) 8%, transparent);
       border-radius: 4px;
       height: 6px;
       overflow: hidden;
     }
     .progress-fill {
-      background: var(--primary-color);
+      background: var(--rc-accent, var(--primary-color));
       border-radius: 4px;
       height: 100%;
       transition: width 1s linear;
     }
     .progress-pct {
-      color: var(--secondary-text-color);
+      color: var(--rc-text-secondary, var(--secondary-text-color));
       font-size: 0.75rem;
       margin-top: 4px;
       text-align: right;
