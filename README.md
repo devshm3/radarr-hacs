@@ -6,9 +6,10 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/devshm3)
 
-<!-- Add a screenshot here once you have one:
-![Radarr Card Card](docs/screenshot.png)
--->
+![Radarr Card](docs/images/hero.png)
+
+<!-- Screenshot files live in docs/images/ — see docs/images/README.md for the
+     expected filenames. Replace any placeholder that 404s with your own capture. -->
 
 ## Features
 
@@ -25,6 +26,30 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 - **Multi-instance** — one card per Radarr instance (e.g. 4K + 1080p libraries)
 - **Two looks** — choose **Glass** (theme-adaptive translucent) or **Material You** (MD3, auto light/dark)
 - **Fully adaptive** — uses HA CSS variables, works with any theme
+
+## Appearance
+
+Choose the card's look in the visual editor (or with `appearance:` in YAML).
+**Glass** adapts to your Home Assistant theme; **Material You** renders Material
+Design 3 surfaces and auto-switches between light and dark with your HA mode.
+
+### Glass
+
+| Dark | Light |
+|------|-------|
+| ![Glass appearance, dark mode](docs/images/glass-dark.png) | ![Glass appearance, light mode](docs/images/glass-light.png) |
+
+### Material You
+
+| Dark | Light |
+|------|-------|
+| ![Material You appearance, dark mode](docs/images/material-dark.png) | ![Material You appearance, light mode](docs/images/material-light.png) |
+
+### Other views
+
+| Inline detail panel | Add a movie (TMDB search) |
+|---------------------|---------------------------|
+| ![Inline movie detail panel](docs/images/detail-panel.png) | ![Add movie via TMDB search](docs/images/add-movie.png) |
 
 ## Requirements
 
