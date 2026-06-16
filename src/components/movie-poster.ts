@@ -31,11 +31,11 @@ export class RadarrMoviePoster extends LitElement {
       transform: scale(1.025);
     }
     .wrap.selected {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 2px var(--primary-color), 0 6px 20px rgba(0, 0, 0, 0.35);
+      border-color: var(--rc-accent, var(--primary-color));
+      box-shadow: 0 0 0 2px var(--rc-accent, var(--primary-color)), 0 6px 20px rgba(0, 0, 0, 0.35);
     }
     img {
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--rc-surface-container, rgba(255, 255, 255, 0.04));
       display: block;
       height: 100%;
       object-fit: cover;
@@ -43,8 +43,8 @@ export class RadarrMoviePoster extends LitElement {
     }
     .placeholder {
       align-items: center;
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--secondary-text-color);
+      background: var(--rc-surface-container, rgba(255, 255, 255, 0.04));
+      color: var(--rc-text-secondary, var(--secondary-text-color));
       display: flex;
       flex-direction: column;
       font-size: 0.72rem;
