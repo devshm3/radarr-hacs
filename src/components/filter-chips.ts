@@ -22,34 +22,37 @@ export class RadarrFilterChips extends LitElement {
       padding: 10px 16px;
     }
     button {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 20px;
-      color: var(--secondary-text-color);
+      background: var(--rc-chip-bg, rgba(255, 255, 255, 0.05));
+      border: 1px solid var(--rc-outline, rgba(255, 255, 255, 0.09));
+      border-radius: var(--rc-chip-radius, 20px);
+      color: var(--rc-text-secondary, var(--secondary-text-color));
       cursor: pointer;
       font-size: 0.82rem;
       letter-spacing: 0.02em;
       padding: 4px 14px;
       transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
+    button.active::before { content: var(--rc-chip-check, ""); }
     button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--primary-text-color);
+      background: color-mix(in srgb, var(--rc-text, #fff) 8%, transparent);
+      color: var(--rc-text, var(--primary-text-color));
     }
     button.active {
-      background: var(--primary-color);
-      border-color: var(--primary-color);
-      color: var(--text-primary-color, #fff);
+      background: var(--rc-accent-container, var(--primary-color));
+      border-color: var(--rc-accent-container, var(--primary-color));
+      color: var(--rc-on-accent, var(--text-primary-color, #fff));
       font-weight: 600;
     }
     .count {
-      background: rgba(255,255,255,0.15);
+      background: color-mix(in srgb, var(--rc-text, #fff) 15%, transparent);
       border-radius: 10px;
       font-size: 0.75rem;
       font-weight: 600;
       padding: 1px 6px;
     }
-    button.active .count { background: rgba(0,0,0,0.2); }
+    button.active .count {
+      background: color-mix(in srgb, var(--rc-on-accent, #000) 22%, transparent);
+    }
   `;
 
   render() {
