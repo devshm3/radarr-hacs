@@ -274,9 +274,12 @@ export class RadarrHacsCard extends LitElement {
       await deleteMovie(this.hass, this._config.entry_id, movie.id);
       this._selectedMovie = undefined;
       this._dialogSelectedMovie = undefined;
-      await this._loadData();
     } catch (e) {
       this._error = `Delete failed: ${e}`;
+    } finally {
+      // Always refresh so the grid reflects reality immediately, even if the
+      // delete reported an error (e.g. the movie was already gone).
+      await this._loadData();
     }
   }
 

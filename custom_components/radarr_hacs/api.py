@@ -30,7 +30,13 @@ class RadarrApi:
 
     async def delete_movie(self, movie_id: int, delete_files: bool = False) -> None:
         params = {"deleteFiles": "true"} if delete_files else None
-        await self._request("DELETE", f"/movie/{movie_id}", params=params)
+        try:
+            await self._request("DELETE", f"/movie/{movie_id}", params=params)
+        except aiohttp.ClientResponseError as err:
+            # A 404 means the movie is already gone — the desired end state.
+            # Treat deletion as idempotent so the card reports success and refreshes.
+            if err.status != 404:
+                raise
 
     async def send_command(self, name: str, **kwargs) -> dict:
         return await self._request("POST", "/command", json={"name": name, **kwargs})

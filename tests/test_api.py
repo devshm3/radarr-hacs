@@ -70,6 +70,22 @@ async def test_delete_movie_with_delete_files(api):
         await api.delete_movie(1, delete_files=True)
 
 
+async def test_delete_movie_ignores_404(api):
+    # Movie already gone from Radarr returns 404 — deletion is idempotent and
+    # must not raise, so the card can treat it as a successful removal.
+    with aioresponses() as m:
+        m.delete("http://localhost:7878/api/v3/movie/914", status=404)
+        await api.delete_movie(914)
+
+
+async def test_delete_movie_raises_on_server_error(api):
+    # Non-404 errors must still surface so genuine failures aren't swallowed.
+    with aioresponses() as m:
+        m.delete("http://localhost:7878/api/v3/movie/1", status=500)
+        with pytest.raises(aiohttp.ClientResponseError):
+            await api.delete_movie(1)
+
+
 async def test_get_quality_profiles(api):
     with aioresponses() as m:
         m.get(
