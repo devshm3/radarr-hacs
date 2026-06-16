@@ -86,6 +86,16 @@ export class RadarrHacsCardEditor extends LitElement {
           <input .value=${c.card_title ?? ''} @change=${this._str('card_title')} />
         </div>
         <div class="field">
+          <label>Appearance</label>
+          <select @change=${this._str('appearance')}>
+            ${(['glass', 'material'] as const).map(a => html`
+              <option value=${a} ?selected=${(c.appearance ?? 'glass') === a}>
+                ${a === 'glass' ? 'Glass (default)' : 'Material You'}
+              </option>
+            `)}
+          </select>
+        </div>
+        <div class="field">
           <label>Columns (2–8, default: 4)</label>
           <input type="number" min="2" max="8"
             .value=${String(c.columns ?? 4)}
