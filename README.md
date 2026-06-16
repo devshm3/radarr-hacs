@@ -4,7 +4,7 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 
 [![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=devshm3&repository=radarr-card&category=integration)
 
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/devshm3)
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/devshm3)
 
 <!-- Add a screenshot here once you have one:
 ![Radarr Card Card](docs/screenshot.png)
