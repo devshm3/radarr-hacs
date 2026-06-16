@@ -1,11 +1,11 @@
-# Radarr HACS
+# Radarr Card
 
 A Home Assistant integration that gives you full Radarr control from a single Lovelace card — browse your library, search TMDB, add movies, monitor downloads, and manage your collection without leaving your dashboard.
 
 [![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=devshm3&repository=radarr-hacs&category=integration)
 
 <!-- Add a screenshot here once you have one:
-![Radarr HACS Card](docs/screenshot.png)
+![Radarr Card Card](docs/screenshot.png)
 -->
 
 ## Features
@@ -33,16 +33,16 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 ### Via HACS (recommended)
 
 1. Click the badge above, or open HACS → Integrations → ⋮ → Custom repositories, add `https://github.com/devshm3/radarr-hacs`, category **Integration**
-2. Download **Radarr HACS** and restart Home Assistant
-3. Go to **Settings → Devices & Services → Add Integration → Radarr HACS**
+2. Download **Radarr Card** and restart Home Assistant
+3. Go to **Settings → Devices & Services → Add Integration → Radarr Card**
 4. Enter your Radarr URL (e.g. `http://192.168.1.10:7878`) and API key
-5. Add the **Radarr HACS Card** to any dashboard — the card JS loads automatically, no resource entry needed
+5. Add the **Radarr Card Card** to any dashboard — the card JS loads automatically, no resource entry needed
 
 ### Manual
 
 1. Copy `custom_components/radarr_hacs/` into your HA config `custom_components/` directory
 2. Restart Home Assistant
-3. Configure the integration via **Settings → Devices & Services → Add Integration → Radarr HACS**
+3. Configure the integration via **Settings → Devices & Services → Add Integration → Radarr Card**
 
 ## Card Configuration
 

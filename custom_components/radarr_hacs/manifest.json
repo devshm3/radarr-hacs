@@ -1,6 +1,6 @@
 {
   "domain": "radarr_hacs",
-  "name": "Radarr HACS",
+  "name": "Radarr Card",
   "version": "0.1.1",
   "homeassistant": "2024.1.0",
   "codeowners": ["@devshm3"],

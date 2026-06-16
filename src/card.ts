@@ -634,7 +634,8 @@ export class RadarrHacsCard extends LitElement {
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'radarr-hacs-card',
-  name: 'Radarr HACS Card',
+  name: 'Radarr Card',
   description: 'Browse and manage your Radarr movie library',
   preview: false,
+  documentationURL: 'https://github.com/devshm3/radarr-hacs',
 });
