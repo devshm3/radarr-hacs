@@ -23,6 +23,7 @@ A Home Assistant integration that gives you full Radarr control from a single Lo
 - **Summary sensors** — `total_movies`, `missing_movies`, `downloading_movies` per Radarr instance
 - **Automatable services** — add, delete, refresh, toggle monitored, and trigger search via HA services
 - **Multi-instance** — one card per Radarr instance (e.g. 4K + 1080p libraries)
+- **Two looks** — choose **Glass** (theme-adaptive translucent) or **Material You** (MD3, auto light/dark)
 - **Fully adaptive** — uses HA CSS variables, works with any theme
 
 ## Requirements
@@ -56,6 +57,7 @@ The visual editor auto-populates all fields. The card auto-detects your Radarr i
 type: custom:radarr-hacs-card
 entry_id: <your_entry_id>        # auto-filled by the editor
 card_title: Radarr               # optional header override
+appearance: glass                # glass | material (Material You; auto light/dark)
 columns: 4                       # poster grid columns (2–8)
 page_size: 25                    # movies shown before "View all"
 default_sort: added              # added | title | year | status
@@ -74,6 +76,7 @@ show_refresh_button: true        # manual refresh button in header
 |--------|---------|-------------|
 | `entry_id` | — | Integration entry ID (auto-filled by the editor) |
 | `card_title` | `Radarr` | Card header title |
+| `appearance` | `glass` | Card look: `glass` (theme-adaptive translucent) or `material` (Material You / MD3, follows HA light/dark mode) |
 | `columns` | `4` | Poster grid columns (2–8) |
 | `page_size` | `25` | Movies shown before "View all" (10 / 15 / 25 / 50) |
 | `default_sort` | `added` | Initial sort order |

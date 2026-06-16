@@ -79,7 +79,11 @@ export class RadarrHacsCard extends LitElement {
   protected updated(changed: PropertyValues): void {
     if (changed.has('hass') || changed.has('_config')) {
       this.setAttribute('data-appearance', this._config?.appearance ?? 'glass');
-      this.toggleAttribute('data-dark', !!this.hass?.themes?.darkMode);
+      // Prefer HA's resolved dark mode; fall back to the OS preference when it
+      // isn't set (plain non-moded themes don't always populate darkMode).
+      const dark = this.hass?.themes?.darkMode
+        ?? window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.toggleAttribute('data-dark', !!dark);
     }
     if (changed.has('hass') && this.hass && this._config && !this._initialised) {
       this._initialised = true;
