@@ -12,6 +12,8 @@ import './components/movie-poster.js';
 import './components/movie-detail.js';
 import type { RadarrMovieDetail } from './components/movie-detail.js';
 
+const DOMAIN = 'radarr_hacs';
+
 @customElement('radarr-hacs-card')
 export class RadarrHacsCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -43,8 +45,17 @@ export class RadarrHacsCard extends LitElement {
     return document.createElement('radarr-hacs-card-editor');
   }
 
-  static getStubConfig(): CardConfig {
-    return { entry_id: '' };
+  static async getStubConfig(hass: HomeAssistant): Promise<Partial<CardConfig>> {
+    try {
+      const entries = await hass.connection.sendMessagePromise<Array<{ entry_id: string; domain: string }>>({
+        type: 'config_entries/get',
+        domain: DOMAIN,
+      });
+      const match = entries.find(e => e.domain === DOMAIN);
+      return { entry_id: match?.entry_id ?? '' };
+    } catch {
+      return { entry_id: '' };
+    }
   }
 
   setConfig(config: CardConfig) {

@@ -1,17 +1,47 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import type { HomeAssistant } from './ha-types.js';
 import type { CardConfig } from './types.js';
+
+interface ConfigEntry {
+  entry_id: string;
+  title: string;
+  domain: string;
+}
 
 @customElement('radarr-hacs-card-editor')
 export class RadarrHacsCardEditor extends LitElement {
   @property({ attribute: false }) public hass?: HomeAssistant;
+  @state() private _entries: ConfigEntry[] = [];
 
   private _config?: CardConfig;
+  private _entriesLoaded = false;
 
   setConfig(config: CardConfig) {
     this._config = { ...config };
     this.requestUpdate();
+  }
+
+  override updated(changed: Map<string, unknown>) {
+    if (changed.has('hass') && this.hass && !this._entriesLoaded) {
+      this._entriesLoaded = true;
+      this._loadEntries();
+    }
+  }
+
+  private async _loadEntries() {
+    try {
+      const entries = await this.hass!.connection.sendMessagePromise<ConfigEntry[]>({
+        type: 'config_entries/get',
+        domain: DOMAIN,
+      });
+      this._entries = entries.filter(e => e.domain === DOMAIN);
+      if (this._entries.length === 1 && !this._config?.entry_id) {
+        this._fire({ entry_id: this._entries[0].entry_id });
+      }
+    } catch {
+      this._entries = [];
+    }
   }
 
   static styles = css`
@@ -36,8 +66,20 @@ export class RadarrHacsCardEditor extends LitElement {
     return html`
       <div class="form">
         <div class="field">
-          <label>Entry ID (required — find in Settings → Devices & Services → Radarr HACS → ⋮ → Integration ID)</label>
-          <input .value=${c.entry_id ?? ''} @change=${this._str('entry_id')} />
+          <label>Radarr Instance</label>
+          ${this._entries.length > 0 ? html`
+            <select @change=${(e: Event) => this._fire({ entry_id: (e.target as HTMLSelectElement).value })}>
+              <option value="" ?selected=${!c.entry_id}>Select…</option>
+              ${this._entries.map(entry => html`
+                <option value=${entry.entry_id} ?selected=${c.entry_id === entry.entry_id}>
+                  ${entry.title}
+                </option>
+              `)}
+            </select>
+          ` : html`
+            <input .value=${c.entry_id ?? ''} @change=${this._str('entry_id')}
+              placeholder="Loading instances…" />
+          `}
         </div>
         <div class="field">
           <label>Card Title (default: "Radarr")</label>
@@ -127,3 +169,5 @@ export class RadarrHacsCardEditor extends LitElement {
     this.requestUpdate();
   }
 }
+
+const DOMAIN = 'radarr_hacs';
