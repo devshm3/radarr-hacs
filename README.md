@@ -1,46 +1,106 @@
 # Radarr HACS
 
-A Home Assistant integration that gives you full Radarr control from a single Lovelace card — browse your library, search for new titles, and add movies without leaving your dashboard.
+A Home Assistant integration that gives you full Radarr control from a single Lovelace card — browse your library, search TMDB, add movies, monitor downloads, and manage your collection without leaving your dashboard.
+
+[![Open your Home Assistant instance and add this integration.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=devshm3&repository=radarr-hacs&category=integration)
+
+<!-- Add a screenshot here once you have one:
+![Radarr HACS Card](docs/screenshot.png)
+-->
 
 ## Features
 
-- **Library browser** — poster grid with filter chips (All / Available / Missing / Downloading)
-- **Unified search** — filters your library instantly; searches TMDB for titles not in your collection
-- **Add movies** — select quality profile and root folder, then add directly from the card
+- **Poster grid** — browse your full library with filter tabs (All / Available / Missing / Downloading / Unmonitored)
+- **Inline detail panel** — click any poster to expand quality, file info, ratings, and overview right in the grid
+- **Unified search** — filters your library instantly; falls through to TMDB for titles not in your collection
+- **Add movies** — pick quality profile, root folder, and monitored state, then add directly from the card
+- **Download progress** — active downloads show a progress bar and time remaining, auto-refreshing every 15 seconds
+- **Monitored toggle** — flip a movie between monitored and unmonitored without leaving the card
+- **Manual search** — trigger Radarr to search for a specific movie immediately
+- **Two-step delete** — confirm before removing a movie from Radarr
 - **Summary sensors** — `total_movies`, `missing_movies`, `downloading_movies` per Radarr instance
-- **Automatable services** — `radarr_hacs.add_movie`, `radarr_hacs.delete_movie`, `radarr_hacs.refresh_library`
-- **Multi-instance** — add one card per Radarr instance (e.g. 4K + 1080p)
+- **Automatable services** — add, delete, refresh, toggle monitored, and trigger search via HA services
+- **Multi-instance** — one card per Radarr instance (e.g. 4K + 1080p libraries)
 - **Fully adaptive** — uses HA CSS variables, works with any theme
-
-## Installation
-
-1. Install via [HACS](https://hacs.xyz)
-2. Go to **Settings → Devices & Services → Add Integration → Radarr HACS**
-3. Enter your Radarr URL and API key
-4. The Lovelace card resource is registered automatically when HA is in storage mode.
-   If using YAML-mode Lovelace, add this resource manually in your `configuration.yaml`:
-   ```yaml
-   lovelace:
-     resources:
-       - url: /radarr_hacs/radarr-hacs-card.js
-         type: module
-   ```
-5. Add the **Radarr HACS Card** to any Lovelace dashboard and set the Entry ID
-   (find it in Settings → Devices & Services → Radarr HACS → ⋮ → Integration ID)
-
-## Card Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `columns` | 4 | Poster grid columns (2–8) |
-| `default_view` | `library` | Starting view (`library` or `search`) |
-| `default_sort` | `added` | Sort order (title / added / year / status) |
-| `default_filter` | `all` | Active filter on load |
-| `show_status_badges` | true | Status overlay on posters |
-| `poster_radius` | 8 | Poster corner radius in px |
-| `card_title` | — | Override the card header title |
 
 ## Requirements
 
 - Home Assistant 2024.1 or later
 - Radarr v3 or later
+
+## Installation
+
+### Via HACS (recommended)
+
+1. Click the badge above, or open HACS → Integrations → ⋮ → Custom repositories, add `https://github.com/devshm3/radarr-hacs`, category **Integration**
+2. Download **Radarr HACS** and restart Home Assistant
+3. Go to **Settings → Devices & Services → Add Integration → Radarr HACS**
+4. Enter your Radarr URL (e.g. `http://192.168.1.10:7878`) and API key
+5. Add the **Radarr HACS Card** to any dashboard — the card JS loads automatically, no resource entry needed
+
+### Manual
+
+1. Copy `custom_components/radarr_hacs/` into your HA config `custom_components/` directory
+2. Restart Home Assistant
+3. Configure the integration via **Settings → Devices & Services → Add Integration → Radarr HACS**
+
+## Card Configuration
+
+The visual editor auto-populates all fields. The card auto-detects your Radarr instance — no manual entry ID lookup needed.
+
+### YAML options
+
+```yaml
+type: custom:radarr-hacs-card
+entry_id: <your_entry_id>        # auto-filled by the editor
+card_title: Radarr               # optional header override
+columns: 4                       # poster grid columns (2–8)
+page_size: 25                    # movies shown before "View all"
+default_sort: added              # added | title | year | status
+default_filter: all              # all | available | missing | downloading | unmonitored
+poster_radius: 8                 # poster corner radius in px
+show_status_badges: true         # status overlay on posters
+show_filter_counts: true         # movie counts on filter tabs
+show_quality: true               # quality profile in movie detail
+show_file_info: true             # file size and codec in movie detail
+show_refresh_button: true        # manual refresh button in header
+```
+
+### Option reference
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `entry_id` | — | Integration entry ID (auto-filled by the editor) |
+| `card_title` | `Radarr` | Card header title |
+| `columns` | `4` | Poster grid columns (2–8) |
+| `page_size` | `25` | Movies shown before "View all" (10 / 15 / 25 / 50) |
+| `default_sort` | `added` | Initial sort order |
+| `default_filter` | `all` | Active filter tab on load |
+| `poster_radius` | `8` | Poster corner radius in px |
+| `show_status_badges` | `true` | Coloured status badge on each poster |
+| `show_filter_counts` | `true` | Movie count bubble on each filter tab |
+| `show_quality` | `true` | Quality profile name in the detail panel |
+| `show_file_info` | `true` | File size and video codec in the detail panel |
+| `show_refresh_button` | `true` | Manual refresh button in the card header |
+
+## Sensors
+
+The integration creates three sensors per configured Radarr instance:
+
+| Sensor | Description |
+|--------|-------------|
+| `sensor.radarr_hacs_total_movies` | Total number of movies in the library |
+| `sensor.radarr_hacs_missing_movies` | Monitored movies without a file |
+| `sensor.radarr_hacs_downloading_movies` | Movies currently downloading |
+
+## Services
+
+| Service | Parameters | Description |
+|---------|------------|-------------|
+| `radarr_hacs.add_movie` | `entry_id`, `tmdb_id`, `title`, `year`, `quality_profile_id`, `root_folder`, `monitored` | Add a movie to Radarr |
+| `radarr_hacs.delete_movie` | `entry_id`, `movie_id`, `delete_files` (optional) | Remove a movie from Radarr |
+| `radarr_hacs.refresh_library` | `entry_id` | Trigger a full library refresh |
+| `radarr_hacs.toggle_monitored` | `entry_id`, `movie_id`, `monitored` | Set monitored state on a movie |
+| `radarr_hacs.trigger_search` | `entry_id`, `movie_id` | Trigger Radarr to search for a movie now |
+
+All services are available under **Developer Tools → Services** in Home Assistant.
