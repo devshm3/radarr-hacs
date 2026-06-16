@@ -15,9 +15,14 @@ class RadarrApi:
             method, url, headers=self._headers, **kwargs
         ) as resp:
             resp.raise_for_status()
-            if resp.status != 204:
+            if resp.status == 204:
+                return None
+            try:
                 return await resp.json()
-            return None
+            except aiohttp.ContentTypeError:
+                # Some endpoints (e.g. DELETE) return 200 with an empty or
+                # non-JSON body — nothing to decode.
+                return None
 
     async def get_movies(self) -> list[dict]:
         return await self._request("GET", "/movie")

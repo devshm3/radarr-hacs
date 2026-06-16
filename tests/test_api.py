@@ -78,6 +78,19 @@ async def test_delete_movie_ignores_404(api):
         await api.delete_movie(914)
 
 
+async def test_delete_movie_handles_non_json_200(api):
+    # Radarr's DELETE returns 200 with an empty, non-JSON body. _request must
+    # not choke trying to decode it as JSON.
+    with aioresponses() as m:
+        m.delete(
+            "http://localhost:7878/api/v3/movie/916",
+            status=200,
+            body="",
+            content_type="text/plain",
+        )
+        await api.delete_movie(916)
+
+
 async def test_delete_movie_raises_on_server_error(api):
     # Non-404 errors must still surface so genuine failures aren't swallowed.
     with aioresponses() as m:
