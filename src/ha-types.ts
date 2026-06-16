@@ -9,4 +9,5 @@ export interface HomeAssistant {
   ): Promise<void>;
   states: Record<string, { state: string; attributes: Record<string, unknown> }>;
   language: string;
+  themes?: { darkMode?: boolean };
 }

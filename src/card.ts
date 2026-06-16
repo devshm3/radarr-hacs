@@ -77,6 +77,10 @@ export class RadarrHacsCard extends LitElement {
   }
 
   protected updated(changed: PropertyValues): void {
+    if (changed.has('hass') || changed.has('_config')) {
+      this.setAttribute('data-appearance', this._config?.appearance ?? 'glass');
+      this.toggleAttribute('data-dark', !!this.hass?.themes?.darkMode);
+    }
     if (changed.has('hass') && this.hass && this._config && !this._initialised) {
       this._initialised = true;
       this._loadData();
@@ -386,17 +390,19 @@ export class RadarrHacsCard extends LitElement {
   static styles = css`
     :host {
       display: block;
-      background: var(--card-background-color);
-      border-radius: 12px;
       font-family: var(--paper-font-body1_-_font-family, sans-serif);
+    }
+    /* Render through ha-card so the card inherits the active theme's card
+       surface (background, blur, radius, shadow) — matching Mushroom and other
+       cards exactly, instead of painting its own darker panel background. */
+    ha-card {
       overflow: hidden;
+      padding: 0;
     }
     .header {
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: transparent;
+      border-bottom: 1px solid var(--divider-color, rgba(255, 255, 255, 0.08));
       display: flex;
       gap: 8px;
       padding: 12px 16px;
@@ -520,6 +526,7 @@ export class RadarrHacsCard extends LitElement {
     const title = this._config.card_title ?? 'Radarr';
     const showCounts = this._config.show_filter_counts !== false;
     return html`
+      <ha-card>
       <div class="header">
         ${this._addMode ? html`
           <button class="icon-btn" @click=${this._exitAddMode}>← Back</button>
@@ -589,6 +596,7 @@ export class RadarrHacsCard extends LitElement {
           </div>
         ` : ''}
       ` : ''}
+      </ha-card>
 
       <dialog @close=${this._onDialogClose}>
         ${this._dialogOpen ? html`
@@ -639,3 +647,4 @@ export class RadarrHacsCard extends LitElement {
   preview: false,
   documentationURL: 'https://github.com/devshm3/radarr-card',
 });
+console.info('%c RADARR-CARD %c 0.1.3 ', 'background:#f5a623;color:#1a1a1a;font-weight:700', 'background:#333;color:#fff');

@@ -58,4 +58,5 @@ export interface CardConfig {
   show_file_info?: boolean;
   show_filter_counts?: boolean;
   show_refresh_button?: boolean;
+  appearance?: 'glass' | 'material';
 }
