@@ -3,11 +3,11 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from homeassistant.components.frontend import add_extra_js_url
 from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.start import async_at_start
 
 from .api import RadarrApi
 from .const import DEFAULT_POLL_INTERVAL, DOMAIN
@@ -15,8 +15,9 @@ from .coordinator import RadarrCoordinator
 from . import services, websocket_api
 
 _LOGGER = logging.getLogger(__name__)
-_CARD_VERSION = "15"
-_CARD_URL = f"/{DOMAIN}/radarr-hacs-card.js?v={_CARD_VERSION}"
+_CARD_VERSION = "16"
+_CARD_BASE_URL = f"/{DOMAIN}/radarr-hacs-card.js"
+_CARD_URL = f"{_CARD_BASE_URL}?v={_CARD_VERSION}"
 
 PLATFORMS = ["sensor"]
 
@@ -26,10 +27,41 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     await hass.http.async_register_static_paths(
         [StaticPathConfig(f"/{DOMAIN}", str(Path(__file__).parent / "www"), cache_headers=True)]
     )
-    add_extra_js_url(hass, _CARD_URL)
+    # Load the card ONLY through the Lovelace resource pipeline (not
+    # add_extra_js_url). HA's card picker resolves custom cards from the
+    # scoped registry populated by Lovelace resources; loading via
+    # add_extra_js_url defines the element globally but leaves the picker
+    # unable to find it. Registering a resource (once Lovelace is loaded)
+    # makes the card appear in the picker with no manual user step.
+    async_at_start(hass, _async_register_card_resource)
     websocket_api.async_register_commands(hass)
     services.async_register_services(hass)
     return True
+
+
+async def _async_register_card_resource(hass: HomeAssistant) -> None:
+    """Add the card to the Lovelace resource collection (storage mode only)."""
+    try:
+        lovelace = hass.data.get("lovelace")
+        resources = getattr(lovelace, "resources", None)
+        if resources is None and isinstance(lovelace, dict):
+            resources = lovelace.get("resources")
+        # Only storage-mode collections can be edited programmatically;
+        # YAML-mode Lovelace exposes no async_create_item.
+        if resources is None or not hasattr(resources, "async_create_item"):
+            return
+        if not getattr(resources, "loaded", True):
+            await resources.async_load()
+            resources.loaded = True
+        for item in resources.async_items():
+            if item.get("url", "").startswith(_CARD_BASE_URL):
+                if item["url"] != _CARD_URL:
+                    await resources.async_update_item(item["id"], {"url": _CARD_URL})
+                return
+        await resources.async_create_item({"res_type": "module", "url": _CARD_URL})
+        _LOGGER.debug("Registered Lovelace resource %s", _CARD_URL)
+    except Exception as err:  # noqa: BLE001
+        _LOGGER.debug("Could not register Lovelace resource %s: %s", _CARD_URL, err)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

@@ -23,6 +23,10 @@ def mock_http(hass):
     http = MagicMock()
     http.async_register_static_paths = AsyncMock(return_value=None)
     hass.http = http
+    # Lovelace isn't set up in these unit tests, so stub the resource
+    # registration that async_setup schedules via async_at_start.
+    with patch("custom_components.radarr_hacs._async_register_card_resource"):
+        yield
 
 
 async def test_setup_entry_stores_coordinator(hass, mock_entry, mock_coordinator):
