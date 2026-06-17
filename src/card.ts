@@ -76,6 +76,20 @@ export class RadarrHacsCard extends LitElement {
     this._activeFilter = this._config.default_filter ?? 'all';
   }
 
+  // Masonry view: approximate height in ~50px units so the card isn't clipped.
+  public getCardSize(): number {
+    const cols = this._config?.columns ?? 4;
+    const shown = this._displayMovies.length || this._pageSize || 25;
+    const rows = Math.max(1, Math.ceil(shown / cols));
+    return 3 + rows * 3;
+  }
+
+  // Sections view: size the card to its content height so it doesn't overflow
+  // into the section below.
+  public getGridOptions(): { columns: string; rows: string } {
+    return { columns: 'full', rows: 'auto' };
+  }
+
   protected updated(changed: PropertyValues): void {
     if (changed.has('hass') || changed.has('_config')) {
       this.setAttribute('data-appearance', this._config?.appearance ?? 'glass');
